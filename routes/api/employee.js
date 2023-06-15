@@ -9,7 +9,9 @@ const positionController = require('../../controllers/positionController');
 const departmentController = require('../../controllers/departmentController');
 
 router.route('/')
-    .post(validateEmployeeRequest, employeeController.create);
+    .post(verifyJWT, validateEmployeeRequest, employeeController.create)
+    .get(verifyJWT, employeeController.getAllEmployees);
+    
 
 router.route('/:id/update-name')
     .patch(verifyJWT, employeeController.updateName);
@@ -33,21 +35,21 @@ router.route('/:id/update-salary')
     .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin), employeeController.updateSalary)
 
 router.route('/positions')
-    .post(positionController.create)
+    .post(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), positionController.create)
     .get(positionController.getAll);
 
 router.route('/positions/:id')
-    .put(positionController.update)
+    .put(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), positionController.update)
     .get(positionController.getById)
-    .delete(positionController.remove);
+    .delete(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), positionController.remove);
 
-    router.route('/departments')
-    .post(departmentController.create)
+router.route('/departments')
+    .post(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), departmentController.create)
     .get(departmentController.getAll);
 
 router.route('/departments/:id')
-    .put(departmentController.update)
+    .put(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), departmentController.update)
     .get(departmentController.getById)
-    .delete(departmentController.remove);
+    .delete(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), departmentController.remove);
 
 module.exports = router

@@ -40,9 +40,10 @@ app.use(cookieParser());
 //Middleware for json
 app.use(express.json());
 
-//Register routes
+//Register the routes
 app.use('/api/employees', require('./routes/api/employee'));
 app.use('/api/roles', require('./routes/api/role'));
+app.use('/api/auth', require('./routes/api/auth'));
 
 //Log errors
 app.use(errorHandler);

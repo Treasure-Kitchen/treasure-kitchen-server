@@ -2,6 +2,7 @@ const Employee = require('../models/Employee');
 const Role = require('../models/Role');
 const Position = require('../models/Position');
 const Department = require('../models/Department');
+const bcrypt = require('bcrypt');
 
 const create = async (req, res) => {
     const { 
@@ -38,7 +39,7 @@ const create = async (req, res) => {
             "middleName": middleName,
             "emailAddress": emailAddress,
             "phoneNumber": phoneNumber,
-            "role": role?.role,
+            "role": role,
             "password": hashedPwd,
             "position": position,
             "department": department,
@@ -49,6 +50,15 @@ const create = async (req, res) => {
         res.status(201).json({ 'message': 'Employee Registration successful' });
     } catch (error) {
         res.status(500).json(({ 'message': error.message }));
+    }
+};
+
+const getAllEmployees = async (req, res) => {
+    try {
+        const employees = await Employee.find();
+        res.status(200).json(employees);
+    } catch (error) {
+        res.status(500).json({ 'message': error.message });
     }
 };
 
@@ -232,5 +242,6 @@ module.exports = {
     updateDepartment,
     updateEmploymentDate,
     changeEmployeeRole,
-    terminate
+    terminate,
+    getAllEmployees
 }

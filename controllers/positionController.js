@@ -6,7 +6,7 @@ const create = async (req, res) => {
         name
     } = req.body;
 
-    if(!name) return res.status(400).json({ 'message': 'Postion Name id required '});
+    if(!name) return res.status(400).json({ 'message': 'Postion Name is required '});
     try {
         await Position.create({
             "name": name

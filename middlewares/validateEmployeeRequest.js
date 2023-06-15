@@ -21,7 +21,7 @@ const validateEmployeeRequest = (req, res, next) => {
         if(!position) return res.status(400).json({ 'message': 'Employee Position is required'});
         if(!department) return res.status(400).json({ 'message': 'Employee Department is required'});
         if(salary && salary <= 0)  return res.status(400).json({ 'message': 'Salary must be greater than 0'});
-        if(!employementDate) return res.status(400).json({ 'message': 'Employment Date is required'});
+        if(!employmentDate) return res.status(400).json({ 'message': 'Employment Date is required'});
         if(!password) return res.status(400).json({ 'message': 'Password is required'});
         if(!validator.validate(emailAddress)) return res.status(400).json({ 'message': 'Invalid email address' });
         if(!validatePhoneNumber.validate(phoneNumber)) return res.status(400).json({ 'message': 'Invalid phone number.' });

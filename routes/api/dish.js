@@ -1,0 +1,24 @@
+const express = require('express');
+const router = express.Router();
+const verifyJWT = require('../../middlewares/verifyJWT');
+const verifyRoles = require('../../middlewares/verifyRoles');
+const ROLES = require('../../config/roles');
+const multer = require('multer');
+const dishController = require('../../controllers/dishController');
+const validateDishRequest = require('../../middlewares/validateDishRequest');
+const storage = multer.diskStorage({});
+
+const fileFilter = (req, file, cb) => {
+    if(file.mimetype.startsWith('image')){
+        cb(null, true);
+    } else{
+        cb("Invalid image file", false);
+    }
+};
+const upload = multer({ storage, fileFilter });
+
+router.route('/')
+    .post(verifyJWT, upload.single('image'), validateDishRequest, dishController.create)
+    .get(verifyJWT, dishController.getAll);
+
+module.exports = router;

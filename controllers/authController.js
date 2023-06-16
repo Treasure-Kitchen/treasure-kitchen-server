@@ -77,6 +77,7 @@ const handleLogin = async (req, res) => {
         );
         //set refresh token for user
         foundEmployee.refreshToken = refreshToken;
+        foundEmployee.lastLogin = new Date();
         foundEmployee.save();
         //set the refresh token in cookie
         res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });//secure: true might not work for Thunder Client

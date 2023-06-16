@@ -7,11 +7,22 @@ const ROLES = require('../../config/roles');
 const validateEmployeeRequest = require('../../middlewares/validateEmployeeRequest');
 const positionController = require('../../controllers/positionController');
 const departmentController = require('../../controllers/departmentController');
+const fileCOntroller = require('../../controllers/fileController');
+const multer = require('multer');
+const storage = multer.diskStorage({});
+
+const fileFilter = (req, file, cb) => {
+    if(file.mimetype.startsWith('image')){
+        cb(null, true);
+    } else{
+        cb("Invalid image file", false);
+    }
+};
+const upload = multer({ storage, fileFilter });
 
 router.route('/')
-    .post(verifyJWT, validateEmployeeRequest, employeeController.create)
+    .post(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), validateEmployeeRequest, employeeController.create)
     .get(verifyJWT, employeeController.getAllEmployees);
-    
 
 router.route('/:id/update-name')
     .patch(verifyJWT, employeeController.updateName);
@@ -51,5 +62,8 @@ router.route('/departments/:id')
     .put(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), departmentController.update)
     .get(departmentController.getById)
     .delete(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), departmentController.remove);
+
+router.route('/:id/upload-photo')
+    .post(verifyJWT, upload.single('image'), fileCOntroller.uploadEmployeePhoto);
 
 module.exports = router

@@ -2,6 +2,14 @@ const randomNumBetweenRange = (min, max) => {
     return Math.round(Math.random() * (max - min) + min);
 };
 
+const MAX_FILE_SIZE = 819200;
+
+const allowedFileExt = ['png', 'jpg', 'jpeg'];
+
+const isNotANumber = (str) => isNaN(Number(str));
+
+const toNumber = (str) =>  Number(str);
+
 const emailConfirmationMessage = () => {
     return `
     We are pleased to welcome you to Treasure Kitchen.
@@ -27,5 +35,9 @@ module.exports = {
     randomNumBetweenRange,
     emailConfirmationMessage,
     resetPasswordMessage,
-    range
+    range,
+    MAX_FILE_SIZE,
+    allowedFileExt,
+    isNotANumber,
+    toNumber
 };

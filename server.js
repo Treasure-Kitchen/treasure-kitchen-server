@@ -32,7 +32,7 @@ app.use(cors(corsOptions));
 
 //Configure to use form-data
 //Content-Type: application/x-www.form-urlencoded
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 //Middleware for cookies
 app.use(cookieParser());
@@ -44,6 +44,7 @@ app.use(express.json());
 app.use('/api/employees', require('./routes/api/employee'));
 app.use('/api/roles', require('./routes/api/role'));
 app.use('/api/auth', require('./routes/api/auth'));
+app.use('/api/dishes', require('./routes/api/dish'));
 
 //Log errors
 app.use(errorHandler);

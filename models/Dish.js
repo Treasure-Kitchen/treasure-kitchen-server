@@ -5,8 +5,20 @@ const dishSchema = new Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    ingredients: { type: String, required: false },
-    category: { type: String, required: false }
+    photo: { type: String, default: '' },
+    publicId: { type: String, default: '' },
+    menus: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Menu"
+        }
+    ],
+    orders: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Order"
+        }
+    ]
 });
 
 module.exports = mongoose.model('Dish', dishSchema);

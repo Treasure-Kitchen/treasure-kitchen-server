@@ -54,11 +54,26 @@ const create = async (req, res) => {
 };
 
 const getAllEmployees = async (req, res) => {
+    const {page, perPage } = req.query;
+    const currentPage = Math.max(0, page) || 1;
+    const pageSize = Number(perPage) || 10;
+  
     try {
-        const employees = await Employee.find();
-        res.status(200).json(employees);
+            const result = await Employee.find()
+                .sort({ _id: 1 })
+                .select('_id firstName lastName middleName position department salary emailAddress phoneNumber role isTerminated employmentDate createdAt lastLogin photoUrl terminationDate')
+                .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
+                .limit(pageSize)        
+                .exec();
+            const count = await Employee.countDocuments();
+            res.status(200).json({
+                Data: result,
+                CurrentPage: currentPage,
+                PageSize: pageSize,
+                TotalPages: Math.ceil(count / pageSize)
+            });
     } catch (error) {
-        res.status(500).json({ 'message': error.message });
+        res.status(500).json({message: error.message});
     }
 };
 

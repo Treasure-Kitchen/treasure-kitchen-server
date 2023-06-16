@@ -8,7 +8,12 @@ const orderSchema = new Schema({
     status: { type: String, default: orderStatuses.Pending },
     dateTime: { type: Date, default: Date.now },
     paymentStatus: { type: String, dafault: paymentStatuses.No },
-    dishes: []
+    dishes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Dish"
+        }
+    ]
 });
 
 module.exports = mongoose.model('Order', orderSchema);

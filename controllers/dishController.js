@@ -84,6 +84,10 @@ const getAll = async (req, res) => {
                     path: 'menus',
                     select: '_id name'
                 })
+                .populate({
+                    path: 'orders',
+                    select: 'customerName tableName status dateTime paymentStatus'
+                })
                 .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
                 .limit(pageSize)        
                 .exec();

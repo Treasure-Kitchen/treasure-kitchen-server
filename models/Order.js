@@ -6,6 +6,7 @@ const orderSchema = new Schema({
     customerName: { type: String, required: true },
     tableName: { type: String, required: true },
     status: { type: String, default: orderStatuses.Pending },
+    price: Number,
     dateTime: { type: Date, default: Date.now },
     paymentStatus: { type: String, dafault: paymentStatuses.No },
     dishes: [

@@ -21,4 +21,9 @@ router.route('/')
     .post(verifyJWT, upload.single('image'), validateDishRequest, dishController.create)
     .get(verifyJWT, dishController.getAll);
 
+router.route('/:id')
+    .get(dishController.getById)
+    .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), dishController.update)
+    .delete(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), dishController.remove);
+
 module.exports = router;

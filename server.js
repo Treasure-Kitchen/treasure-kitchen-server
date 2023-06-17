@@ -45,6 +45,7 @@ app.use('/api/employees', require('./routes/api/employee'));
 app.use('/api/roles', require('./routes/api/role'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/dishes', require('./routes/api/dish'));
+app.use('/api/menus', require('./routes/api/menu'));
 
 //Log errors
 app.use(errorHandler);

@@ -5,6 +5,7 @@ const verifyRoles = require('../../middlewares/verifyRoles');
 const ROLES = require('../../config/roles');
 const multer = require('multer');
 const dishController = require('../../controllers/dishController');
+const fileController = require('../../controllers/fileController');
 const validateDishRequest = require('../../middlewares/validateDishRequest');
 const storage = multer.diskStorage({});
 
@@ -25,5 +26,8 @@ router.route('/:id')
     .get(dishController.getById)
     .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), dishController.update)
     .delete(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), dishController.remove);
+
+router.route(':id/update-image')
+    .post(verifyJWT, verifyRoles(ROLES.Admin, ROLES.SuperAdmin), fileController.updateDishImage);
 
 module.exports = router;

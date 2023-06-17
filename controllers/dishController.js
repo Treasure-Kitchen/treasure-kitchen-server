@@ -21,7 +21,7 @@ const create = async (req, res) => {
             "description": description,
             "price": toNumber(price),
             "photo": result.secure_url,
-            "publicId": result.secure_url,
+            "publicId": result.public_id,
         };
         await Dish.create(newDish)
         res.status(200).json({message:'Dish successfully created.'});
@@ -80,6 +80,10 @@ const getAll = async (req, res) => {
             const result = await Dish.find()
                 .sort({ _id: 1 })
                 .select('_id name description price photo')
+                .populate({
+                    path: 'menus',
+                    select: '_id name'
+                })
                 .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
                 .limit(pageSize)        
                 .exec();
@@ -87,9 +91,12 @@ const getAll = async (req, res) => {
 
             res.status(200).json({
                 Data: result,
-                CurrentPage: currentPage,
-                PageSize: pageSize,
-                TotalPages: Math.ceil(count / pageSize)
+                MetaData: {
+                    CurrentPage: currentPage,
+                    PageSize: pageSize,
+                    TotalPages: Math.ceil(count / pageSize),
+                    ItemCount: count
+                }
             });
     } catch (error) {
         res.status(500).json({message: error.message});

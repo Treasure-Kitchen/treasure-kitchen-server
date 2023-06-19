@@ -9,24 +9,22 @@ const create = async (req, res) => {
     } = req.body;
         if(!name || !description) return res.status(400).json({message:`Please fill in all the required fields.`});
         try {
+                const dishCount = await Dish.countDocuments({
+                    _id: { $in: dishes }
+                });
+                if(dishes.length !== dishCount) return res.status(404).json({message: `One or more chosen dishes could not be found.`});
+
                 const newMenu = {
                     "name": name,
                     "description": description,
                     "dishes": dishes
                 };
 
-                const menu = await Menu.create(newMenu);
-                if(dishes.length > 0){
-                    await Dish.updateMany(
-                        { _id: { $in: dishes }},
-                        { $push: { menus: menu._id }}
-                    );
-                }
+                await Menu.create(newMenu);
                 res.status(200).json({message: 'Menu successfully created'});
         } catch (error) {
             res.status(500).json({message:error.message});
-        }
-    
+        }   
 };
 
 const update = async (req, res) => {
@@ -39,31 +37,19 @@ const update = async (req, res) => {
         if(!name || !description) return res.status(400).json({message:`Please fill in all the required fields.`});
 
         try {
-            const menu = await Menu.findById({ _id: id }).select('dishes').populate({
-                path: 'dishes'
-            });
-            if(!menu) return res.status(404).json({message: `No menu record found for Id: ${id}`});
-
-            if(menu.dishes.length > 0){
-                menu.dishes.forEach( async (dish) => {
-                    dish.menus.splice(menu._id, 1);
-                    await dish.save();
+                const menu = await Menu.findById({ _id: id });
+                if(!menu) return res.status(404).json({message: `No menu record found for Id: ${id}`});
+                const dishCount = await Dish.countDocuments({
+                    _id: { $in: dishes }
                 });
-            }
+                if(dishes.length !== dishCount) return res.status(404).json({message: `One or more chosen dishes could not be found.`});
 
-            menu.name = name;
-            menu.description = description;
-            menu.dishes = dishes;
-            //Update chosen dishes
-            if(dishes.length > 0){
-                await Dish.updateMany(
-                    { _id: { $in: dishes }},
-                    { $push: { menus: menu._id }}
-                );
-            }
-            //Save
-            await menu.save();
-            res.status(200).json({message: 'Menu successfully updated'});
+                menu.name = name;
+                menu.description = description;
+                menu.dishes = dishes;
+                //Save
+                await menu.save();
+                res.status(200).json({message: 'Menu successfully updated'});
         } catch (error) {
             res.status(500).json({message: error.message});
         }
@@ -72,15 +58,8 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
     const { id } = req.params;
     try {
-            const menu = await Menu.findById({ _id: id }).select('dishes');
+            const menu = await Menu.findById({ _id: id });
             if(!menu) return res.status(404).json({message: `No menu record found for Id: ${id}`});
-
-            if(menu.dishes.length > 0){
-                menu.dishes.forEach( async (dish) => {
-                    dish.menus?.splice(menu._id, 1);
-                    await dish.save();
-                });
-            }
 
             await Menu.deleteOne({ _id: id });
             res.status(200).json({message: 'Menu successfully deleted'});
@@ -99,7 +78,6 @@ const getAll = async (req, res) => {
                 })  
                 .sort({ _id: 1 })   
                 .exec();
-            const count = await Dish.countDocuments();
 
             res.status(200).json(result);
         } catch (error) {
@@ -122,7 +100,7 @@ const getById = async (req, res) => {
     } catch (error) {
         res.status(500).json({message: error.message});
     }
-}
+};
 
 module.exports = {
     create,

@@ -18,7 +18,9 @@ const orderStatuses = {
 
 const paymentStatuses = {
     "Yes": "Yes",
-    "No": "No"
+    "No": "No",
+    "Partial": "Partial",
+    "OverPaid": "Over Paid"
 }
 
 module.exports = {

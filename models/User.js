@@ -2,10 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    email: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
+    name: { type: String, required: true },
+    email: { type: String, required: true, dropDups: true },
     role: { type: Number, required: true },
     refreshToken: { type: String, default: '' },
     isEmailConfirmed: { type: Boolean, default: false },
@@ -13,7 +11,7 @@ const userSchema = new Schema({
     lastLogin: Date,
     isActive: { type: Boolean, default: false },
     password: { type: String, required: true },
-    emailToken: { type: Number, unique: true, required: false },
+    emailToken: { type: Number, unique: true, required: false, dropDups: true },
     tokenExpiryTime: Date,
     orders: [
         {

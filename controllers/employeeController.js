@@ -3,6 +3,9 @@ const Role = require('../models/Role');
 const Position = require('../models/Position');
 const Department = require('../models/Department');
 const bcrypt = require('bcrypt');
+const { emailSlave } = require('../helpers/emailSlave');
+const { emailConfirmationMessage, resetPasswordMessage } = require('../helpers/helperFs');
+
 
 const create = async (req, res) => {
     const { 
@@ -47,7 +50,18 @@ const create = async (req, res) => {
             "employmentDate": employmentDate
         }
         await Employee.create(newEmployee);
-        res.status(201).json({ 'message': 'Employee Registration successful' });
+
+        const payload = {
+            name: firstName,
+            email: emailAddress,
+            subject: "Confirm Your Email",
+            messageText: emailConfirmationMessage(),
+            file: "ConfirmEmail.html"
+        }
+        const result = emailSlave(payload);
+        if(!result?.isSuccess) return res.status(400).json({message: 'Registration failed. Please try again'});
+        res.cookie('cnfm', emailAddress, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 60 * 60 * 1000 });//secure: true might not work for Thunder Client
+        res.status(201).json({ 'message': 'Employee Registration successful. Please check your mail for confirmation OTP' });
     } catch (error) {
         res.status(500).json(({ 'message': error.message }));
     }

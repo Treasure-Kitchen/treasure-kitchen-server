@@ -25,9 +25,8 @@ const create = async (req, res) => {
             })
 
             const newOrder = {
-                "customerName": `${user.firstName} ${user?.lastName}`,
+                "customerName": user.name,
                 "email": user?.email,
-                "phoneNumber": user?.phoneNumber,
                 "tableName": tableName,
                 "price": totalPrice,
                 "balance": totalPrice,
@@ -71,7 +70,7 @@ const update = async (req, res) => {
             const order = await Order.findOne({ _id: id }).exec();
             if(!order) return res.status(404).json({message: `Could not find an order with Id: ${id}`});
 
-            order.customerName = `${user?.firstName} ${user?.lastName}`;
+            order.customerName = user.name;
             order.tableName = tableName;
             order.dishes = dishes;
             order.price = price;

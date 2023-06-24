@@ -15,41 +15,29 @@ const {
 
 const handleLogin = async (req, res) => {
     const { emailAddress, password } = req.body;
-    if(!emailAddress || !password) return res.status(400).json({ 'message': 'Email and password are required.', 'toConfirmEmail': false});
+    if(!emailAddress || !password) return res.status(400).json({ 'message': 'Email and password are required.'});
 
     const foundEmployee = await Employee.findOne({ emailAddress: emailAddress }).exec();
-    if(!foundEmployee) return res.status(404).json({'message':`No user found with email: ${emailAddress}`, 'toConfirmEmail': false});
-    if(foundEmployee.isTerminated) return res.status(403).json({message: 'You have been terminated. Your access have been revoked', toConfirmEmail: false})
+    if(!foundEmployee) return res.status(404).json({'message':`No user found with email: ${emailAddress}`});
+    if(foundEmployee.isTerminated) return res.status(403).json({message: 'You have been terminated. Your access have been revoked'})
     if(!foundEmployee.isEmailConfirmed) {
         try {
-            const filePath = path.join(__dirname, '..', 'views', 'ConfirmEmail.html');
-            const emailToken = randomNumBetweenRange(range.MIN, range.MAX);
-            //TODO: Check if path exists
-            const template = await fsPromises.readFile(filePath, 'utf8');
-            const message = template
-                            .replace("{{greetings}}", `Welcome ${foundEmployee.firstName}`)
-                            .replace("{{message}}", emailConfirmationMessage())
-                            .replace("{{OTP}}", emailToken)
-                            .replace("{{year}}", (new Date()).getFullYear());
+            const payload = {
+                name: foundEmployee.name,
+                email: foundEmployee.email,
+                subject: "Confirm Your Email",
+                messageText: emailConfirmationMessage(),
+                file: "ConfirmEmail.html"
+            }
             
-            //send verification OTP to user
-            const payLoad = { 
-                recipientEmail: foundEmployee.emailAddress, 
-                recipientName: foundEmployee.firstName, 
-                subject: "Confirm Your Email", 
-                html: message
-            };
-            sendMail(payLoad);
+            const result = emailSlave(payload);
+            if(!result?.isSuccess) return res.status(400).json({message:'Login failed. Please try again.'});
             //set the user token and the expiry time
-            foundEmployee.emailToken = emailToken;
+            foundEmployee.emailToken = result?.token;
             foundEmployee.tokenExpiryTime = addHours(Date.now(), 2);
             await foundEmployee.save();
-            return res.status(400).json(
-                {
-                    message:'Confirm your account before attempting to log in. Please check your mail.',
-                    toConfirmEmail: true,
-                    email: emailAddress
-                })
+            res.cookie('cnfm', emailAddress, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 60 * 60 * 1000 });//secure: true might not work for Thunder Client
+            return res.status(400).json({message:'Confirm your account before attempting to log in. Please check your mail.'})
         } catch (error) {
             res.status(500).json({'message':error.message, 'toConfirmEmail': false });
         }
@@ -81,9 +69,11 @@ const handleLogin = async (req, res) => {
         foundEmployee.save();
         //set the refresh token in cookie
         res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });//secure: true might not work for Thunder Client
+        //clear confirmation cookie if any
+        res.clearCookie('cnfm', { httpOnly: true, sameSite: 'None', secure: true });
         res.status(200).json({ accessToken });
     } else {
-        res.status(400).json({'message':'Password is not correct.', 'toConfirmEmail': false});
+        res.status(400).json({'message':'Password is not correct.'});
     }
 };
 
@@ -107,45 +97,42 @@ const handleLogout = async (req, res) => {
 
 const handleConfirmEmail = async (req, res) => {
     try {
-        const { token, email } = req.body;
+        const { token } = req.body;
         if(!token) return res.status(404).json({'message':'Email token not found'});
-        //Use the token to find the Employee
+        const cookies = req.cookies;
+        if(!cookies?.cnfm) return res.status(400).json({message: 'Invalid session!'});
+        const email = cookies.jwt;
+        //Use the token and email to find the Employee
         const employee = await Employee.findOne({ emailToken: token, emailAddress: email }).exec();
-        if(employee){
-            if(new Date(employee.tokenExpiryTime).getTime() < new Date().getTime()){
-                const filePath = path.join(__dirname, '..', 'views', 'ConfirmEmail.html');
-                //TODO: check if the file exists
-                const emailToken = randomNumBetweenRange(range.MIN, range.MAX);
-
-                const template = await fsPromises.readFile(filePath, 'utf8');
-                const message = template
-                            .replace("{{greetings}}", `Welcome ${foundEmployee.firstName}`)
-                            .replace("{{message}}", emailConfirmationMessage())
-                            .replace("{{OTP}}", emailToken)
-                            .replace("{{year}}", (new Date()).getFullYear());
-            
-                //send verification OTP to user
-                const payLoad = { 
-                    recipientEmail: employee.emailAddress, 
-                    recipientName: employee.firstName, 
-                    subject: "Confirm Your Email", 
-                    html: message
-                };
-                sendMail(payLoad);
+        if(!employee || (new Date(employee?.tokenExpiryTime).getTime() < new Date().getTime())){
+            if(!email || (new Date(employee?.tokenExpiryTime).getTime() < new Date().getTime())){
+                const payload = {
+                    name: employee.firstName,
+                    email: employee.emailAddress,
+                    subject: "Confirm Your Email",
+                    messageText: emailConfirmationMessage(),
+                    file: "ConfirmEmail.html"
+                }
+                
+                const result = emailSlave(payload);
+                if(!result?.isSuccess) return res.status(400).json({message: 'Email confirmation failed. Please try again.'});
                 //set the Employee token and the expiry time
-                employee.emailToken = emailToken;
+                employee.emailToken = result?.token;
                 employee.tokenExpiryTime = addHours(Date.now(), 2);
                 await employee.save();
+                res.cookie('cnfm', email, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 60 * 60 * 1000 });//secure: true might not work for Thunder Client
                 res.status(400).json({message:'Token expired! Please verify with the new token sent to your email'});
+            } else {
+                res.status(404).json({message:'Email verification failed. Invalid token'});
             }
+        } else {
             //update the Employee
             employee.emailToken = null;
             employee.isEmailConfirmed = true;
             //save the changes
             await employee.save();
-            res.status(200).json({id: employee._id});
-        } else {
-            res.status(404).json({message:'Email verification failed. Invalid token'});
+            res.clearCookie('cnfm', { httpOnly: true, sameSite: 'None', secure: true });
+            res.status(200).json({message: 'Email successfully confirm. Please login.'});
         }
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -157,28 +144,22 @@ const handleResetPassword = async (req, res) => {
     try {
             const employee = await Employee.findOne({ emailAddress: emailAddress });
             if(!employee) return res.status(404).json({'message':`No employee found with the email: ${emailAddress}`});
-            const filePath = path.join(__dirname, '..', 'views', 'ConfirmEmail.html');
-            const emailToken = randomNumBetweenRange(range.MIN, range.MAX);
-            //TODO: check if file exists
-            const template = await fsPromises.readFile(filePath, 'utf8');
-            const message = template
-                        .replace("{{greetings}}", `Hello ${employee.firstName}`)
-                        .replace("{{message}}", resetPasswordMessage())
-                        .replace("{{OTP}}", emailToken)
-                        .replace("{{year}}", (new Date()).getFullYear());
-            //send verification link to employee
-            const payLoad = { 
-                recipientEmail: employee.emailAddress, 
-                recipientName: employee.firstName, 
+            const payload = {
+                name: employee.firstName,
+                email: employee.emailAddress,
                 subject: "Reset Your Password",
-                html: message
-            };
-            sendMail(payLoad);
+                messageText: resetPasswordMessage(),
+                file: "ConfirmEmail.html"
+            }
+            
+            const result = emailSlave(payload);
+            if(!result?.isSuccess) return res.status(400).json({message: 'Password reset failed. Please try again.'});
             //set the employee token and the expiry time
-            employee.emailToken = emailToken;
+            employee.emailToken = result?.token;
             employee.tokenExpiryTime = addHours(Date.now(), 2);
             await employee.save();
-            res.status(200).json({message:'Please check your email for a One-Time-Password to change your password.', email: emailAddress});
+            res.cookie('cnfm', emailAddress, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 60 * 60 * 1000 });//secure: true might not work for Thunder Client
+            res.status(200).json({message:'Please check your email for a One-Time-Password to change your password.'});
         } catch (error) {
             res.status(500).json({message:error.message});
         }
@@ -188,56 +169,52 @@ const handleChangeForgotPass = async (req, res) => {
     const { 
         newPassword, 
         confirmNewPassword,
-        email,
         token 
     } = req.body;
 
     if(newPassword !== confirmNewPassword)
-        return res.status(400).json({message:'Password and confirm password must match.', toConfirmEmail: false});
-    if(!isValidPassword(newPassword)) return res.status(400).json({
-        message:'Password must have at least, a lowercase, an uppercase, a digit and a special character',
-        toConfirmEmail: false
-    });
+        return res.status(400).json({message:'Password and confirm password must match.'});
+    if(!isValidPassword(newPassword)) return res.status(400).json({message:'Password must have at least, a lowercase, an uppercase, a digit and a special character'});
 
+    const cookies = req.cookies;
+    if(!cookies?.cnfm) return res.status(400).json({message: 'Invalid session'});
+    const email = cookies.jwt;
     try {
         const employee = await Employee.findOne({ emailToken: token, emailAddress: email });
-        if(employee){
-                if(new Date(employee.tokenExpiryTime).getTime() < new Date().getTime()){
-                    const filePath = path.join(__dirname, '..', 'views', 'ConfirmEmail.html');
-                    const emailToken = randomNumBetweenRange(range.MIN, range.MAX);
-                    //TODO: check if file exists
-                    const template = await fsPromises.readFile(filePath, 'utf8');
-                    const message = template
-                                .replace("{{greetings}}", `Hello ${employee.firstName}`)
-                                .replace("{{message}}", resetPasswordMessage())
-                                .replace("{{OTP}}", emailToken)
-                                .replace("{{year}}", (new Date()).getFullYear());
-                    //send verification link to employee
-                    const payLoad = { 
-                        recipientEmail: employee.emailAddress, 
-                        recipientName: employee.firstName, 
-                        subject: "Reset Your Password",
-                        html: message
-                    };
-                    sendMail(payLoad);
-                    //set the user token and the expiry time
-                    employee.emailToken = emailToken;
-                    employee.tokenExpiryTime = addHours(Date.now(), 2);
-                    await employee.save();
-                    res.status(400).json({message:'Token expired! Please verify with the new token sent to your email', toConfirmEmail: true});
+        if(!employee || (new Date(employee?.tokenExpiryTime).getTime() < new Date().getTime())){
+            if(!email || (new Date(employee?.tokenExpiryTime).getTime() < new Date().getTime())){
+                const payload = {
+                    name: employee.firstName,
+                    email: employee.emailAddress,
+                    subject: "Reset Your Password",
+                    messageText: resetPasswordMessage(),
+                    file: "ConfirmEmail.html"
                 }
-                employee.emailToken = null;
-                //hash the new Password
-                const hashedPwd = await bcrypt.hash(newPassword, 10);
-                employee.password = hashedPwd;
-                //save the changes
+                
+                const result = emailSlave(payload);
+                if(!result?.isSuccess) return res.status(400).json({message: 'Password change failed. Please try again.'});
+                //set the user token and the expiry time
+                employee.emailToken = result?.token;
+                employee.tokenExpiryTime = addHours(Date.now(), 2);
+                res.cookie('cnfm', email, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 60 * 60 * 1000 });//secure: true might not work for Thunder Client
                 await employee.save();
-                res.status(200).json({_id: employee._id});
+                res.status(400).json({message:'Token expired! Please verify with the new token sent to your email'});
             } else {
-                res.status(404).json({message:'User not found. Invalid token',toConfirmEmail: false});
+                res.status(404).json({message:'User not found. Invalid token'});
             }
+
+        } else {
+            employee.emailToken = null;
+            //hash the new Password
+            const hashedPwd = await bcrypt.hash(newPassword, 10);
+            employee.password = hashedPwd;
+            //save the changes
+            await employee.save();
+            res.clearCookie('cnfm', { httpOnly: true, sameSite: 'None', secure: true });
+            res.status(200).json({message: 'Password successfully changed'});
+        }
     } catch (error) {
-       res.status(500).json({message:error.message, toConfirmEmail: false}); 
+       res.status(500).json({message:error.message}); 
     }
 };
 

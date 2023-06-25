@@ -13,6 +13,9 @@ const connectDB = require('./config/dbConnection');
 const corsOptions = require('./config/corsOptions');
 const errorHandler = require('./middlewares/errorHandler');
 const { logger, logEvents } = require('./middlewares/logEvents');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const passportSetup = require('./utils/passport');
 const PORT = process.env.PORT || 5500;
 
 //Initialize Express
@@ -37,16 +40,26 @@ app.use(express.urlencoded({ extended: true }));
 //Middleware for cookies
 app.use(cookieParser());
 
+app.use(cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [process.env.COOKIE_KEY]
+}));
+
+//Init Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Middleware for json
 app.use(express.json());
 
 //Register the routes
 app.use('/api/employees', require('./routes/api/employee'));
 app.use('/api/roles', require('./routes/api/role'));
-app.use('/api/auth', require('./routes/api/auth'));
+app.use('/auth', require('./routes/api/auth'));
 app.use('/api/dishes', require('./routes/api/dish'));
 app.use('/api/menus', require('./routes/api/menu'));
 app.use('api/orders', require('./routes/api/order'));
+app.use('api/users', require('./routes/api/user'));
 
 //Log errors
 app.use(errorHandler);

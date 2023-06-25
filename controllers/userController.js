@@ -5,6 +5,11 @@ const { emailConfirmationMessage, resetPasswordMessage } = require('../helpers/h
 const isValidPassword = require('../utils/isValidPassword');
 const { emailSlave } = require('../helpers/emailSlave');
 
+const getUserProfile = (req, res) => {
+    console.log(req.cookies)
+    res.status(200).json({message: 'It works'});
+};
+
 const create = async (req, res) => {
     const { 
         name,
@@ -294,6 +299,7 @@ const changePass = async (req, res) => {
 }
 
 module.exports = {
+    getUserProfile,
     create,
     updateName,
     login,

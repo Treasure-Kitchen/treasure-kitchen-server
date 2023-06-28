@@ -1,4 +1,5 @@
 const Dish = require('../models/Dish');
+const Order = require('../models/Order');
 const { toNumber,isNotANumber } = require('../helpers/helperFs');
 const cloudinary = require('../utils/cloudinary');
 
@@ -49,7 +50,7 @@ const update = async (req, res) => {
 
         dish.name = name;
         dish.description = description;
-        dish.price = price;
+        dish.price = toNumber(price);
         //Save
         await dish.save();
         res.status(200).json({message: 'Dish details successfully updated.'});
@@ -80,14 +81,6 @@ const getAll = async (req, res) => {
             const result = await Dish.find()
                 .sort({ _id: 1 })
                 .select('_id name description price photo')
-                .populate({
-                    path: 'menus',
-                    select: '_id name'
-                })
-                .populate({
-                    path: 'orders',
-                    select: 'customerName tableName status dateTime paymentStatus'
-                })
                 .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
                 .limit(pageSize)        
                 .exec();
@@ -107,6 +100,19 @@ const getAll = async (req, res) => {
     }
 };
 
+const getSingleWithOrders = async(req, res) => {
+    const { id } = req.params;
+    try {
+            let dish = await Dish.findOne({ _id: id });
+            if(!dish) return res.status(404).json({message: `No Dish record found with Id: ${id}`});
+            const orders = Order.find({ dishes: dish._id });
+            dish.orders = orders;
+            res.status(200).json(dish);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
 const remove = async (req, res) => {
     const { id } = req.params;
 
@@ -124,5 +130,6 @@ module.exports = {
     getAll,
     getById,
     update,
-    remove
+    remove,
+    getSingleWithOrders
 };

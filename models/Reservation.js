@@ -7,6 +7,10 @@ const reservationSchema = new Schema({
     customerEmail: { type: String, required: true },
     customerPhone: { type: String, required: false },
     dateTime: { type: Date, required: true },
+    table: {
+        type: Schema.Types.ObjectId,
+        ref: "Table"
+    },
     partySize: Number,
     status: { type: String, default: reservationStatuses.Pending }
 });

@@ -1,6 +1,7 @@
 const path = require('path');
-const { randomNumBetweenRange } = require('./helperFs');
+const { randomNumBetweenRange, range } = require('./helperFs');
 const fsPromises = require('fs').promises;
+const { sendMail } = require('../utils/sendMail');
 
 
 const emailSlave = async ({ name, email, subject, messageText, file }) => {
@@ -26,6 +27,7 @@ const emailSlave = async ({ name, email, subject, messageText, file }) => {
             //name, email, subject, message, filename: ConfirmEmail.html
             return { isSuccess: true, token: emailToken };
     } catch (error) {
+        console.log(error)
         return { isSuccess: false, token: null };
     }
 };

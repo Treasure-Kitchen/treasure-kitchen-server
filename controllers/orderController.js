@@ -5,10 +5,10 @@ const { isNotANumber, toNumber, processPaymentStatus, validDateRange, minimumDat
 const User = require('../models/User');
 
 const create = async (req, res) => {
-    const { userId } = req.params;
+    const userId = req.user;
     const {
-        tableName,
-        dishes
+        dishes,
+        phoneNumber
     } = req.body;
 
     try {
@@ -25,11 +25,10 @@ const create = async (req, res) => {
             })
 
             const newOrder = {
-                "customerName": user.name,
-                "email": user?.email,
-                "tableName": tableName,
+                "phoneNumber": phoneNumber,
                 "price": totalPrice,
                 "balance": totalPrice,
+                "customer": user._id,
                 "dishes": dishes
             };
 
@@ -43,62 +42,36 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     const { id } = req.params;
-    const cookies = req.cookies;
-    if(!cookies?.jwt) return res.status(403).json({message: 'You are forbidden from accessing this resource.'});
-    const refreshToken = cookies.jwt;
     const {
-        tableName,
-        dishes
+        dishes,
+        phoneNumber
     } = req.body;
-    if(!tableName) return res.status(400).json({message: 'Table Name is a required field.'});
-    if(!dishes.length <= 0) return res.status(400).json({message: `Your Order must include at least, one dish.`});
 
     try {
-            const user = await User.findOne({ refreshToken: refreshToken }).exec();
-            if(!user) return res.status(404).json({message: `No user found.`});
+            const order = await Order.findOne({ _id: id }).exec();
+            if(!order) return res.status(404).json({message: `Could not find an order with Id: ${id}`});
+            if(order.status === orderStatuses.Completed) return res.status(400).json({message: `Completed orders can not be updated.`});
+            const userId = order.customer;
+            const user = await User.findOne({ _id: userId }).exec();
+            if(!user) return res.status(404).json({message: `No user found with Id: ${userId}.`});
 
             const dishesFromDb = await Dish.find({
                 _id: { $in: dishes }
             }).exec();
-            if(dishesFromDb.length !== dishes.length) return res.status(404).json({message: 'One or more dishes could not be found'});
-
             let totalPrice = 0;
             dishesFromDb.forEach((dish) => {
                 totalPrice += dish.price;
             });
 
-            const order = await Order.findOne({ _id: id }).exec();
-            if(!order) return res.status(404).json({message: `Could not find an order with Id: ${id}`});
-
-            order.customerName = user.name;
-            order.tableName = tableName;
             order.dishes = dishes;
             order.price = price;
+            order.phoneNumber = phoneNumber;
             order.balance = (price - order.amountPaid);
             //Save
             await order.save();
             res.status(200).json({message: 'Order details successfully updated.'});
     } catch (error) {
         res.status(500).json({message: error.message});
-    }
-};
-
-const confirm = async (req, res) => {
-    const { id } = req.params;
-    const { otp } = req.body;
-
-    try {
-        const order = await Order.findOne({ _id: id }).exec();
-        if(!order) return res.status(404).json({message: `Could not find order with Id: ${id}`});
-        if(order.otp !== otp) return res.status(400).json({message: `You entered the wrong One-Time-Password`});
-
-        order.status = orderStatuses.InProgress;
-        order.set('otp', undefined, {strict: false} );
-        order.save();
-
-        res.status(200).json({message: "Order successfully confirmed. Please proceed to payment section."});
-    } catch (error) {
-        res.status(500).json({ message: error.message });
     }
 };
 
@@ -143,10 +116,14 @@ const getAll = async (req, res) => {
                 .where('paymentStatus').in(paymentStatus)
                 .where('dateTime').gte(mnDate).lte(mxDate)
                 .sort({ dateTime: -1 })
-                .select('_id customerName email phoneNumber tableName status price amountPaid balance dateTime paymentStatus dishes')
+                .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
                 .populate({
                     path: 'dishes',
                     select: '_id name'
+                })
+                .populate({
+                    path: 'customer',
+                    select: '_id displayName email phoneNumber'
                 })
                 .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
                 .limit(pageSize)        
@@ -175,7 +152,7 @@ const getByUserId = async (req, res) => {
     const {page, perPage, status, payStatus, minDate, maxDate } = req.query;
     const currentPage = Math.max(0, page) || 1;
     const pageSize = Number(perPage) || 10;
-    const orderStatus = status ? [status] : [orderStatuses.Pending, orderStatuses.InProgress, orderStatuses.Completed];
+    const orderStatus = status ? [status] : [orderStatuses.Pending, orderStatuses.InProgress, orderStatuses.Completed, orderStatuses.Fulfilled];
     const paymentStatus = payStatus ? [payStatus] : [paymentStatuses.Yes, paymentStatuses.No, paymentStatuses.Partial, paymentStatuses.OverPaid];
     const mnDate = minDate ? new Date(minDate) : new Date(minimumDate);
     const mxDate = maxDate ? new Date(maxDate) : new Date(maximumDate);
@@ -185,15 +162,19 @@ const getByUserId = async (req, res) => {
             const user = await User.findOne({ _id: userId }).exec();
             if(!user) return res.status(404).json({message: `No user found with the Id: ${userId}`});
 
-            const result = await Order.find({ email: user?.email })
+            const result = await Order.find({ customer: userId })
                 .where('status').in(orderStatus)
                 .where('paymentStatus').in(paymentStatus)
                 .where('dateTime').gte(mnDate).lte(mxDate)
                 .sort({ dateTime: -1 })
-                .select('_id customerName email phoneNumber tableName status price amountPaid balance dateTime paymentStatus dishes')
+                .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
                 .populate({
                     path: 'dishes',
                     select: '_id name'
+                })
+                .populate({
+                    path: 'customer',
+                    select: '_id displayName email phoneNumber'
                 })
                 .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
                 .limit(pageSize)        
@@ -221,11 +202,16 @@ const getById = async (req, res) => {
     const { id } = req.params;
     try {
             const order = await Order.findOne({ _id: id })
-                    .select('_id customerName email phoneNumber tableName status price amountPaid balance dateTime paymentStatus dishes')
+                    .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
                     .populate({
                         path: 'dishes',
                         select: '_id name'
-                    }).exec();
+                    })
+                    .populate({
+                        path: 'customer',
+                        select: '_id displayName email phoneNumber'
+                    })
+                    .exec();
             if(!order) return res.status(404).json({message: `No order found with the Id: ${id}`});
             res.status(200).json(order);
     } catch (error) {
@@ -235,20 +221,18 @@ const getById = async (req, res) => {
 
 const remove = async (req, res) => {
     const { id } = req.params;
-    const cookies = req.cookies;
-    if(!cookies?.jwt) return res.status(403).json({message: 'You are forbidden from accessing this resource.'});
-    const refreshToken = cookies.jwt;
+    const userId = req.user;
 
     try {
-        const user = await User.findOne({ refreshToken: refreshToken }).exec();
-        if(!user) return res.status(403).json({message: `No user found. Invalid token`});
+        const user = await User.findOne({ _id: userId }).exec();
+        if(!user) return res.status(401).json({message: `No user found. Invalid token`});
 
-        const order = await Order.findOne({ _id: id }).exec();
-        if(!order) return res.status(404).json({message: `No order found with the Id: ${id}`});
-        if(user?.email !== order?.email) return res.status(400).json({message: 'You can delete only the orders you placed.'});
+        const order = await Order.findOne({ _id: id, customer: userId }).exec();
+        if(!order) return res.status(404).json({message: `No order found with the Id: ${id} and placed by a customer with Id: ${userId}`});
+        if(order.status === orderStatuses.Completed) return res.status(400).json({message: `You can not delete an already completed order.`});
         if(order?.amountPaid > 0) return res.status(400).json({message: 'You can delete only orders with no payment'});
 
-        await Order.deleteOne({ _id: id});
+        await Order.deleteOne({ _id: id });
         res.status(200).json({message: 'Order successfully deleted'});
     } catch (error) {
         res.status(500).json({message: error.message});
@@ -258,7 +242,6 @@ const remove = async (req, res) => {
 module.exports = {
     create,
     update,
-    confirm,
     pay,
     getAll,
     getByUserId,

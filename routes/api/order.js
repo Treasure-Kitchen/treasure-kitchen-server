@@ -8,15 +8,12 @@ const validateOrderRequest = require('../../middlewares/validateOrderRequest');
 
 router.route('/')
     .post(verifyJWT, verifyRoles(ROLES.User), validateOrderRequest, orderController.create)
-    .get(verifyJWT, orderController.getAll);
+    .get(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin, ROLES.Regular), orderController.getAll);
 
 router.route('/:id')
     .get(verifyJWT, orderController.getById)
     .patch(verifyJWT, verifyRoles(ROLES.User), orderController.update)
     .delete(verifyJWT, verifyRoles(ROLES.User), orderController.remove);
-
-router.route('/:id/confirm')
-    .patch(verifyJWT, verifyRoles(ROLES.User), orderController.confirm);
 
 router.route('/:id/pay')
     .patch(verifyJWT, verifyRoles(ROLES.User), orderController.pay);

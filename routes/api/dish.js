@@ -20,7 +20,7 @@ const upload = multer({ storage, fileFilter });
 
 router.route('/')
     .post(verifyJWT, upload.single('image'), validateDishRequest, dishController.create)
-    .get(verifyJWT, dishController.getAll);
+    .get(dishController.getAll);
 
 router.route('/:id')
     .get(dishController.getById)

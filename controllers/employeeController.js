@@ -3,9 +3,6 @@ const Role = require('../models/Role');
 const Position = require('../models/Position');
 const Department = require('../models/Department');
 const bcrypt = require('bcrypt');
-const { emailSlave } = require('../helpers/emailSlave');
-const { emailConfirmationMessage, resetPasswordMessage } = require('../helpers/helperFs');
-
 
 const create = async (req, res) => {
     const { 
@@ -31,9 +28,9 @@ const create = async (req, res) => {
         const roleFromDb = await Role.findOne({ role: role }).exec();
         const positionFromDB = await Position.findOne({ name: position }).exec();
         const departmentFromDB = await Department.findOne({ name: department }).exec();
-        if(!roleFromDb) res.status(400).json({ 'message':`Role: ${role}, not found` });
-        if(!positionFromDB) res.status(400).json({ 'message':`Role: ${position}, not found` });
-        if(!departmentFromDB) res.status(400).json({ 'message':`Role: ${department}, not found` });
+        if(!roleFromDb) return res.status(400).json({ 'message':`Role: ${role}, not found` });
+        if(!positionFromDB) return res.status(400).json({ 'message':`Position: ${position}, not found` });
+        if(!departmentFromDB) return res.status(400).json({ 'message':`Role: ${department}, not found` });
         
         //add new Employee
         const newEmployee = {
@@ -50,18 +47,7 @@ const create = async (req, res) => {
             "employmentDate": employmentDate
         }
         await Employee.create(newEmployee);
-
-        const payload = {
-            name: firstName,
-            email: emailAddress,
-            subject: "Confirm Your Email",
-            messageText: emailConfirmationMessage(),
-            file: "ConfirmEmail.html"
-        }
-        const result = emailSlave(payload);
-        if(!result?.isSuccess) return res.status(400).json({message: 'Registration failed. Please try again'});
-        res.cookie('cnfm', emailAddress, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 60 * 60 * 1000 });//secure: true might not work for Thunder Client
-        res.status(201).json({ 'message': 'Employee Registration successful. Please check your mail for confirmation OTP' });
+        res.status(201).json({ 'message': 'Employee Registration successful.' });
     } catch (error) {
         res.status(500).json(({ 'message': error.message }));
     }

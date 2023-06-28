@@ -42,7 +42,8 @@ app.use(cookieParser());
 
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
-    keys: [process.env.COOKIE_KEY]
+    keys: [process.env.COOKIE_KEY],
+    sameSite: 'none'
 }));
 
 //Init Passport
@@ -58,8 +59,10 @@ app.use('/api/roles', require('./routes/api/role'));
 app.use('/auth', require('./routes/api/auth'));
 app.use('/api/dishes', require('./routes/api/dish'));
 app.use('/api/menus', require('./routes/api/menu'));
-app.use('api/orders', require('./routes/api/order'));
-app.use('api/users', require('./routes/api/user'));
+app.use('/api/orders', require('./routes/api/order'));
+app.use('/api/profile', require('./routes/api/profile'));
+app.use('/api/employee/auth', require('./routes/api/employeeAuth'));
+app.use('/api/tables', require('./routes/api/table'));
 
 //Log errors
 app.use(errorHandler);

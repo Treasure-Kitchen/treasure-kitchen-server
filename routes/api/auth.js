@@ -50,8 +50,18 @@ router.get('/logout', (req, res) => {
 })
 
 router.route("/google/callback")
-    .get(passport.authenticate('google', {successRedirect: process.env.REDIRECT_URL,failureRedirect: "login/failed"}), (req, res) => {
-        console.log(res)
+    .get(passport.authenticate('google'), (req, res) => {
+        res.cookie('profile', req.user.id, { httpOnly: false, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+        res.redirect(process.env.REDIRECT_URL);
     });
+
+router.route('/facebook')
+    .get(passport.authenticate('facebook', {scope: 'email'}));
+
+router.route('/facebook/callback')
+    .get(passport.authenticate('facebook'), (req, res) => {
+        res.cookie('profile', req.user.id, { httpOnly: false, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+        res.send(req.user);
+    })
 
 module.exports = router;

@@ -1,14 +1,14 @@
 const Dish = require('../models/Dish');
+const validatePhoneNumber = require('validate-phone-number-node-js');
 
 const validateOrderRequest = async (req, res, next) => {
     const {
-        tableName,
         phoneNumber,
         dishes
     } = req.body;
 
-    if(!tableName) return res.status(400).json({message: 'Table Name is a required field.'});
     if(!dishes.length <= 0) return res.status(400).json({message: `Your Order must include at least, one dish.`});
+    if(!validatePhoneNumber.validate(phoneNumber)) return res.status(400).json({ 'message': 'Invalid phone number.' });
 
     try {
         const count = await Dish.countDocuments(

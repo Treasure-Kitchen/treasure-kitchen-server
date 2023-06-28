@@ -7,7 +7,6 @@ const dishSchema = new Schema({
     price: { type: Number, required: true },
     photo: { type: String, default: '' },
     publicId: { type: String, default: '' },
-    menus: { type: Array, dafault: [] },
     orders: { type: Array, default: [] }
 });
 

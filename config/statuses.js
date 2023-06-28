@@ -13,7 +13,9 @@ const reservationStatuses = {
 const orderStatuses = {
     "Pending": "Pending",
     "InProgress": "In Progress",
-    "Completed": "Completed"
+    "Cancelled": "Cancelled",
+    "Completed": "Completed",
+    "Fulfilled": "Fulfilled"
 }
 
 const paymentStatuses = {

@@ -5,13 +5,13 @@ const Table = require('../models/Table');
 
 const create = async (req, res) => {
     const {
-        name,
+        number,
         capacity
     } = req.body;
 
     try {
         const newTable = {
-            "name": name,
+            "number": toNumber(number),
             "capacity": toNumber(capacity)
         }
 
@@ -25,7 +25,7 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     const { id } = req.params;
     const {
-        name,
+        number,
         capacity
     } = req.body;
 
@@ -33,8 +33,8 @@ const update = async (req, res) => {
             const tableToUpdate = await Table.findOne({ _id: id });
             if(!tableToUpdate) return res.status(404).json({ message: `No table record found with Id: ${id}` });
 
-            tableToUpdate.name = name;
-            tableToUpdate.capacity = capacity;
+            tableToUpdate.number = toNumber(number);
+            tableToUpdate.capacity = toNumber(capacity);
             await tableToUpdate.save();
 
             res.status(200).json({ message: 'Table successfully updated' });
@@ -73,7 +73,7 @@ const getAll = async (req, res) => {
     try {
             const tables = await Table.find()
                                 .sort({ name: 1 })
-                                .select('name capacity status');
+                                .select('number capacity status');
             res.status(200).json(tables);
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -84,7 +84,7 @@ const getAvailable = async (req, res) => {
     try {
             const tables = await Table.find({ status: tableStatuses.Available })
                                 .sort({ name: 1 })
-                                .select('name capacity status');
+                                .select('number capacity status');
             res.status(200).json(tables);
     } catch (error) {
         res.status(500).json({message:error.message});

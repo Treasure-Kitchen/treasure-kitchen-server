@@ -8,7 +8,10 @@ const router = require('express').Router();
 router.route('/')
     .post(verifyJWT, verifyRoles(ROLES.User), validateReservationRequest, reservationController.create);
 
-router.route('/:id')
-    .patch(verifyJWT, verifyRoles(ROLES.User), validateReservationRequest, reservationController.update);
+router.route('/:id/table-size')
+    .patch(verifyJWT, verifyRoles(ROLES.User), validateReservationRequest, reservationController.updateTableAndPartySize);
+
+router.route('/:id/time-duration')
+    .patch(verifyJWT, verifyRoles(ROLES.User), validateReservationRequest, reservationController.updateTimeAndDuration);
 
 module.exports = router;

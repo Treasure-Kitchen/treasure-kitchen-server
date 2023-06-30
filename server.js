@@ -16,7 +16,6 @@ const { logger, logEvents } = require('./middlewares/logEvents');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const passportSetup = require('./utils/passport');
-const cron = require('node-cron');
 const PORT = process.env.PORT || 5500;
 
 //Initialize Express
@@ -27,12 +26,6 @@ app.use('api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 //Coneect to MongoDB
 connectDB();
-
-//Start Background Job
-cron.schedule("*/5 * * * *", () => {
-    //Method to run goes here
-    console.log(`Running Job: ${Math.random()}`);
-});
 
 //Logger
 app.use(logger)

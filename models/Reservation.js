@@ -7,6 +7,7 @@ const reservationSchema = new Schema({
     customerEmail: { type: String, required: true },
     customerPhone: { type: String, required: false },
     dateTime: { type: Date, required: true },
+    duration: { type: Number, required: true },
     table: {
         type: Schema.Types.ObjectId,
         ref: "Table"

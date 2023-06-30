@@ -16,6 +16,7 @@ const { logger, logEvents } = require('./middlewares/logEvents');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const passportSetup = require('./utils/passport');
+const cron = require('node-cron');
 const PORT = process.env.PORT || 5500;
 
 //Initialize Express
@@ -26,6 +27,12 @@ app.use('api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 //Coneect to MongoDB
 connectDB();
+
+//Start Background Job
+cron.schedule("*/5 * * * *", () => {
+    //Method to run goes here
+    console.log(`Running Job: ${Math.random()}`);
+});
 
 //Logger
 app.use(logger)
@@ -43,7 +50,9 @@ app.use(cookieParser());
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
     keys: [process.env.COOKIE_KEY],
-    sameSite: 'none'
+    sameSite: 'none',
+    secure: true,
+    httpOnly: false
 }));
 
 //Init Passport
@@ -63,6 +72,7 @@ app.use('/api/orders', require('./routes/api/order'));
 app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/employee/auth', require('./routes/api/employeeAuth'));
 app.use('/api/tables', require('./routes/api/table'));
+app.use('/api/reservations', require('./routes/api/reservation'));
 
 //Log errors
 app.use(errorHandler);

@@ -1,3 +1,4 @@
+const { tableStatuses } = require('../config/statuses');
 const { toNumber } = require('../helpers/helperFs');
 const Reservation = require('../models/Reservation');
 const Table = require('../models/Table');
@@ -46,7 +47,7 @@ const remove = async (req, res) => {
     const { id } = req.params;
 
     try {
-            const count = await Reservation.countDocuments({ table: id }).where("dateTime").$gt(new Date());
+            const count = await Reservation.countDocuments({ table: id }).where("dateTime").gt(new Date());
             if(count > 0) return res.status(400).json({message: 'You can not delete a table with future reservations.'});
 
             await Table.deleteOne({ _id: id });
@@ -70,10 +71,20 @@ const getById = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-            const tables = await Table.find().populate({
-                path: 'reservations',
-                select: '_id customerName customerEmail customerPhone dateTime'
-            });
+            const tables = await Table.find()
+                                .sort({ name: 1 })
+                                .select('name capacity status');
+            res.status(200).json(tables);
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+};
+
+const getAvailable = async (req, res) => {
+    try {
+            const tables = await Table.find({ status: tableStatuses.Available })
+                                .sort({ name: 1 })
+                                .select('name capacity status');
             res.status(200).json(tables);
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -85,5 +96,6 @@ module.exports = {
     update,
     remove,
     getById,
-    getAll
+    getAll,
+    getAvailable
 }

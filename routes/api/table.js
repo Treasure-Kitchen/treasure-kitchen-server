@@ -10,6 +10,9 @@ router.route('/')
     .post(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), validateTableRequest, tablesController.create)
     .get(tablesController.getAll);
 
+router.route('/available')
+    .get(tablesController.getAvailable);
+
 router.route('/:id')
     .get(tablesController.getById)
     .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), validateTableRequest, tablesController.update)

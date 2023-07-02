@@ -8,10 +8,7 @@ const reservationSchema = new Schema({
     customerPhone: { type: String, required: false },
     dateTime: { type: Date, required: true },
     duration: { type: Number, required: true },
-    table: {
-        type: Schema.Types.ObjectId,
-        ref: "Table"
-    },
+    table: { type: mongoose.Schema.Types.ObjectId, ref: 'Table' },
     partySize: Number,
     status: { type: String, default: reservationStatuses.Pending }
 });

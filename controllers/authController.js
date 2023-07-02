@@ -40,7 +40,7 @@ const handleLogin = async (req, res) => {
     const match = await bcrypt.compare(password, foundEmployee.password);
     if(match){
         //create JWT
-        const accessToken = generateAccessToken(foundEmployee.role, foundEmployee._id, '1h');
+        const accessToken = generateAccessToken(foundEmployee.role, foundEmployee._id, '1d');
         const refreshToken = generateRefreshToken(foundEmployee._id, '1d');
         //set refresh token for user
         foundEmployee.refreshToken = refreshToken;

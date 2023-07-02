@@ -7,7 +7,7 @@ const userSchema = new Schema({
     facebookId: String,
     twitterId: String,
     displayName: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true, dropDups: true },
     photo: String,
     role: { type: Number, default: ROLES.User },
     createdAt: { type: Date, default: new Date() },

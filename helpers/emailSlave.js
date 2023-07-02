@@ -1,8 +1,27 @@
 const path = require('path');
-const { randomNumBetweenRange, range } = require('./helperFs');
+const { randomNumBetweenRange, range, confirmReservationMessage, capitalizeFirstWord } = require('./helperFs');
 const fsPromises = require('fs').promises;
 const { sendMail } = require('../utils/sendMail');
 
+const sendReservationNotification = async({ name, email, subject, cancelAtDate }) => {
+    try {
+        const filePath = path.join(__dirname, '..', 'views', 'Notification.html');
+        const template = await fsPromises.readFile(filePath, 'utf8');
+        const message = template
+                        .replace("{{greetings}}", `Hello ${capitalizeFirstWord(name)},`)
+                        .replace("{{message}}", confirmReservationMessage(cancelAtDate))
+                        .replace("{{year}}", (new Date()).getFullYear());
+        const payLoad = { 
+            recipientEmail: email, 
+            recipientName: name, 
+            subject: subject, 
+            html: message
+        };
+        sendMail(payLoad);
+    } catch (error) {
+        throw error;
+    }
+}
 
 const emailSlave = async ({ name, email, subject, messageText, file }) => {
     try {
@@ -11,7 +30,7 @@ const emailSlave = async ({ name, email, subject, messageText, file }) => {
             //TODO: Check if path exists
             const template = await fsPromises.readFile(filePath, 'utf8');
             const message = template
-                            .replace("{{greetings}}", `Welcome ${name}`)
+                            .replace("{{greetings}}", `Welcome ${name},`)
                             .replace("{{message}}", messageText)
                             .replace("{{OTP}}", emailToken)
                             .replace("{{year}}", (new Date()).getFullYear());
@@ -27,11 +46,11 @@ const emailSlave = async ({ name, email, subject, messageText, file }) => {
             //name, email, subject, message, filename: ConfirmEmail.html
             return { isSuccess: true, token: emailToken };
     } catch (error) {
-        console.log(error)
-        return { isSuccess: false, token: null };
+        throw error;
     }
 };
 
 module.exports = {
-    emailSlave
+    emailSlave,
+    sendReservationNotification
 }

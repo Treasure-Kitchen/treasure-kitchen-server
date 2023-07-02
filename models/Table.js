@@ -6,12 +6,7 @@ const tableSchema = new Schema({
     number: { type: Number, required: true },
     capacity: { type: Number, required: true },
     status: { type: String, default: tableStatuses.Available},
-    reservations: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Reservation"
-        }
-    ]
+    reservations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reservation" }]
 });
 
-module.exports = mongoose.model('Tables', tableSchema);
+module.exports = mongoose.model('Table', tableSchema);

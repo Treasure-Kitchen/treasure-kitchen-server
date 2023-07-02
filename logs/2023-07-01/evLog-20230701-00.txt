@@ -1,2 +1,0 @@
-2023-07-01	00:53:44	883fd299-6225-4370-8cb0-6f943659d590	Server running on 5500.	Windows_NT - Windows 10 Enterprise
-2023-07-01	00:53:52	8ea50b1b-49d6-4c1f-abef-eda4259e095c	Server running on 5500.	Windows_NT - Windows 10 Enterprise

@@ -83,8 +83,10 @@ const getAll = async (req, res) => {
 const getAvailable = async (req, res) => {
     try {
             const tables = await Table.find({ status: tableStatuses.Available })
-                                .sort({ name: 1 })
-                                .select('number capacity status');
+                                .select('number capacity status reservations')
+                                .sort({ number: 1 })
+                                .populate('reservations').
+                                exec();
             res.status(200).json(tables);
     } catch (error) {
         res.status(500).json({message:error.message});

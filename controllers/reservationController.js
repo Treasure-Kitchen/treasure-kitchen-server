@@ -58,6 +58,7 @@ const create = async (req, res) => {
             subject: "Confirm Your Reservation", 
             cancelAtDate: cancelAtDate
         };
+        await sendReservationNotification(payload);
 
         res.status(200).json({message: `Reservation successfully added. Please proceed to confirm before ${cancelAtDate}.`});
     } catch (error) {
@@ -175,8 +176,8 @@ const getAll = async (req, res) => {
     const currentPage = Math.max(0, parseInt(page)) || 1;
     const pageSize = parseInt(perPage) || 10;
     const reservationStatus = status ? [status] : [reservationStatuses.Pending, reservationStatuses.Confirmed, reservationStatuses.Cancelled];
-    const mnDate = minDate ? parseISO(minDate) : parseISO(minimumDate);
-    const mxDate = maxDate ? parseISO(maxDate) : parseISO(maximumDate);
+    const mnDate = minDate ? minDate : minimumDate;
+    const mxDate = maxDate ? maxDate : maximumDate;
     if(!validDateRange(mnDate, mxDate)) return res.status(400).json({message: 'Invalid date range'});
   
     try {

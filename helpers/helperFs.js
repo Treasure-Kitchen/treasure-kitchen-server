@@ -116,7 +116,7 @@ const isReservationAConflict = (table, dateTime, duration) => {
         const overLapses = requestDateTime <= existingResTime && requestThroughTime >= existingResTime;
         //Filter the table's reservations based on these conditions
         return fallsWithIn || overLapses;
-    })
+    });
     //Check if the length of the filtered list is greater than 0.
     return reservations.length > 0;
 };

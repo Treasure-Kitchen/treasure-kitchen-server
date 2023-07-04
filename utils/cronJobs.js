@@ -39,10 +39,8 @@ const changeReservationStatus = (id, status, dateTime) => {
 };
 
 const changeTableReservationStatus = (tableId, reservationId, tableStatus, dateTime) => {
-    console.log("Job to change status to "+tableStatus+ " at "+dateTime)
     cron.scheduleJob(dateTime, async () => {
         try {
-            console.log("Changing...")
             const reservation = await Reservation.findOne({ _id: reservationId }).exec();
             const table = await Table.findOne({ _id: tableId, reservations: reservationId }).exec();
             //Check if the reservation date and duration has changed
@@ -54,12 +52,6 @@ const changeTableReservationStatus = (tableId, reservationId, tableStatus, dateT
                 ){
                     table.status = tableStatus;
                     await table.save();
-                    console.log("Changed...")
-                } else 
-                {
-                    table.status = tableStatuses.Available;
-                    await table.save();
-                    console.log("Reverted...")
                 }
             }
         } catch (error) {
@@ -74,13 +66,6 @@ const cancelReservationIfNotConfirmed = (id, dateTime) => {
             const reservation = await Reservation.findOne({ _id: id }).exec();
             if(reservation){
                 if(reservation.status !== reservationStatuses.Confirmed){
-                    //Find table and reset the status back to available
-                    const table = await Table.findOne({ reservations: reservation._id });
-                    if(table){
-                        table.status = tableStatuses.Available;
-                        await table.save();
-                    }
-                    //Then cancel the reservation
                     reservation.status = reservationStatuses.Cancelled;
                     await reservation.save();
                 }

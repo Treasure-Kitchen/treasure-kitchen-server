@@ -35,7 +35,7 @@ request
         logEvents(`${result.response.statusText}: Verification email sent to ${recipientEmail}`, `evLog-${format(new Date(), 'yyyyMMdd-HH')}.txt`);
 	})
 	.catch((err) => {
-        logEvents(`${err.ErrorMessage}`, `errLog-${format(new Date(), 'yyyyMMdd-HH')}.txt`);
+        logEvents(`${err.originalMessage}`, `errLog-${format(new Date(), 'yyyyMMdd-HH')}.txt`);
 	})
 };
 

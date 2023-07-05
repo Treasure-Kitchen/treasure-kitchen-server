@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const generateAccessToken = (role, id, expiersIn) => {
-    const roles = [role];
+const generateAccessToken = (role, id, expiresIn) => {
+    const roles = [role.role];
         //create JWT
         const accessToken = jwt.sign(
             { 
@@ -11,16 +11,16 @@ const generateAccessToken = (role, id, expiersIn) => {
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: expiersIn }
+            { expiresIn: expiresIn }
         );
     return accessToken;
 };
 
-const generateRefreshToken = (id, expiersIn) => {
+const generateRefreshToken = (id, expiresIn) => {
     const refreshToken = jwt.sign(
         { "id": id },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: expiersIn }
+        { expiresIn: expiresIn }
     );
 
     return refreshToken;

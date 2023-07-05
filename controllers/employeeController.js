@@ -3,18 +3,23 @@ const Role = require('../models/Role');
 const Position = require('../models/Position');
 const Department = require('../models/Department');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const { isNotANumber, toNumber, capitalizeFirstLetters, emailConfirmationMessage } = require('../helpers/helperFs');
+const { addHours } = require('date-fns');
+const { sendConfirmationEmail } = require('../helpers/emailSlave');
 
 const create = async (req, res) => {
+    const origin = req.headers.origin;
     const { 
         firstName,
         lastName,
         middleName,
-        position,
-        department,
+        positionId,
+        departmentId,
         salary,
         emailAddress,
         phoneNumber,
-        role,
+        roleId,
         employmentDate,
         password,
     } = req.body;
@@ -25,28 +30,43 @@ const create = async (req, res) => {
     
     try {
         const hashedPwd = await bcrypt.hash(password, 10);
-        const roleFromDb = await Role.findOne({ role: role }).exec();
-        const positionFromDB = await Position.findOne({ name: position }).exec();
-        const departmentFromDB = await Department.findOne({ name: department }).exec();
-        if(!roleFromDb) return res.status(400).json({ 'message':`Role: ${role}, not found` });
-        if(!positionFromDB) return res.status(400).json({ 'message':`Position: ${position}, not found` });
-        if(!departmentFromDB) return res.status(400).json({ 'message':`Role: ${department}, not found` });
+        const roleFromDb = await Role.findOne({ role: roleId }).exec();
+        const positionFromDB = await Position.findOne({ name: positionId }).exec();
+        const departmentFromDB = await Department.findOne({ name: departmentId }).exec();
+        if(!roleFromDb) return res.status(400).json({ 'message':`Role with Id: ${roleId}, not found` });
+        if(!positionFromDB) return res.status(400).json({ 'message':`Position with Id: ${positionId}, not found` });
+        if(!departmentFromDB) return res.status(400).json({ 'message':`Department with Id: ${departmentId}, not found` });
         
-        //add new Employee
-        const newEmployee = {
-            "firstName": firstName,
-            "lastName": lastName,
-            "middleName": middleName,
-            "emailAddress": emailAddress,
-            "phoneNumber": phoneNumber,
-            "role": role,
-            "password": hashedPwd,
-            "position": position,
-            "department": department,
-            "salary": salary,
-            "employmentDate": employmentDate
+        const emailToken = crypto.randomBytes(64).toString("hex");
+        //Initialize new Employee
+        const employee = new Employee({
+            firstName: capitalizeFirstLetters(firstName),
+            lastName: capitalizeFirstLetters(lastName),
+            middleName: middleName,
+            emailAddress: emailAddress,
+            phoneNumber: phoneNumber,
+            role: roleFromDb._id,
+            password: hashedPwd,
+            position: positionFromDB._id,
+            department: departmentFromDB._id,
+            salary: salary,
+            employmentDate: employmentDate,
+            emailToken: emailToken,
+            tokenExpiryTime: addHours(new Date(), 2)
+        });
+        //Save
+        await employee.save();
+        const link = `${origin}/verify-email?token=${emailToken}`;
+        //Send confirmation email
+        const payload = {
+            name: employee.firstName,
+            email: employee.emailAddress,
+            subject: "Confirm Email",
+            messageText: emailConfirmationMessage(),
+            file: "ConfirmEmail.html",
+            link: link
         }
-        await Employee.create(newEmployee);
+        await sendConfirmationEmail(payload);
         res.status(201).json({ 'message': 'Employee Registration successful.' });
     } catch (error) {
         res.status(500).json(({ 'message': error.message }));
@@ -60,8 +80,9 @@ const getAllEmployees = async (req, res) => {
   
     try {
             const result = await Employee.find()
-                .sort({ _id: 1 })
+                .sort({ firstName: 1 })
                 .select('_id firstName lastName middleName position department salary emailAddress phoneNumber role isTerminated employmentDate createdAt lastLogin photoUrl terminationDate')
+                .populate('position department role')
                 .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
                 .limit(pageSize)        
                 .exec();
@@ -78,6 +99,8 @@ const getAllEmployees = async (req, res) => {
 };
 
 const updateName = async (req, res) => {
+    const { id } = req.params;
+
     const {
         firstName,
         lastName,
@@ -85,8 +108,6 @@ const updateName = async (req, res) => {
     } = req.body;
 
     if(!firstName || !lastName) return res.status(400).json({ 'message': 'Please fill in the required fields.' });
-    const id = req.params.id;
-
     try {
         const employeeToUpdate = await Employee.findOne({ _id: id }).exec();
         if(employeeToUpdate){
@@ -105,25 +126,19 @@ const updateName = async (req, res) => {
 };
 
 const updatePosition = async (req, res) => {
-    const {
-        position
-    } = req.body;
-
-    if(!position) return res.status(400).json({ 'message': 'Position is required.' });
-    const id = req.params.id;
-
+    const { empId, posId } = req.params;
     try {
-        const positionFromDB = await Position.findOne({ name: position });
-        if(positionFromDB) return res.status(404).json({ 'message': `The Position: ${position}, does not exist`});
+        const positionFromDB = await Position.findOne({ _id: posId }).exec();
+        if(!positionFromDB) return res.status(404).json({ 'message': `The Position with Id: ${posId}, does not exist`});
 
-        const employeeToUpdate = await Employee.findOne({ _id: id }).exec();
+        const employeeToUpdate = await Employee.findOne({ _id: empId }).exec();
         if(employeeToUpdate){
-            employeeToUpdate.position = position;
+            employeeToUpdate.position = positionFromDB._id;
 
             await employeeToUpdate.save();
             res.status(200).json({ 'message': 'Employee position updated successfully.' });
         } else {
-            res.status(404).json({ 'message': `No employee with Id: ${id}`});
+            res.status(404).json({ 'message': `No employee with Id: ${empId}`});
         }
     } catch (error) {
         res.status(500).json({ 'message': error.message });
@@ -131,18 +146,18 @@ const updatePosition = async (req, res) => {
 };
 
 const updateSalary = async (req, res) => {
+    const id = req.params.id;
     const {
         salary
     } = req.body;
 
-    if(!salary) return res.status(400).json({ 'message': 'Salary is required.' });
-    if(salary <= 0) res.status(400).json({ 'message': 'Salary must be greater than 0.' });
-    const id = req.params.id;
+    if(isNotANumber(salary)) return res.status(400).json({ 'message': 'Salary is required. Please enter a valid value.' });
+    if(toNumber(salary) <= 0) res.status(400).json({ 'message': 'Salary must be greater than 0.' });
 
     try {
         const employeeToUpdate = await Employee.findOne({ _id: id }).exec();
         if(employeeToUpdate){
-            employeeToUpdate.salary = salary;
+            employeeToUpdate.salary = toNumber(salary);
 
             await employeeToUpdate.save();
             res.status(200).json({ 'message': 'Employee salary updated successfully.' });
@@ -155,25 +170,19 @@ const updateSalary = async (req, res) => {
 };
 
 const updateDepartment = async (req, res) => {
-    const {
-        department
-    } = req.body;
-
-    if(!department) return res.status(400).json({ 'message': 'Department is required.' });
-    const id = req.params.id;
-
+    const { empId, deptId } = req.params;
     try {
-        const departmentFromDB = await Department.findOne({ name: department });
-        if(departmentFromDB) return res.status(404).json({ 'message': `The Department: ${department}, does not exist`});
+        const departmentFromDB = await Department.findOne({ _id: deptId }).exec();
+        if(!departmentFromDB) return res.status(404).json({ 'message': `No department found with Id: ${deptId}`});
 
-        const employeeToUpdate = await Employee.findOne({ _id: id }).exec();
+        const employeeToUpdate = await Employee.findOne({ _id: empId }).exec();
         if(employeeToUpdate){
-            employeeToUpdate.department = department;
+            employeeToUpdate.department = departmentFromDB._id;
 
             await employeeToUpdate.save();
             res.status(200).json({ 'message': 'Employee department updated successfully.' });
         } else {
-            res.status(404).json({ 'message': `No employee with Id: ${id}`});
+            res.status(404).json({ 'message': `No employee with Id: ${empId}`});
         }
     } catch (error) {
         res.status(500).json({ 'message': error.message });
@@ -181,19 +190,17 @@ const updateDepartment = async (req, res) => {
 };
 
 const updateEmploymentDate = async (req, res) => {
+    const id = req.params.id;
     const {
         employmentDate
     } = req.body;
 
     if(!employmentDate) return res.status(400).json({ 'message': 'Employment Date is required.' });
     if((new Date()).getTime() < (new Date(employmentDate).getTime())) return res.status(400).json({ 'message':'Employment Date cannot be in the future' });
-    const id = req.params.id;
-
     try {
         const employeeToUpdate = await Employee.findOne({ _id: id }).exec();
         if(employeeToUpdate){
-            employeeToUpdate.employmentDate = employmentDate;
-
+            employeeToUpdate.employmentDate = new Date(employmentDate);
             await employeeToUpdate.save();
             res.status(200).json({ 'message': 'Employment Date updated successfully.' });
         } else {
@@ -205,24 +212,18 @@ const updateEmploymentDate = async (req, res) => {
 };
 
 const changeEmployeeRole = async (req, res) => {
-    const {
-        role
-    } = req.body;
-
-    if(!role) return res.status(400).json({ 'message': 'Role is required.' });
-    const id = req.params.id;
-
+    const { empId, roleId } = req.params;
     try {
-        const roleFromDB = await Role.findOne({ name: role }).exec();
-        if(!roleFromDB) return res.status(404).json({ 'message': `Role: ${role}, not found` });
-        const employeeToUpdate = await Employee.findOne({ _id: id }).exec();
+        const roleFromDB = await Role.findOne({ _id: roleId }).exec();
+        if(!roleFromDB) return res.status(404).json({ 'message': `Role with Id: ${roleId}, not found` });
+        const employeeToUpdate = await Employee.findOne({ _id: empId }).exec();
         if(employeeToUpdate){
-            employeeToUpdate.role = role;
+            employeeToUpdate.role = roleFromDB._id;
 
             await employeeToUpdate.save();
             res.status(200).json({ 'message': 'Employee Role updated successfully.' });
         } else {
-            res.status(404).json({ 'message': `No employee with Id: ${id}`});
+            res.status(404).json({ 'message': `No employee with Id: ${empId}`});
         }
     } catch (error) {
         res.status(500).json({ 'message': error.message });
@@ -230,7 +231,7 @@ const changeEmployeeRole = async (req, res) => {
 };
 
 const terminate = async (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params.id;
 
     try {
         const employeeToTerminate = await Employee.findOne({ _id: id });
@@ -238,7 +239,7 @@ const terminate = async (req, res) => {
             employeeToTerminate.terminationDate = new Date();
             employeeToTerminate.isTerminated = true;
             employeeToTerminate.refreshToken = '';
-
+            employeeToTerminate.role = null;
             //Save changes
             employeeToTerminate.save();
         } else {

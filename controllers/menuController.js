@@ -60,6 +60,7 @@ const remove = async (req, res) => {
     try {
             const menu = await Menu.findById({ _id: id });
             if(!menu) return res.status(404).json({message: `No menu record found for Id: ${id}`});
+            if(menu.dishes) return res.status(400).json({message: 'You can not delete a menu that already has a list of dishes.'});
 
             await Menu.deleteOne({ _id: id });
             res.status(200).json({message: 'Menu successfully deleted'});

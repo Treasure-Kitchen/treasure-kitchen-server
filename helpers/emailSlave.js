@@ -25,13 +25,14 @@ const sendOrderNotification = async({ name, price, date, orderId, email, subject
     }
 }
 
-const sendReservationNotification = async({ name, email, subject, cancelAtDate }) => {
+const sendReservationNotification = async({ name, email, subject, cancelAtDate, link }) => {
     try {
         const filePath = path.join(__dirname, '..', 'views', 'Notification.html');
         const template = await fsPromises.readFile(filePath, 'utf8');
         const message = template
                         .replace("{{greetings}}", `Hello ${capitalizeFirstWord(name)},`)
                         .replace("{{message}}", confirmReservationMessage(cancelAtDate))
+                        .replace("{{order_track_link}}", link)
                         .replace("{{year}}", (new Date()).getFullYear());
         const payLoad = { 
             recipientEmail: email, 
@@ -40,6 +41,28 @@ const sendReservationNotification = async({ name, email, subject, cancelAtDate }
             html: message
         };
         sendMail(payLoad);
+    } catch (error) {
+        throw error;
+    }
+}
+
+const sendConfirmationEmail = async ({ name, email, subject, messageText, file, link }) => {
+    try {
+            const filePath = path.join(__dirname, '..', 'views', file);
+            let template = await fsPromises.readFile(filePath, 'utf8');
+            let message = template
+                            .replace("{{greetings}}", capitalizeFirstWord(name))
+                            .replace("{{message}}", messageText)
+                            .replace("{{email_link}}", link)
+                            .replace("{{btn_name}}", btn)
+                            .replace("{{year}}", (new Date()).getFullYear());
+            const payLoad = { 
+                recipientEmail: email, 
+                recipientName: name, 
+                subject: subject, 
+                html: message
+            };
+            sendMail(payLoad);    
     } catch (error) {
         throw error;
     }
@@ -74,5 +97,6 @@ const emailSlave = async ({ name, email, subject, messageText, file }) => {
 module.exports = {
     emailSlave,
     sendOrderNotification,
+    sendConfirmationEmail,
     sendReservationNotification
 }

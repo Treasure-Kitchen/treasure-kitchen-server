@@ -1,7 +1,29 @@
 const path = require('path');
-const { randomNumBetweenRange, range, confirmReservationMessage, capitalizeFirstWord } = require('./helperFs');
+const { randomNumBetweenRange, range, confirmReservationMessage, capitalizeFirstWord, currency } = require('./helperFs');
 const fsPromises = require('fs').promises;
 const { sendMail } = require('../utils/sendMail');
+const { format } = require('date-fns');
+
+const sendOrderNotification = async({ name, price, date, orderId, email, subject }) => {
+    try {
+        const filePath = path.join(__dirname, '..', 'views', 'OrderDetails.html');
+        const template = await fsPromises.readFile(filePath, 'utf8');
+        const message = template
+                        .replace("{{firstname}}", `Hello ${capitalizeFirstWord(name)},`)
+                        .replace("{{total_price}}", `${currency.naira}${new Intl.NumberFormat().format(price)}`)
+                        .replace("{{order_date}}", format(new Date(date), 'yyyy-MM-dd-HH:mm'))
+                        .replace("{{order_id}}", orderId);
+        const payLoad = { 
+            recipientEmail: email, 
+            recipientName: name, 
+            subject: subject, 
+            html: message
+        };
+        sendMail(payLoad);
+    } catch (error) {
+        throw error;
+    }
+}
 
 const sendReservationNotification = async({ name, email, subject, cancelAtDate }) => {
     try {
@@ -43,7 +65,6 @@ const emailSlave = async ({ name, email, subject, messageText, file }) => {
                 html: message
             };
             sendMail(payLoad);
-            //name, email, subject, message, filename: ConfirmEmail.html
             return { isSuccess: true, token: emailToken };
     } catch (error) {
         throw error;
@@ -52,5 +73,6 @@ const emailSlave = async ({ name, email, subject, messageText, file }) => {
 
 module.exports = {
     emailSlave,
+    sendOrderNotification,
     sendReservationNotification
 }

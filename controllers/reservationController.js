@@ -49,7 +49,6 @@ const create = async (req, res) => {
         //============Cancel reservation if not confirmed within a computed time=======//
         //===========Difference in date in milliseconds divided by 2, then converted to minutes
         const cancelAtDate = addMilliseconds(parseISO(dateTime), (differenceInMilliseconds( new Date(), parseISO(dateTime)) / TWO));
-        console.log(cancelAtDate)
         cancelReservationIfNotConfirmed(reservation._id, cancelAtDate);
         //=========Send Notification=============//
         const payload = {

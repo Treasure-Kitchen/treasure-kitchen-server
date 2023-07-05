@@ -3,9 +3,14 @@ const Dish = require('../models/Dish');
 const { orderStatuses, paymentStatuses } = require('../config/statuses');
 const { isNotANumber, toNumber, processPaymentStatus, validDateRange, minimumDate, maximumDate } = require('../helpers/helperFs');
 const User = require('../models/User');
+const { getLoggedInUserId } = require('../utils/getClaimsFromToken');
+const OrderTrack = require('../models/OrderTrack');
+const { sendOrderNotification } = require('../helpers/emailSlave');
+const { addMilliseconds, millisecondsInHour } = require('date-fns');
+const { cancelOrderIfNotConfirmed } = require('../utils/cronJobs');
 
 const create = async (req, res) => {
-    const userId = req.user;
+    const userId = getLoggedInUserId(req);
     const {
         dishes,
         phoneNumber
@@ -18,23 +23,33 @@ const create = async (req, res) => {
             const dishesFromDb = await Dish.find({
                 _id: { $in: dishes }
             }).exec();
-
+            //calculate the price
             let totalPrice = 0;
             dishesFromDb.forEach((dish) => {
                 totalPrice += dish.price;
             })
-
-            const newOrder = {
-                "phoneNumber": phoneNumber,
-                "price": totalPrice,
-                "balance": totalPrice,
-                "customer": user._id,
-                "dishes": dishes
-            };
-
-            await Order.create(newOrder);
-            //TODO: send email to user
-            res.status(200).json({message: 'Order placed successfully. Please check your email to confirm your order.'});
+            //Initialize new Order
+            const order = new Order({
+                phoneNumber: phoneNumber,
+                price: totalPrice,
+                balance: totalPrice,
+                customer: user._id,
+                dishes: dishes,
+                paymentStatus: paymentStatuses.No
+            });
+            //Initialize Order Track
+            const orderTrack = new OrderTrack({
+                userId: user._id,
+                orderId: order._id,
+                dateTime: order.dateTime,
+                orderStatus: order.status
+            });
+            //Save Changes
+            await order.save();
+            await orderTrack.save()
+            const threeDaysLater = addMilliseconds(order.dateTime, (millisecondsInHour * 24 * 3));
+            cancelOrderIfNotConfirmed(order._id, threeDaysLater);
+            res.status(200).json({message: `Order created successfully. Pending payment. Please complete your order before ${threeDaysLater}.`});
         } catch (error) {
             res.status(500).json({message: error.message});
         }
@@ -69,6 +84,15 @@ const update = async (req, res) => {
             order.balance = (price - order.amountPaid);
             //Save
             await order.save();
+            // const payload = {
+            //     name: user.displayName, 
+            //     price: order.price, 
+            //     date: order.dateTime, 
+            //     orderId: order._id, 
+            //     email: user.email, 
+            //     subject: "Order Details"
+            // };
+            //await sendOrderNotification(payload);
             res.status(200).json({message: 'Order details successfully updated.'});
     } catch (error) {
         res.status(500).json({message: error.message});

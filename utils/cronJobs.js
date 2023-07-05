@@ -1,9 +1,11 @@
 const cron = require('node-schedule');
 const Table = require('../models/Table');
 const Reservation = require('../models/Reservation');
-const { reservationStatuses, tableStatuses } = require('../config/statuses');
+const { reservationStatuses, tableStatuses, orderStatuses } = require('../config/statuses');
 const { addMinutes, parseISO } = require('date-fns');
 const { toMinutes } = require('../helpers/helperFs');
+const Order = require('../models/Order');
+const OrderTrack = require('../models/OrderTrack');
 
 const changeTableStatus = (id, status, dateTime) => {
     const date = new Date(dateTime);
@@ -76,9 +78,33 @@ const cancelReservationIfNotConfirmed = (id, dateTime) => {
     });
 };
 
+const cancelOrderIfNotConfirmed = (orderId, dateTime) => {
+    cron.scheduleJob(dateTime, async () => {
+        try {
+            const order = await Order.findOne({ _id: orderId }).exec();
+            if(order){
+                if(order.status === orderStatuses.Pending){
+                    const orderTrack = new OrderTrack({
+                        userId: order.customer,
+                        orderId: order._id,
+                        dateTime: order.dateTime,
+                        orderStatus: orderStatuses.Cancelled
+                    });
+                    order.status = orderStatuses.Cancelled;
+                    await order.save();
+                    await orderTrack.save();
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    });
+};
+
 module.exports = {
     changeTableStatus,
     changeReservationStatus,
+    cancelOrderIfNotConfirmed,
     changeTableReservationStatus,
     cancelReservationIfNotConfirmed
 }

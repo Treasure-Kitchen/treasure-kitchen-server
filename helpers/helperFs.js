@@ -120,6 +120,12 @@ const isReservationAConflict = (table, dateTime, duration) => {
     //Check if the length of the filtered list is greater than 0.
     return reservations.length > 0;
 };
+
+const currency = {
+    naira: "NGN",
+    usDollar: "USD",
+    pound: "GBP"
+}
  
 const maximumDate = new Date('9999-12-31');
 const epochDate = new Date(0);
@@ -150,6 +156,7 @@ module.exports = {
     FIFTY,
     range,
     range2,
+    currency,
     MAX_FILE_SIZE,
     allowedFileExt,
 };

@@ -12,15 +12,16 @@ const reservationStatuses = {
 
 const orderStatuses = {
     "Pending": "Pending",
-    "InProgress": "In Progress",
+    "Placed": "Order Placed",
     "Cancelled": "Cancelled",
-    "Completed": "Completed",
+    "Confirmed": "Confirmed",
+    "Shipped": "Shipped",
     "Fulfilled": "Fulfilled"
 }
 
 const paymentStatuses = {
-    "Yes": "Yes",
-    "No": "No",
+    "Paid": "Paid",
+    "No": "Not Paid",
     "Partial": "Partial",
     "OverPaid": "Over Paid"
 }

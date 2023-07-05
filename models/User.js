@@ -12,12 +12,8 @@ const userSchema = new Schema({
     role: { type: Number, default: ROLES.User },
     createdAt: { type: Date, default: new Date() },
     lastLogin: Date,
-    orders: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Order"
-        }
-    ]
+    address: { type: Schema.Types.ObjectId, ref: "Address" },
+    orders: [{ type: Schema.Types.ObjectId, ref: "Order" }]
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -67,6 +67,7 @@ app.use('/api/employee/auth', require('./routes/api/employeeAuth'));
 app.use('/api/tables', require('./routes/api/table'));
 app.use('/api/reservations', require('./routes/api/reservation'));
 app.use('/api/durations', require('./routes/api/duration'));
+app.use('/api/addresses', require('./routes/api/address'));
 
 //Log errors
 app.use(errorHandler);

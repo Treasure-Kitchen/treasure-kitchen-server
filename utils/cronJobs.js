@@ -87,7 +87,7 @@ const cancelOrderIfNotConfirmed = (orderId, dateTime) => {
                     const orderTrack = new OrderTrack({
                         userId: order.customer,
                         orderId: order._id,
-                        dateTime: order.dateTime,
+                        dateTime: Date.now,
                         orderStatus: orderStatuses.Cancelled
                     });
                     order.status = orderStatuses.Cancelled;

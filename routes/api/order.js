@@ -10,15 +10,24 @@ router.route('/')
     .post(verifyJWT, verifyRoles(ROLES.User), validateOrderRequest, orderController.create)
     .get(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin, ROLES.Regular), orderController.getAll);
 
+router.route('/user')
+    .get(verifyJWT, verifyRoles(ROLES.User), orderController.getByUserId);
+
 router.route('/:id')
     .get(verifyJWT, orderController.getById)
-    .patch(verifyJWT, verifyRoles(ROLES.User), orderController.update)
+    .put(verifyJWT, verifyRoles(ROLES.User), orderController.update)
     .delete(verifyJWT, verifyRoles(ROLES.User), orderController.remove);
+
+router.route('/:id/confirm')
+    .patch(verifyJWT, verifyRoles(ROLES.Admin, ROLES.Regular, ROLES.SuperAdmin), orderController.confirmOrder);
+
+router.route('/:id/complete')
+    .patch(verifyJWT, verifyRoles(ROLES.Admin, ROLES.Regular, ROLES.SuperAdmin), orderController.completeOrder)
 
 router.route('/:id/pay')
     .patch(verifyJWT, verifyRoles(ROLES.User), orderController.pay);
 
-router.route('/:userId/user')
-    .get(verifyJWT, verifyRoles(ROLES.User), orderController.getByUserId);
+router.route('/:orderId/tracks')
+    .get(verifyJWT, verifyRoles(ROLES.User), orderController.getOrderTrack);
 
 module.exports = router;

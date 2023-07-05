@@ -9,7 +9,7 @@ const orderSchema = new Schema({
     amountPaid: { type: Number, default: 0 },
     balance: Number,
     dateTime: { type: Date, default: Date.now },
-    paymentStatus: { type: String, dafault: paymentStatuses.No },
+    paymentStatus: { type: String, dafault: paymentStatuses.NotPaid },
     customer: {
         type: Schema.Types.ObjectId,
         ref: "User"

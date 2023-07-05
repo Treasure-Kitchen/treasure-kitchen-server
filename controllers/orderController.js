@@ -5,9 +5,9 @@ const { isNotANumber, toNumber, processPaymentStatus, validDateRange, minimumDat
 const User = require('../models/User');
 const { getLoggedInUserId } = require('../utils/getClaimsFromToken');
 const OrderTrack = require('../models/OrderTrack');
-const { sendOrderNotification } = require('../helpers/emailSlave');
 const { addMilliseconds, millisecondsInHour } = require('date-fns');
 const { cancelOrderIfNotConfirmed } = require('../utils/cronJobs');
+const { sendOrderNotification } = require('../helpers/emailSlave');
 
 const create = async (req, res) => {
     const userId = getLoggedInUserId(req);
@@ -38,12 +38,7 @@ const create = async (req, res) => {
                 paymentStatus: paymentStatuses.No
             });
             //Initialize Order Track
-            const orderTrack = new OrderTrack({
-                userId: user._id,
-                orderId: order._id,
-                dateTime: order.dateTime,
-                orderStatus: order.status
-            });
+            const orderTrack = initOrderTrack(order);
             //Save Changes
             await order.save();
             await orderTrack.save()
@@ -78,21 +73,25 @@ const update = async (req, res) => {
                 totalPrice += dish.price;
             });
 
+            const previousOrderStatus = order.status;
             order.dishes = dishes;
-            order.price = price;
+            order.price = totalPrice;
             order.phoneNumber = phoneNumber;
-            order.balance = (price - order.amountPaid);
+            order.balance = (totalPrice - order.amountPaid);
+            order.status = (order.price - toNumber(order.amountPaid)) === 0 || (order.price - toNumber(order.amountPaid) < 0) ? 
+                orderStatuses.Placed : 
+                orderStatuses.Pending;
+            order.paymentStatus = processPaymentStatus(order, toNumber(order.amountPaid));
+            if(previousOrderStatus !== order.status){
+                const orderTrack = initOrderTrack(order);
+                await orderTrack.save();
+            }
             //Save
             await order.save();
-            // const payload = {
-            //     name: user.displayName, 
-            //     price: order.price, 
-            //     date: order.dateTime, 
-            //     orderId: order._id, 
-            //     email: user.email, 
-            //     subject: "Order Details"
-            // };
-            //await sendOrderNotification(payload);
+            if(previousOrderStatus === orderStatuses.Cancelled){
+                const threeDaysLater = addMilliseconds(Date.name, (millisecondsInHour * 24 * 3));
+                cancelOrderIfNotConfirmed(order._id, threeDaysLater);
+            }
             res.status(200).json({message: 'Order details successfully updated.'});
     } catch (error) {
         res.status(500).json({message: error.message});
@@ -107,18 +106,26 @@ const pay = async (req, res) => {
     if(toNumber(amount) <= 0) return res.status(400).json({message: `Amount must be greater than 0.`});
 
     try {
-        const order = await Order.findOne({ _id: id }).exec();
+        const order = await Order.findOne({ _id: id }).populate('customer').exec();
         if(!order) return res.status(404).json({message: `Could not find an order with Id: ${id}`});
+        if((order.paymentStatus === paymentStatuses.Paid && order.balance <= 0) || order.amountPaid === order.price) return res.status(400).json({message: 'Order already process. Awaiting confirmation.'});
+        //TODO: Process Payment here
+        const previousOrderStatus = order.status;
         //Update
         order.amountPaid = toNumber(amount);
         order.balance = (order.price - toNumber(amount));
         order.status = (order.price - toNumber(amount)) === 0 || (order.price - toNumber(amount) < 0) ? 
-                orderStatuses.Completed : 
-                orderStatuses.InProgress;
+                orderStatuses.Placed : 
+                orderStatuses.Pending;
         order.paymentStatus = processPaymentStatus(order, toNumber(amount));
+        //Initialize Order Track
+        if(previousOrderStatus !== order.status){
+            const orderTrack = initOrderTrack(order);
+            await orderTrack.save();
+        }
         //Save
-        order.save();
-        //TODO: Send order details to the user email
+        await order.save();
+        res.status(200).json({ message: 'Order successfully placed. You will receive a notification once your order is confirmed.'})
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -128,34 +135,49 @@ const getAll = async (req, res) => {
     const { page, perPage, status, payStatus, minDate, maxDate } = req.query;
     const currentPage = Math.max(0, page) || 1;
     const pageSize = Number(perPage) || 10;
-    const orderStatus = status ? [status] : [orderStatuses.Pending, orderStatuses.InProgress, orderStatuses.Completed];
-    const paymentStatus = payStatus ? [payStatus] : [paymentStatuses.Yes, paymentStatuses.No, paymentStatuses.Partial, paymentStatuses.OverPaid];
+    const orderStatus = status ? 
+                            [orderStatuses[status]] : 
+                            [
+                                orderStatuses.Pending, 
+                                orderStatuses.Placed, 
+                                orderStatuses.Cancelled, 
+                                orderStatuses.Confirmed,
+                                orderStatuses.Completed
+                            ];
+    const paymentStatus = payStatus ? 
+                            [paymentStatuses[payStatus]] : 
+                            [
+                                paymentStatuses.Paid, 
+                                paymentStatuses.NotPaid, 
+                                paymentStatuses.Partial, 
+                                paymentStatuses.OverPaid
+                            ];
     const mnDate = minDate ? new Date(minDate) : new Date(minimumDate);
     const mxDate = maxDate ? new Date(maxDate) : new Date(maximumDate);
     if(!validDateRange(mnDate, mxDate)) return res.status(400).json({message: 'Invalid date range'});
   
     try {
             const result = await Order.find()
-                .where('status').in(orderStatus)
-                .where('paymentStatus').in(paymentStatus)
-                .where('dateTime').gte(mnDate).lte(mxDate)
-                .sort({ dateTime: -1 })
-                .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
-                .populate({
-                    path: 'dishes',
-                    select: '_id name'
-                })
-                .populate({
-                    path: 'customer',
-                    select: '_id displayName email phoneNumber'
-                })
-                .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
-                .limit(pageSize)        
-                .exec();
-            const count = await Order.countDocuments()
-                    .where('status').in(orderStatus)
-                    .where('paymentStatus').in(paymentStatus)
-                    .where('dateTime').gte(mnDate).lte(mxDate).exec();
+                 .where('status').in(orderStatus)
+                 .where('paymentStatus').in(paymentStatus)
+                 .where('dateTime').gte(mnDate).lte(mxDate)
+                 .sort({ dateTime: -1 })
+                 .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
+                 .populate({
+                     path: 'dishes',
+                     select: '_id name photo'
+                 })
+                 .populate({
+                     path: 'customer',
+                     select: '_id displayName email phoneNumber'
+                 })
+                 .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
+                 .limit(pageSize)        
+                 .exec();
+             const count = await Order.countDocuments()
+                     .where('status').in(orderStatus)
+                     .where('paymentStatus').in(paymentStatus)
+                     .where('dateTime').gte(mnDate).lte(mxDate).exec();
 
             res.status(200).json({
                 Data: result,
@@ -172,12 +194,27 @@ const getAll = async (req, res) => {
 };
 
 const getByUserId = async (req, res) => {
-    const { userId } = req.params;
-    const {page, perPage, status, payStatus, minDate, maxDate } = req.query;
+    const userId = getLoggedInUserId(req);
+    const { page, perPage, status, payStatus, minDate, maxDate } = req.query;
     const currentPage = Math.max(0, page) || 1;
     const pageSize = Number(perPage) || 10;
-    const orderStatus = status ? [status] : [orderStatuses.Pending, orderStatuses.InProgress, orderStatuses.Completed, orderStatuses.Fulfilled];
-    const paymentStatus = payStatus ? [payStatus] : [paymentStatuses.Yes, paymentStatuses.No, paymentStatuses.Partial, paymentStatuses.OverPaid];
+    const orderStatus = status ? 
+                            [orderStatuses[status]] : 
+                            [
+                                orderStatuses.Pending, 
+                                orderStatuses.Placed, 
+                                orderStatuses.Cancelled, 
+                                orderStatuses.Confirmed,
+                                orderStatuses.Completed
+                            ];
+    const paymentStatus = payStatus ? 
+                            [paymentStatuses[payStatus]] : 
+                            [
+                                paymentStatuses.Paid, 
+                                paymentStatuses.NotPaid, 
+                                paymentStatuses.Partial, 
+                                paymentStatuses.OverPaid
+                            ];
     const mnDate = minDate ? new Date(minDate) : new Date(minimumDate);
     const mxDate = maxDate ? new Date(maxDate) : new Date(maximumDate);
     if(!validDateRange(mnDate, mxDate)) return res.status(400).json({message: 'Invalid date range'});
@@ -185,28 +222,27 @@ const getByUserId = async (req, res) => {
     try {
             const user = await User.findOne({ _id: userId }).exec();
             if(!user) return res.status(404).json({message: `No user found with the Id: ${userId}`});
-
-            const result = await Order.find({ customer: userId })
-                .where('status').in(orderStatus)
-                .where('paymentStatus').in(paymentStatus)
-                .where('dateTime').gte(mnDate).lte(mxDate)
-                .sort({ dateTime: -1 })
-                .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
-                .populate({
-                    path: 'dishes',
-                    select: '_id name'
-                })
-                .populate({
-                    path: 'customer',
-                    select: '_id displayName email phoneNumber'
-                })
-                .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
-                .limit(pageSize)        
-                .exec();
-            const count = await Order.countDocuments()
-                    .where('status').in(orderStatus)
-                    .where('paymentStatus').in(paymentStatus)
-                    .where('dateTime').gte(mnDate).lte(mxDate).exec();
+            const result = await Order.find({ customer: user._id })
+                 .where('status').in(orderStatus)
+                 .where('paymentStatus').in(paymentStatus)
+                 .where('dateTime').gte(mnDate).lte(mxDate)
+                 .sort({ dateTime: -1 })
+                 .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
+                 .populate({
+                     path: 'dishes',
+                     select: '_id name photo'
+                 })
+                 .populate({
+                     path: 'customer',
+                     select: '_id displayName email phoneNumber'
+                 })
+                 .skip((parseInt(currentPage) - 1) * parseInt(pageSize))
+                 .limit(pageSize)        
+                 .exec();
+             const count = await Order.countDocuments({ customer: user._id })
+                     .where('status').in(orderStatus)
+                     .where('paymentStatus').in(paymentStatus)
+                     .where('dateTime').gte(mnDate).lte(mxDate).exec();
 
             res.status(200).json({
                 Data: result,
@@ -229,7 +265,7 @@ const getById = async (req, res) => {
                     .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
                     .populate({
                         path: 'dishes',
-                        select: '_id name'
+                        select: '_id name photo'
                     })
                     .populate({
                         path: 'customer',
@@ -245,7 +281,7 @@ const getById = async (req, res) => {
 
 const remove = async (req, res) => {
     const { id } = req.params;
-    const userId = req.user;
+    const userId = getLoggedInUserId(req);
 
     try {
         const user = await User.findOne({ _id: userId }).exec();
@@ -263,6 +299,85 @@ const remove = async (req, res) => {
     }
 };
 
+const confirmOrder = async (req, res) => {
+    const { id } = req.params;
+    try {
+            const orderToConfirm = await Order.findOne({ _id: id }).populate('customer').exec();
+            if(!orderToConfirm) return res.status(404).json({message: `No order found with Id: ${id}`});
+            if(orderToConfirm.status !== orderStatuses.Placed) return res.status(400).json({message: `You can not moved order from ${orderToConfirm.status} to ${orderStatuses.Confirmed}`});
+            if(orderToConfirm.price !== orderToConfirm.amountPaid || orderToConfirm.price > orderToConfirm.amountPaid)
+                return res.status(400).json({message: `The order amount has to be fully paid to be confirmed.`});
+
+            const previousOrderStatus = orderToConfirm.status;
+            if(previousOrderStatus !== orderToConfirm.status){
+                const orderTrack = initOrderTrack(orderToConfirm);
+                await orderTrack.save();
+            }
+            //Update
+            orderToConfirm.status = orderStatuses.Confirmed;
+            //Save
+            orderToConfirm.save();
+            //Send order details to the user email
+            const payload = {
+                name: orderToConfirm.customer.displayName, 
+                price: orderToConfirm.price, 
+                date: orderToConfirm.dateTime, 
+                orderId: orderToConfirm._id, 
+                email: orderToConfirm.customer.email, 
+                subject: "Order Details"
+            };
+            await sendOrderNotification(payload);
+            res.status(200).json({message: 'Order successfully confirmed.'});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+};
+
+const completeOrder = async (req, res) => {
+    const { id } = req.params;
+    try {
+            const orderToConfirm = await Order.findOne({ _id: id }).populate('customer').exec();
+            if(!orderToConfirm) return res.status(404).json({message: `No order found with Id: ${id}`});
+            if(orderToConfirm.status !== orderStatuses.Confirmed) return res.status(400).json({message: `You can not moved order from ${orderToConfirm.status} to ${orderStatuses.Completed}`});
+            if(orderToConfirm.price !== orderToConfirm.amountPaid || orderToConfirm.price > orderToConfirm.amountPaid) return res.status(400).json({message: `The order amount has to be fully paid to be completed.`});
+            
+            const previousOrderStatus = orderToConfirm.status;
+            if(previousOrderStatus !== orderToConfirm.status){
+                const orderTrack = initOrderTrack(orderToConfirm);
+                await orderTrack.save();
+            }
+            //Update order
+            orderToConfirm.status = orderStatuses.Completed;
+            //Save
+            orderToConfirm.save();
+        res.status(200).json({message: 'Order successfully completed.'});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+};
+
+const getOrderTrack = async (req, res) => {
+    const { orderId } = req.params;
+    const userId = getLoggedInUserId(req);
+    try {
+            const tracks = await OrderTrack.find({ userId: userId, orderId: orderId })
+                                    .select('dateTime orderStatus')
+                                    .sort({ dateTime: 1 }).exec();
+            res.status(200).json(tracks)
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+};
+
+const initOrderTrack = (order) => {
+    return new OrderTrack({
+        dateTime: new Date(),
+        userId: order.customer,
+        orderId: order._id,
+        orderStatus: order.status
+    });
+}
+
 module.exports = {
     create,
     update,
@@ -270,5 +385,8 @@ module.exports = {
     getAll,
     getByUserId,
     getById,
-    remove
+    remove,
+    confirmOrder,
+    completeOrder,
+    getOrderTrack
 };

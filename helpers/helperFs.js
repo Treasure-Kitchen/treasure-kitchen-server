@@ -1,4 +1,5 @@
 const { millisecondsInHour } = require("date-fns");
+const { paymentStatuses } = require("../config/statuses");
 
 const randomNumBetweenRange = (min, max) => {
     return Math.round(Math.random() * (max - min) + min);
@@ -70,10 +71,13 @@ const processPaymentStatus = (order, amountPaid) => {
     //if order price minus amount paid is 0: paid 
     //if order price minus amount paid is greater than zero but less than the price: partial
     //if order price minus the amount paid is less than zero: over paid
-    const status = order.price - amountPaid === 0 ? 
-                        paymentStatuses.Yes :
+    const status = amountPaid === 0 ?
+                        paymentStatuses.NotPaid :
+                        order.price - amountPaid === 0 ? 
+                        paymentStatuses.Paid :
                         (order.price - amountPaid > 0 && amountPaid < order.price) ?
-                        paymentStatuses.Partial : paymentStatuses.OverPaid;
+                        paymentStatuses.Partial :
+                        paymentStatuses.OverPaid;
     return status
 };
 

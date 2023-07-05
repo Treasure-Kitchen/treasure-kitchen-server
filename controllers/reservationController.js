@@ -174,7 +174,7 @@ const getAll = async (req, res) => {
     const { page, perPage, status, minDate, maxDate } = req.query;
     const currentPage = Math.max(0, parseInt(page)) || 1;
     const pageSize = parseInt(perPage) || 10;
-    const reservationStatus = status ? [status] : [reservationStatuses.Pending, reservationStatuses.Confirmed, reservationStatuses.Cancelled];
+    const reservationStatus = status ? [reservationStatuses[status]] : [reservationStatuses.Pending, reservationStatuses.Confirmed, reservationStatuses.Cancelled];
     const mnDate = minDate ? minDate : minimumDate;
     const mxDate = maxDate ? maxDate : maximumDate;
     if(!validDateRange(mnDate, mxDate)) return res.status(400).json({message: 'Invalid date range'});
@@ -228,7 +228,7 @@ const getByUserEmail = async(req, res) => {
     const { page, perPage, status, minDate, maxDate } = req.query;
     const currentPage = Math.max(0, parseInt(page)) || 1;
     const pageSize = parseInt(perPage) || 10;
-    const reservationStatus = status ? [status] : [reservationStatuses.Pending, reservationStatuses.Confirmed, reservationStatuses.Cancelled];
+    const reservationStatus = status ? [reservationStatuses[status]] : [reservationStatuses.Pending, reservationStatuses.Confirmed, reservationStatuses.Cancelled];
     const mnDate = minDate ? minDate : minimumDate;
     const mxDate = maxDate ? maxDate : maximumDate;
     if(!validDateRange(mnDate, mxDate)) return res.status(400).json({message: 'Invalid date range'});

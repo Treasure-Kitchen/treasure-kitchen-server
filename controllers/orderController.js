@@ -19,6 +19,7 @@ const create = async (req, res) => {
     try {
             const user = await User.findOne({ _id: userId }).exec();
             if(!user) return res.status(404).json({message: `No user found with Id: ${userId}`});
+            if(!user.address) return res.status(404).json({message: 'Please add an address in your profile to continue.'});
 
             const dishesFromDb = await Dish.find({
                 _id: { $in: dishes }
@@ -34,8 +35,9 @@ const create = async (req, res) => {
                 price: totalPrice,
                 balance: totalPrice,
                 customer: user._id,
+                customerAddress: user.address,
                 dishes: dishes,
-                paymentStatus: paymentStatuses.No
+                paymentStatus: paymentStatuses.NotPaid
             });
             //Initialize Order Track
             const orderTrack = initOrderTrack(order);
@@ -271,6 +273,7 @@ const getById = async (req, res) => {
                         path: 'customer',
                         select: '_id displayName email phoneNumber'
                     })
+                    .populate('customerAddress')
                     .exec();
             if(!order) return res.status(404).json({message: `No order found with the Id: ${id}`});
             res.status(200).json(order);

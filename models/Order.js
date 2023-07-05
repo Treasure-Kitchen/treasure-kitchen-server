@@ -10,16 +10,9 @@ const orderSchema = new Schema({
     balance: Number,
     dateTime: { type: Date, default: Date.now },
     paymentStatus: { type: String, dafault: paymentStatuses.NotPaid },
-    customer: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    },
-    dishes: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Dish"
-        }
-    ]
+    customer: { type: Schema.Types.ObjectId, ref: "User" },
+    customerAddress: { type: Schema.Types.ObjectId, ref: "Address" },
+    dishes: [{ type: Schema.Types.ObjectId, ref: "Dish" }]
 });
 
 module.exports = mongoose.model('Order', orderSchema);

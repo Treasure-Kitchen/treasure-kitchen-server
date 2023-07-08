@@ -1,26 +1,23 @@
-const authController = require('../../controllers/authController');
+const userController = require('../../controllers/userController');
 const express = require('express');
 const router = express.Router();
 const verifyJWT = require('../../middlewares/verifyJWT');
 const passport = require('passport')
 
-// router.route('/login')
-//     .post(authController.handleLogin);
+router.route('/login')
+    .post(userController.login);
 
-// router.route('/logout')
-//     .get(verifyJWT, authController.handleLogout);
+router.route('/confirm-email')
+    .patch(userController.confirmEmail);
 
-// router.route('/confirm-email')
-//     .post(authController.handleConfirmEmail);
+router.route('/reset-password')
+    .patch(userController.resetPassword);
 
-// router.route('/reset-password')
-//     .patch(authController.handleResetPassword);
+router.route('/change-password')
+    .patch(userController.changeForgottenPassword);
 
-// router.route('/change-password')
-//     .patch(authController.handleChangeForgotPass);
-
-// router.route('/:userId/change-password')
-//     .patch(verifyJWT, authController.handleChangePass);
+router.route('/:userId/change-password')
+    .patch(verifyJWT, userController.changePassword);
 
 //Passport
 router.route('/google')
@@ -54,14 +51,5 @@ router.route("/google/callback")
         res.cookie('profile', req.user.id, { httpOnly: false, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
         res.redirect(process.env.REDIRECT_URL);
     });
-
-router.route('/facebook')
-    .get(passport.authenticate('facebook', {scope: 'email'}));
-
-router.route('/facebook/callback')
-    .get(passport.authenticate('facebook'), (req, res) => {
-        res.cookie('profile', req.user.id, { httpOnly: false, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
-        res.send(req.user);
-    })
 
 module.exports = router;

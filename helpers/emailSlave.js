@@ -51,10 +51,10 @@ const sendConfirmationEmail = async ({ name, email, subject, messageText, file, 
             const filePath = path.join(__dirname, '..', 'views', file);
             let template = await fsPromises.readFile(filePath, 'utf8');
             let message = template
-                            .replace("{{greetings}}", capitalizeFirstWord(name))
+                            .replace("{{greetings}}", `Welcome ${capitalizeFirstWord(name)}`)
                             .replace("{{message}}", messageText)
                             .replace("{{email_link}}", link)
-                            .replace("{{btn_name}}", btn)
+                            .replace("{{btn_name}}", subject)
                             .replace("{{year}}", (new Date()).getFullYear());
             const payLoad = { 
                 recipientEmail: email, 

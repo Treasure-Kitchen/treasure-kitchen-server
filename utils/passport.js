@@ -1,8 +1,9 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
 const User = require('../models/User');
 const { capitalizeFirstLetters } = require('../helpers/helperFs');
+const Role = require('../models/Role');
+const ROLES = require('../config/roles');
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -22,25 +23,26 @@ passport.use(new GoogleStrategy({
     User.findOne({ googleId: profile.id })
         .then((currentUser) => {
             if(currentUser){
-                done(null, currentUser);
+                User.findOneAndUpdate({ _id: currentUser._id }, { lastLogin: new Date() })
+                    .then((user) => {
+                        done(null, user);
+                    })
             } else {
-                new User({
-                    displayName: capitalizeFirstLetters(profile.displayName),
-                    googleId: profile.id,
-                    email: profile.emails[0].value,
-                    photo: profile.photos[0].value 
-                }).save().then((newUser) => {
-                    done(null, newUser);
-                })
+                Role.findOne({ role: ROLES.User })
+                    .then((role) => {
+                        if(role){
+                            new User({
+                                displayName: capitalizeFirstLetters(profile.displayName),
+                                googleId: profile.id,
+                                email: profile.emails[0].value,
+                                photo: profile.photos[0].value,
+                                role: role._id,
+                                lastLogin: new Date()
+                            }).save().then((newUser) => {
+                                done(null, newUser);
+                            })
+                        }
+                    }).catch(err => done(err, null));
             }
         });
-}));
-
-passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_CLIENT_ID,
-    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    callbackURL: process.env.FACEBOOK_CALLBACK_URL,
-    profileFields: ['id', 'displayName', 'picture.type(large)', 'email']
-}, async (token, refreshToken, profile, done) => {
-    console.log(profile)
 }));

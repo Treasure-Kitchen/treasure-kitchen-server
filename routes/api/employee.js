@@ -9,6 +9,8 @@ const positionController = require('../../controllers/positionController');
 const departmentController = require('../../controllers/departmentController');
 const fileCOntroller = require('../../controllers/fileController');
 const multer = require('multer');
+const canAddToRole = require('../../middlewares/canAddToRole');
+const canPerform = require('../../middlewares/canPerform');
 const storage = multer.diskStorage({});
 
 const fileFilter = (req, file, cb) => {
@@ -21,46 +23,60 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage, fileFilter });
 
 router.route('/')
-    .post(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), validateEmployeeRequest, employeeController.create)
+    .post(
+            verifyJWT, 
+            verifyRoles(ROLES.SuperAdmin, ROLES.Admin, ROLES.Regular),
+            canAddToRole,
+            validateEmployeeRequest, 
+            employeeController.create
+        )
     .get(verifyJWT, employeeController.getAllEmployees);
 
 router.route('/:id/update-name')
     .patch(verifyJWT, employeeController.updateName);
-    
-router.route('/:id/update-department')
-    .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), employeeController.updateDepartment);
-
-router.route('/:id/update-role')
-    .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin), employeeController.changeEmployeeRole);
+  
+router.route('/:id/update-role/:roleId')
+    .patch(
+            verifyJWT, 
+            verifyRoles(ROLES.SuperAdmin, ROLES.Admin),
+            canAddToRole,
+            employeeController.changeEmployeeRole
+        );
 
 router.route('/:id/terminate')
-    .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin), employeeController.terminate);
+    .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), canPerform, employeeController.terminate);
 
-router.route('/:id/update-position')
+router.route('/:id/reinstate/:roleId')
+    .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), employeeController.reinstate);
+
+router.route('/:id/update-position/:posId')
     .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin), employeeController.updatePosition);
 
-router.route('/:id/update-department')
+router.route('/:id/update-department/:dptId')
     .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), employeeController.updateDepartment);
 
 router.route('/:id/update-salary')
-    .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin), employeeController.updateSalary)
+    .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin), employeeController.updateSalary);
+
+router.route('/:id/update-employment-date')
+        .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), employeeController.updateEmploymentDate);
 
 router.route('/positions')
     .post(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), positionController.create)
-    .get(positionController.getAll);
+    .get(verifyJWT, positionController.getAll);
 
 router.route('/positions/:id')
     .put(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), positionController.update)
-    .get(positionController.getById)
+    .get(verifyJWT, positionController.getById)
     .delete(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), positionController.remove);
 
 router.route('/departments')
     .post(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), departmentController.create)
-    .get(departmentController.getAll);
+    .get(verifyJWT, departmentController.getAll);
 
 router.route('/departments/:id')
     .put(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), departmentController.update)
-    .get(departmentController.getById)
+    .get(verifyJWT, departmentController.getById)
     .delete(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), departmentController.remove);
 
 router.route('/:id/upload-photo')

@@ -21,7 +21,7 @@ const employeeSchema = new Schema({
     password: { type: String, required: true },
     photoUrl: { type: String, default: '' },
     publicId: { type: String, default: '' },
-    emailToken: { type: Number, default: null },
+    emailToken: { type: String, default: "" },
     tokenExpiryTime: Date
 });
 

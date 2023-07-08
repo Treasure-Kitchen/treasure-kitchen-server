@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const { isNotANumber, toNumber, capitalizeFirstLetters, emailConfirmationMessage } = require('../helpers/helperFs');
 const { addHours } = require('date-fns');
 const { sendConfirmationEmail } = require('../helpers/emailSlave');
+const { getLoggedInUserId } = require('../utils/getClaimsFromToken');
 
 const create = async (req, res) => {
     const origin = req.headers.origin;
@@ -30,9 +31,9 @@ const create = async (req, res) => {
     
     try {
         const hashedPwd = await bcrypt.hash(password, 10);
-        const roleFromDb = await Role.findOne({ role: roleId }).exec();
-        const positionFromDB = await Position.findOne({ name: positionId }).exec();
-        const departmentFromDB = await Department.findOne({ name: departmentId }).exec();
+        const roleFromDb = await Role.findOne({ _id: roleId }).exec();
+        const positionFromDB = await Position.findOne({ _id: positionId }).exec();
+        const departmentFromDB = await Department.findOne({ _id: departmentId }).exec();
         if(!roleFromDb) return res.status(400).json({ 'message':`Role with Id: ${roleId}, not found` });
         if(!positionFromDB) return res.status(400).json({ 'message':`Position with Id: ${positionId}, not found` });
         if(!departmentFromDB) return res.status(400).json({ 'message':`Department with Id: ${departmentId}, not found` });
@@ -42,20 +43,19 @@ const create = async (req, res) => {
         const employee = new Employee({
             firstName: capitalizeFirstLetters(firstName),
             lastName: capitalizeFirstLetters(lastName),
-            middleName: middleName,
+            middleName: capitalizeFirstLetters(middleName),
             emailAddress: emailAddress,
             phoneNumber: phoneNumber,
             role: roleFromDb._id,
             password: hashedPwd,
             position: positionFromDB._id,
             department: departmentFromDB._id,
-            salary: salary,
-            employmentDate: employmentDate,
+            salary: toNumber(salary),
+            employmentDate: new Date(employmentDate),
             emailToken: emailToken,
             tokenExpiryTime: addHours(new Date(), 2)
         });
-        //Save
-        await employee.save();
+
         const link = `${origin}/verify-email?token=${emailToken}`;
         //Send confirmation email
         const payload = {
@@ -67,6 +67,8 @@ const create = async (req, res) => {
             link: link
         }
         await sendConfirmationEmail(payload);
+        //Save
+        await employee.save();
         res.status(201).json({ 'message': 'Employee Registration successful.' });
     } catch (error) {
         res.status(500).json(({ 'message': error.message }));
@@ -91,7 +93,8 @@ const getAllEmployees = async (req, res) => {
                 Data: result,
                 CurrentPage: currentPage,
                 PageSize: pageSize,
-                TotalPages: Math.ceil(count / pageSize)
+                TotalPages: Math.ceil(count / pageSize),
+                ItemCount: count
             });
     } catch (error) {
         res.status(500).json({message: error.message});
@@ -126,19 +129,19 @@ const updateName = async (req, res) => {
 };
 
 const updatePosition = async (req, res) => {
-    const { empId, posId } = req.params;
+    const { id, posId } = req.params;
     try {
         const positionFromDB = await Position.findOne({ _id: posId }).exec();
         if(!positionFromDB) return res.status(404).json({ 'message': `The Position with Id: ${posId}, does not exist`});
 
-        const employeeToUpdate = await Employee.findOne({ _id: empId }).exec();
+        const employeeToUpdate = await Employee.findOne({ _id: id }).exec();
         if(employeeToUpdate){
             employeeToUpdate.position = positionFromDB._id;
 
             await employeeToUpdate.save();
             res.status(200).json({ 'message': 'Employee position updated successfully.' });
         } else {
-            res.status(404).json({ 'message': `No employee with Id: ${empId}`});
+            res.status(404).json({ 'message': `No employee with Id: ${id}`});
         }
     } catch (error) {
         res.status(500).json({ 'message': error.message });
@@ -170,19 +173,19 @@ const updateSalary = async (req, res) => {
 };
 
 const updateDepartment = async (req, res) => {
-    const { empId, deptId } = req.params;
+    const { id, dptId } = req.params;
     try {
-        const departmentFromDB = await Department.findOne({ _id: deptId }).exec();
-        if(!departmentFromDB) return res.status(404).json({ 'message': `No department found with Id: ${deptId}`});
+        const departmentFromDB = await Department.findOne({ _id: dptId }).exec();
+        if(!departmentFromDB) return res.status(404).json({ 'message': `No department found with Id: ${dptId}`});
 
-        const employeeToUpdate = await Employee.findOne({ _id: empId }).exec();
+        const employeeToUpdate = await Employee.findOne({ _id: id }).exec();
         if(employeeToUpdate){
             employeeToUpdate.department = departmentFromDB._id;
 
             await employeeToUpdate.save();
             res.status(200).json({ 'message': 'Employee department updated successfully.' });
         } else {
-            res.status(404).json({ 'message': `No employee with Id: ${empId}`});
+            res.status(404).json({ 'message': `No employee with Id: ${id}`});
         }
     } catch (error) {
         res.status(500).json({ 'message': error.message });
@@ -190,7 +193,7 @@ const updateDepartment = async (req, res) => {
 };
 
 const updateEmploymentDate = async (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
     const {
         employmentDate
     } = req.body;
@@ -212,18 +215,18 @@ const updateEmploymentDate = async (req, res) => {
 };
 
 const changeEmployeeRole = async (req, res) => {
-    const { empId, roleId } = req.params;
+    const { id, roleId } = req.params;
     try {
         const roleFromDB = await Role.findOne({ _id: roleId }).exec();
         if(!roleFromDB) return res.status(404).json({ 'message': `Role with Id: ${roleId}, not found` });
-        const employeeToUpdate = await Employee.findOne({ _id: empId }).exec();
+        const employeeToUpdate = await Employee.findOne({ _id: id }).exec();
         if(employeeToUpdate){
             employeeToUpdate.role = roleFromDB._id;
 
             await employeeToUpdate.save();
             res.status(200).json({ 'message': 'Employee Role updated successfully.' });
         } else {
-            res.status(404).json({ 'message': `No employee with Id: ${empId}`});
+            res.status(404).json({ 'message': `No employee with Id: ${id}`});
         }
     } catch (error) {
         res.status(500).json({ 'message': error.message });
@@ -231,17 +234,41 @@ const changeEmployeeRole = async (req, res) => {
 };
 
 const terminate = async (req, res) => {
-    const { id } = req.params.id;
+    const loggedInUserId = getLoggedInUserId(req);
+    const { id } = req.params;
 
     try {
         const employeeToTerminate = await Employee.findOne({ _id: id });
         if(employeeToTerminate){
+            if(id === loggedInUserId) return res.status(403).json({message: 'You can not perform this operation on yourself.'});
             employeeToTerminate.terminationDate = new Date();
             employeeToTerminate.isTerminated = true;
             employeeToTerminate.refreshToken = '';
             employeeToTerminate.role = null;
             //Save changes
-            employeeToTerminate.save();
+            await employeeToTerminate.save();
+            res.status(200).json({message: `Successfully terminated ${employeeToTerminate.firstName} ${employeeToTerminate.lastName}.`})
+        } else {
+            res.status(404).json({ 'message': `No Employee found with Id: ${id}` });
+        }
+    } catch (error) {
+        
+    }
+};
+
+const reinstate = async (req, res) => {
+    const { id, roleId } = req.params;
+
+    try {
+        const employeeToReinstate = await Employee.findOne({ _id: id });
+        if(employeeToReinstate){
+            const role = await Role.findOne({ _id: roleId }).exec();
+            if(!role) return res.status(404).json({message: `No role found with the Id: ${roleId}`});
+            employeeToReinstate.isTerminated = false;
+            employeeToReinstate.role = role._id;
+            //Save changes
+            await employeeToReinstate.save();
+            res.status(200).json({message: `Successfully reinstated ${employeeToReinstate.firstName} ${employeeToReinstate.lastName}.`})
         } else {
             res.status(404).json({ 'message': `No Employee found with Id: ${id}` });
         }
@@ -259,5 +286,6 @@ module.exports = {
     updateEmploymentDate,
     changeEmployeeRole,
     terminate,
+    reinstate,
     getAllEmployees
 }

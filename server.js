@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 5500;
 const app = express()
 
 //Configure Swagger UI
-app.use('api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 //Coneect to MongoDB
 connectDB();

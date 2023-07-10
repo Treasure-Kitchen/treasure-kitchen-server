@@ -1,3 +1,3441 @@
 {
-    "user": "user"
-}
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Treasure Kitchen API",
+      "description": "Treasure Kitchen Project Server",
+      "contact": {
+        "email": "ojotobar@gmail.com"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "https:apache.org"
+      },
+      "version": "1.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:5500",
+        "variables": {}
+      }
+    ],
+    "paths": {
+      "/api/employees/positions": {
+        "post": {
+          "tags": [
+            "positions"
+          ],
+          "summary": "Create A New Position",
+          "operationId": "CreateANewPosition",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/CreateANewPositionRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "CEO"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "CEO"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "positions"
+          ],
+          "summary": "Get The List Of All Positions",
+          "operationId": "GetTheListOfAllPositions",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employees/departments": {
+        "post": {
+          "tags": [
+            "departments"
+          ],
+          "summary": "Create New Department",
+          "operationId": "CreateNewDepartment",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/CreateNewDepartmentRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "Sales"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "Sales"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "departments"
+          ],
+          "summary": "Get The List Of All Departments",
+          "operationId": "GetTheListOfAllDepartments",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/employees": {
+        "post": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Create A New Employee",
+          "operationId": "CreateANewEmployee",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/CreateANewEmployeeRequest"
+                    },
+                    {
+                      "example": {
+                        "firstName": "Toba",
+                        "lastName": "Ojo",
+                        "middleName": "Rufus",
+                        "emailAddress": "ojotobar@gmail.com",
+                        "phoneNumber": "+2348131016938",
+                        "employmentDate": "2023-07-01",
+                        "salary": 1000000,
+                        "positionId": "64a9cd92aacb2c3daf46778f",
+                        "departmentId": "648a80a600105844a1c6a8ca",
+                        "password": "P@33w0rd",
+                        "confirmPassword": "P@33w0rd",
+                        "roleId": "648a7fe800105844a1c6a8c7"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "firstName": "Toba",
+                  "lastName": "Ojo",
+                  "middleName": "Rufus",
+                  "emailAddress": "ojotobar@gmail.com",
+                  "phoneNumber": "+2348131016938",
+                  "employmentDate": "2023-07-01",
+                  "salary": 1000000,
+                  "positionId": "64a9cd92aacb2c3daf46778f",
+                  "departmentId": "648a80a600105844a1c6a8ca",
+                  "password": "P@33w0rd",
+                  "confirmPassword": "P@33w0rd",
+                  "roleId": "648a7fe800105844a1c6a8c7"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Get List Of All Employees",
+          "operationId": "GetListOfAllEmployees",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "example": 1
+              }
+            },
+            {
+              "name": "perPage",
+              "in": "query",
+              "description": "",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "example": 20
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employees/64a9cec69d29e765667c5fe7/update-name": {
+        "patch": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Update Employee Names",
+          "operationId": "UpdateEmployeeNames",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateEmployeeNamesRequest"
+                    },
+                    {
+                      "example": {
+                        "firstName": "Oloruntomiloba",
+                        "lastName": "Ojo",
+                        "middleName": ""
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "firstName": "Oloruntomiloba",
+                  "lastName": "Ojo",
+                  "middleName": ""
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employees/64a9cec69d29e765667c5fe7/update-salary": {
+        "patch": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Update Employee Salary",
+          "operationId": "UpdateEmployeeSalary",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateEmployeeSalaryRequest"
+                    },
+                    {
+                      "example": {
+                        "salary": 1200000
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "salary": 1200000
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employees/64a9cec69d29e765667c5fe7/update-role/648a7fe800105844a1c6a8c7": {
+        "patch": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Update Employee Role",
+          "operationId": "UpdateEmployeeRole",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employees/64a9cec69d29e765667c5fe7/terminate": {
+        "patch": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Terminate Employee",
+          "operationId": "TerminateEmployee",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employees/64a9cec69d29e765667c5fe7/reinstate/648a7fe800105844a1c6a8c7": {
+        "patch": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Reinstate Employee",
+          "operationId": "ReinstateEmployee",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employees/64a9cec69d29e765667c5fe7/update-position/64a9cd92aacb2c3daf46778f": {
+        "patch": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Update Employee Position",
+          "operationId": "UpdateEmployeePosition",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employees/64a9cec69d29e765667c5fe7/update-department/648a80a600105844a1c6a8ca": {
+        "patch": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Update Employee Department",
+          "operationId": "UpdateEmployeeDepartment",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employees/64a9cec69d29e765667c5fe7/update-employment-date": {
+        "patch": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Update Employment Date",
+          "operationId": "UpdateEmploymentDate",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateEmploymentDateRequest"
+                    },
+                    {
+                      "example": {
+                        "employmentDate": "2023-06-30"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "employmentDate": "2023-06-30"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/roles": {
+        "post": {
+          "tags": [
+            "roles"
+          ],
+          "summary": "Create New Role",
+          "operationId": "CreateNewRole",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/CreateNewRoleRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "User",
+                        "role": 2004
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "User",
+                  "role": 2004
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "roles"
+          ],
+          "summary": "Get All List Of Roles",
+          "operationId": "GetAllListOfRoles",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/menus": {
+        "post": {
+          "tags": [
+            "menus"
+          ],
+          "summary": "Add Menu",
+          "operationId": "AddMenu",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AddMenuRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "Continental",
+                        "description": "Continental Dishes",
+                        "dishes": [
+                          "648d0d1f8e6bf9bebb2b6d1b"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "Continental",
+                  "description": "Continental Dishes",
+                  "dishes": [
+                    "648d0d1f8e6bf9bebb2b6d1b"
+                  ]
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "menus"
+          ],
+          "summary": "Get All Menus",
+          "operationId": "GetAllMenus",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/menus/648e03bcfc1a7b39ce6c26b6": {
+        "get": {
+          "tags": [
+            "menus"
+          ],
+          "summary": "Get Menu By Id",
+          "operationId": "GetMenuById",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        },
+        "put": {
+          "tags": [
+            "menus"
+          ],
+          "summary": "Update Menu",
+          "operationId": "UpdateMenu",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateMenuRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "Africana",
+                        "description": "Africana Dishes.",
+                        "dishes": [
+                          "648cd753d301e88b34b6fbb4"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "Africana",
+                  "description": "Africana Dishes.",
+                  "dishes": [
+                    "648cd753d301e88b34b6fbb4"
+                  ]
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/menus/648e2f98971d82da02152038": {
+        "delete": {
+          "tags": [
+            "menus"
+          ],
+          "summary": "Delete A Menu",
+          "operationId": "DeleteAMenu",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/dishes": {
+        "post": {
+          "tags": [
+            "dishes"
+          ],
+          "summary": "Create A Dish",
+          "operationId": "CreateADish",
+          "parameters": [],
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "encoding": {},
+                "schema": {
+                  "required": [
+                    "name",
+                    "description",
+                    "price",
+                    "image"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Beans"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Beans with Ponmo"
+                    },
+                    "price": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 1850
+                    },
+                    "image": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            },
+            "required": false
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "dishes"
+          ],
+          "summary": "Get All Dishes",
+          "operationId": "GetAllDishes",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "example": 1
+              }
+            },
+            {
+              "name": "perPage",
+              "in": "query",
+              "description": "",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "example": 25
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/dishes/648cd646d301e88b34b6fbb2": {
+        "patch": {
+          "tags": [
+            "dishes"
+          ],
+          "summary": "Update A Dish",
+          "operationId": "UpdateADish",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateADishRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "Amala",
+                        "description": "Amala with Beans soup together with tomato stew, spinach and Goat meat",
+                        "price": 854
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "Amala",
+                  "description": "Amala with Beans soup together with tomato stew, spinach and Goat meat",
+                  "price": 854
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/dishes/648d0db98e6bf9bebb2b6d1f": {
+        "delete": {
+          "tags": [
+            "dishes"
+          ],
+          "summary": "Delete A Dish",
+          "operationId": "DeleteADish",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/dishes/648cd753d301e88b34b6fbb4": {
+        "get": {
+          "tags": [
+            "dishes"
+          ],
+          "summary": "Get A Dish By Id",
+          "operationId": "GetADishById",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/orders": {
+        "post": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Add Order",
+          "operationId": "AddOrder",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AddOrderRequest"
+                    },
+                    {
+                      "example": {
+                        "dishes": [
+                          "648cd753d301e88b34b6fbb4",
+                          "648d0d1f8e6bf9bebb2b6d1b"
+                        ],
+                        "phoneNumber": "+2348035222858"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "dishes": [
+                    "648cd753d301e88b34b6fbb4",
+                    "648d0d1f8e6bf9bebb2b6d1b"
+                  ],
+                  "phoneNumber": "+2348035222858"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Get All Orders",
+          "operationId": "GetAllOrders",
+          "parameters": [
+            {
+              "name": "status",
+              "in": "query",
+              "description": "",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "Completed"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/orders/64a4d40d015af41342670369": {
+        "put": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Update Order",
+          "operationId": "UpdateOrder",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateOrderRequest"
+                    },
+                    {
+                      "example": {
+                        "dishes": [
+                          "648cd753d301e88b34b6fbb4"
+                        ],
+                        "phoneNumber": "+2348035222858"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "dishes": [
+                    "648cd753d301e88b34b6fbb4"
+                  ],
+                  "phoneNumber": "+2348035222858"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Get Order By Id",
+          "operationId": "GetOrderById",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/orders/user": {
+        "get": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Get Order By UserId",
+          "operationId": "GetOrderByUserId",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/orders/64a4d40d015af41342670369/pay": {
+        "patch": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Pay For An Order",
+          "operationId": "PayForAnOrder",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/PayForAnOrderRequest"
+                    },
+                    {
+                      "example": {
+                        "amount": 1200
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "amount": 1200
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/orders/64a56aa175f25be4bc38bca8": {
+        "delete": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Delete An Order",
+          "operationId": "DeleteAnOrder",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/orders/64a4d40d015af41342670369/confirm": {
+        "patch": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Confirm An Order",
+          "operationId": "ConfirmAnOrder",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/orders/64a4d40d015af41342670369/complete": {
+        "patch": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Complete An Order",
+          "operationId": "CompleteAnOrder",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/orders/64a4d40d015af41342670369/tracks": {
+        "get": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Get Order Tracks",
+          "operationId": "GetOrderTracks",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/tables": {
+        "get": {
+          "tags": [
+            "tables"
+          ],
+          "summary": "Get All Tables",
+          "operationId": "GetAllTables",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "tables"
+          ],
+          "summary": "Add A Table",
+          "operationId": "AddATable",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AddATableRequest"
+                    },
+                    {
+                      "example": {
+                        "number": 107,
+                        "capacity": 1
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "number": 107,
+                  "capacity": 1
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/tables/64a1dabf71ebb124a8942333": {
+        "patch": {
+          "tags": [
+            "tables"
+          ],
+          "summary": "Update A Table",
+          "operationId": "UpdateATable",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateATableRequest"
+                    },
+                    {
+                      "example": {
+                        "number": 102,
+                        "capacity": 8
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "number": 102,
+                  "capacity": 8
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/tables/64a1db6071ebb124a894233a": {
+        "delete": {
+          "tags": [
+            "tables"
+          ],
+          "summary": "Delete A Table",
+          "operationId": "DeleteATable",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "tables"
+          ],
+          "summary": "Get A Table By Id",
+          "operationId": "GetATableById",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/tables/available": {
+        "get": {
+          "tags": [
+            "tables"
+          ],
+          "summary": "Get All Available Tables",
+          "operationId": "GetAllAvailableTables",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/reservations": {
+        "post": {
+          "tags": [
+            "reservations"
+          ],
+          "summary": "Add Reservation",
+          "operationId": "AddReservation",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AddReservationRequest"
+                    },
+                    {
+                      "example": {
+                        "customerPhone": "",
+                        "dateTime": "2023-07-08T16:30",
+                        "duration": 2,
+                        "table": "64a15243dcd9678c6cc5a31d",
+                        "partySize": 4
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "customerPhone": "",
+                  "dateTime": "2023-07-08T16:30",
+                  "duration": 2,
+                  "table": "64a15243dcd9678c6cc5a31d",
+                  "partySize": 4
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "reservations"
+          ],
+          "summary": "Get All Reservations",
+          "operationId": "GetAllReservations",
+          "parameters": [
+            {
+              "name": "status",
+              "in": "query",
+              "description": "",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "Pending"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/reservations/64a47622e0015c7183ad8b46/cancel": {
+        "patch": {
+          "tags": [
+            "reservations"
+          ],
+          "summary": "Cancel A Reservation",
+          "operationId": "CancelAReservation",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/reservations/64a47622e0015c7183ad8b46/time-duration": {
+        "patch": {
+          "tags": [
+            "reservations"
+          ],
+          "summary": "Update Reservation Time-Duration",
+          "operationId": "UpdateReservationTime-Duration",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateReservationTime-DurationRequest"
+                    },
+                    {
+                      "example": {
+                        "dateTime": "2023-07-06T17:30",
+                        "duration": 3
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "dateTime": "2023-07-06T17:30",
+                  "duration": 3
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/reservations/64a47622e0015c7183ad8b46/table-size": {
+        "patch": {
+          "tags": [
+            "reservations"
+          ],
+          "summary": "Update Reservation Table And Size",
+          "operationId": "UpdateReservationTableAndSize",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateReservationTableAndSizeRequest"
+                    },
+                    {
+                      "example": {
+                        "table": "64a1dabf71ebb124a8942333",
+                        "partySize": 8
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "table": "64a1dabf71ebb124a8942333",
+                  "partySize": 8
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/reservations/64a47622e0015c7183ad8b46/confirm": {
+        "patch": {
+          "tags": [
+            "reservations"
+          ],
+          "summary": "Confirm Reservation",
+          "operationId": "ConfirmReservation",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ConfirmReservationRequest"
+                    },
+                    {
+                      "example": {
+                        "cardNumber": "",
+                        "cardPin": 1234,
+                        "cvv": 123
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "cardNumber": "",
+                  "cardPin": 1234,
+                  "cvv": 123
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/reservations/user": {
+        "get": {
+          "tags": [
+            "reservations"
+          ],
+          "summary": "Get All User Reservations",
+          "operationId": "GetAllUserReservations",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employee/auth/login": {
+        "post": {
+          "tags": [
+            "auth"
+          ],
+          "summary": "Login Employee",
+          "operationId": "LoginEmployee",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/LoginEmployeeRequest"
+                    },
+                    {
+                      "example": {
+                        "emailAddress": "ojotobar@gmail.com",
+                        "password": "P@33w0rd"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "emailAddress": "ojotobar@gmail.com",
+                  "password": "P@33w0rd"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/employee/auth/confirm-email": {
+        "post": {
+          "tags": [
+            "auth"
+          ],
+          "summary": "Confirm Employee Email",
+          "operationId": "ConfirmEmployeeEmail",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ConfirmEmployeeEmailRequest"
+                    },
+                    {
+                      "example": {
+                        "token": "c2e3b17547bbddbbb604eca10e682437fca50509aa23afa048307ef9936c53b299a9f658cc09663b0525a421639e669b1d58a4d9b19a139b2a7d46e9a7b246af",
+                        "email": "ojotobar@gmail.com"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "token": "c2e3b17547bbddbbb604eca10e682437fca50509aa23afa048307ef9936c53b299a9f658cc09663b0525a421639e669b1d58a4d9b19a139b2a7d46e9a7b246af",
+                  "email": "ojotobar@gmail.com"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/employee/auth/logout": {
+        "get": {
+          "tags": [
+            "auth"
+          ],
+          "summary": "Logout",
+          "operationId": "Logout",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employee/auth/64a9cec69d29e765667c5fe7/change-password": {
+        "patch": {
+          "tags": [
+            "auth"
+          ],
+          "summary": "Change Employee Password",
+          "operationId": "ChangeEmployeePassword",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ChangeEmployeePasswordRequest"
+                    },
+                    {
+                      "example": {
+                        "newPassword": "P@33w0rd",
+                        "confirmNewPassword": "P@33w0rd"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "newPassword": "P@33w0rd",
+                  "confirmNewPassword": "P@33w0rd"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/employee/auth/reset-password": {
+        "patch": {
+          "tags": [
+            "auth"
+          ],
+          "summary": "Reset Employee Password",
+          "operationId": "ResetEmployeePassword",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResetEmployeePasswordRequest"
+                    },
+                    {
+                      "example": {
+                        "emailAddress": "ojotobar@gmail.com"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "emailAddress": "ojotobar@gmail.com"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/employee/auth/change-password": {
+        "patch": {
+          "tags": [
+            "auth"
+          ],
+          "summary": "Change Employee Forgotten Password",
+          "operationId": "ChangeEmployeeForgottenPassword",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ChangeEmployeeForgottenPasswordRequest"
+                    },
+                    {
+                      "example": {
+                        "newPassword": "P@33w0rd174",
+                        "confirmNewPassword": "P@33w0rd174",
+                        "token": "aa8b0faad563f6653c4e070ec85b1181580b13cfbe76be690aa8cdc05ca44f98af320234b1c8199df8b879c644dda55d6fe4a073da5f505d25ac33ef78e361da"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "newPassword": "P@33w0rd174",
+                  "confirmNewPassword": "P@33w0rd174",
+                  "token": "aa8b0faad563f6653c4e070ec85b1181580b13cfbe76be690aa8cdc05ca44f98af320234b1c8199df8b879c644dda55d6fe4a073da5f505d25ac33ef78e361da"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/profile": {
+        "get": {
+          "tags": [
+            "profile"
+          ],
+          "summary": "Get User Profile",
+          "operationId": "GetUserProfile",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/profile/signup": {
+        "post": {
+          "tags": [
+            "profile"
+          ],
+          "summary": "Register User",
+          "operationId": "RegisterUser",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/RegisterUserRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "tope data",
+                        "email": "tojo@axxess.com",
+                        "password": "P@ssw0rd",
+                        "confirmPassword": "P@ssw0rd"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "tope data",
+                  "email": "tojo@axxess.com",
+                  "password": "P@ssw0rd",
+                  "confirmPassword": "P@ssw0rd"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/profile/64a99186e7af91d2705922c7/update-name": {
+        "patch": {
+          "tags": [
+            "profile"
+          ],
+          "summary": "Update User Names",
+          "operationId": "UpdateUserNames",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateUserNamesRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "Tope Dada"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "Tope Dada"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/auth/facebook/callback": {
+        "get": {
+          "tags": [
+            "OAuth"
+          ],
+          "summary": "Facebook Callback URI",
+          "operationId": "FacebookCallbackURI",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "tags": [
+            "OAuth"
+          ],
+          "summary": "Login User",
+          "operationId": "LoginUser",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/LoginUserRequest"
+                    },
+                    {
+                      "example": {
+                        "emailAddress": "tojo@axxess.com",
+                        "password": "P@33w0rd"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "emailAddress": "tojo@axxess.com",
+                  "password": "P@33w0rd"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/auth/confirm-email": {
+        "patch": {
+          "tags": [
+            "OAuth"
+          ],
+          "summary": "Confirm User Email",
+          "operationId": "ConfirmUserEmail",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ConfirmUserEmailRequest"
+                    },
+                    {
+                      "example": {
+                        "token": "88722e7f701f29bbb64614b78af32b9193929ba95ee5dfbd34f2b58dfa9ce2dcacf25b1e2a54e6f5f0e1b7d7323fb69c3951a82b105dea469bc9db6af022751a"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "token": "88722e7f701f29bbb64614b78af32b9193929ba95ee5dfbd34f2b58dfa9ce2dcacf25b1e2a54e6f5f0e1b7d7323fb69c3951a82b105dea469bc9db6af022751a"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/auth/reset-password": {
+        "patch": {
+          "tags": [
+            "OAuth"
+          ],
+          "summary": "Reset User Password",
+          "operationId": "ResetUserPassword",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResetUserPasswordRequest"
+                    },
+                    {
+                      "example": {
+                        "emailAddress": "tojo@axxess.com"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "emailAddress": "tojo@axxess.com"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/auth/change-password": {
+        "patch": {
+          "tags": [
+            "OAuth"
+          ],
+          "summary": "Change User's Forgotten Password",
+          "operationId": "ChangeUser'sForgottenPassword",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ChangeUsersForgottenPasswordRequest"
+                    },
+                    {
+                      "example": {
+                        "newPassword": "P@33w0rd174",
+                        "confirmNewPassword": "P@33w0rd174",
+                        "token": "848565b956a373934c07995acfd44b8443b00cdeda7aee774e2bc1fc5f5e6994b8c03f6146e88fd3f5c1ed1bd49108f1fb2f4e4fcfba87d4eda4d10a71844c90"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "newPassword": "P@33w0rd174",
+                  "confirmNewPassword": "P@33w0rd174",
+                  "token": "848565b956a373934c07995acfd44b8443b00cdeda7aee774e2bc1fc5f5e6994b8c03f6146e88fd3f5c1ed1bd49108f1fb2f4e4fcfba87d4eda4d10a71844c90"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/auth/64a99186e7af91d2705922c7/change-password": {
+        "patch": {
+          "tags": [
+            "OAuth"
+          ],
+          "summary": "Change User Password",
+          "operationId": "ChangeUserPassword",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ChangeUserPasswordRequest"
+                    },
+                    {
+                      "example": {
+                        "newPassword": "P@33w0rd",
+                        "confirmNewPassword": "P@33w0rd"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "newPassword": "P@33w0rd",
+                  "confirmNewPassword": "P@33w0rd"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/durations": {
+        "post": {
+          "tags": [
+            "duration"
+          ],
+          "summary": "Add Duration",
+          "operationId": "AddDuration",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AddDurationRequest"
+                    },
+                    {
+                      "example": {
+                        "inWords": "11 Hours",
+                        "inFigure": 11
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "inWords": "11 Hours",
+                  "inFigure": 11
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "duration"
+          ],
+          "summary": "Get All Durations",
+          "operationId": "GetAllDurations",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/api/durations/64a00f8df4ff868bac521e27": {
+        "put": {
+          "tags": [
+            "duration"
+          ],
+          "summary": "Update Duration",
+          "operationId": "UpdateDuration",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateDurationRequest"
+                    },
+                    {
+                      "example": {
+                        "inWords": "2 Hours 30 Minutes",
+                        "inFigure": 2.5
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "inWords": "2 Hours 30 Minutes",
+                  "inFigure": 2.5
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/durations/64a01005f4ff868bac521e3d": {
+        "delete": {
+          "tags": [
+            "duration"
+          ],
+          "summary": "Delete A Duration",
+          "operationId": "DeleteADuration",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/addresses": {
+        "post": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Add User Address",
+          "operationId": "AddUserAddress",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AddUserAddressRequest"
+                    },
+                    {
+                      "example": {
+                        "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
+                        "line2": "Tudun Fulani New Site",
+                        "locality": "Bwari-Abuja",
+                        "adminArea": "Federal Capital Territory",
+                        "postalCode": "901774",
+                        "country": "Nigeria"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
+                  "line2": "Tudun Fulani New Site",
+                  "locality": "Bwari-Abuja",
+                  "adminArea": "Federal Capital Territory",
+                  "postalCode": "901774",
+                  "country": "Nigeria"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/addresses/64a5b57baa6c7c191ab3724b": {
+        "get": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Get Address By Id",
+          "operationId": "GetAddressById",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/addresses/64a5b3e8aa6c7c191ab3723d": {
+        "put": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Update An Address",
+          "operationId": "UpdateAnAddress",
+          "parameters": [],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateAnAddressRequest"
+                    },
+                    {
+                      "example": {
+                        "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
+                        "line2": "Tudun Fulani New Site",
+                        "locality": "Bwari-Abuja",
+                        "adminArea": "Federal Capital Territory",
+                        "postalCode": "901774",
+                        "country": "Nigeria"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
+                  "line2": "Tudun Fulani New Site",
+                  "locality": "Bwari-Abuja",
+                  "adminArea": "Federal Capital Territory",
+                  "postalCode": "901774",
+                  "country": "Nigeria"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Delete An Address",
+          "operationId": "DeleteAnAddress",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "CreateANewPositionRequest": {
+          "title": "CreateANewPositionRequest",
+          "required": [
+            "name"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "name": "CEO"
+          }
+        },
+        "CreateNewDepartmentRequest": {
+          "title": "CreateNewDepartmentRequest",
+          "required": [
+            "name"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "name": "Sales"
+          }
+        },
+        "CreateANewEmployeeRequest": {
+          "title": "CreateANewEmployeeRequest",
+          "required": [
+            "firstName",
+            "lastName",
+            "middleName",
+            "emailAddress",
+            "phoneNumber",
+            "employmentDate",
+            "salary",
+            "positionId",
+            "departmentId",
+            "password",
+            "confirmPassword",
+            "roleId"
+          ],
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "middleName": {
+              "type": "string"
+            },
+            "emailAddress": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "employmentDate": {
+              "type": "string"
+            },
+            "salary": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "positionId": {
+              "type": "string"
+            },
+            "departmentId": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "confirmPassword": {
+              "type": "string"
+            },
+            "roleId": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "firstName": "Toba",
+            "lastName": "Ojo",
+            "middleName": "Rufus",
+            "emailAddress": "ojotobar@gmail.com",
+            "phoneNumber": "+2348131016938",
+            "employmentDate": "2023-07-01",
+            "salary": 1000000,
+            "positionId": "64a9cd92aacb2c3daf46778f",
+            "departmentId": "648a80a600105844a1c6a8ca",
+            "password": "P@33w0rd",
+            "confirmPassword": "P@33w0rd",
+            "roleId": "648a7fe800105844a1c6a8c7"
+          }
+        },
+        "UpdateEmployeeNamesRequest": {
+          "title": "UpdateEmployeeNamesRequest",
+          "required": [
+            "firstName",
+            "lastName",
+            "middleName"
+          ],
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "middleName": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "firstName": "Oloruntomiloba",
+            "lastName": "Ojo",
+            "middleName": ""
+          }
+        },
+        "UpdateEmployeeSalaryRequest": {
+          "title": "UpdateEmployeeSalaryRequest",
+          "required": [
+            "salary"
+          ],
+          "type": "object",
+          "properties": {
+            "salary": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "salary": 1200000
+          }
+        },
+        "UpdateEmploymentDateRequest": {
+          "title": "UpdateEmploymentDateRequest",
+          "required": [
+            "employmentDate"
+          ],
+          "type": "object",
+          "properties": {
+            "employmentDate": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "employmentDate": "2023-06-30"
+          }
+        },
+        "CreateNewRoleRequest": {
+          "title": "CreateNewRoleRequest",
+          "required": [
+            "name",
+            "role"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "role": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "name": "User",
+            "role": 2004
+          }
+        },
+        "AddMenuRequest": {
+          "title": "AddMenuRequest",
+          "required": [
+            "name",
+            "description",
+            "dishes"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "dishes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": ""
+            }
+          },
+          "example": {
+            "name": "Continental",
+            "description": "Continental Dishes",
+            "dishes": [
+              "648d0d1f8e6bf9bebb2b6d1b"
+            ]
+          }
+        },
+        "UpdateMenuRequest": {
+          "title": "UpdateMenuRequest",
+          "required": [
+            "name",
+            "description",
+            "dishes"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "dishes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": ""
+            }
+          },
+          "example": {
+            "name": "Africana",
+            "description": "Africana Dishes.",
+            "dishes": [
+              "648cd753d301e88b34b6fbb4"
+            ]
+          }
+        },
+        "UpdateADishRequest": {
+          "title": "UpdateADishRequest",
+          "required": [
+            "name",
+            "description",
+            "price"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "price": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "name": "Amala",
+            "description": "Amala with Beans soup together with tomato stew, spinach and Goat meat",
+            "price": 854
+          }
+        },
+        "AddOrderRequest": {
+          "title": "AddOrderRequest",
+          "required": [
+            "dishes",
+            "phoneNumber"
+          ],
+          "type": "object",
+          "properties": {
+            "dishes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": ""
+            },
+            "phoneNumber": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "dishes": [
+              "648cd753d301e88b34b6fbb4",
+              "648d0d1f8e6bf9bebb2b6d1b"
+            ],
+            "phoneNumber": "+2348035222858"
+          }
+        },
+        "UpdateOrderRequest": {
+          "title": "UpdateOrderRequest",
+          "required": [
+            "dishes",
+            "phoneNumber"
+          ],
+          "type": "object",
+          "properties": {
+            "dishes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": ""
+            },
+            "phoneNumber": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "dishes": [
+              "648cd753d301e88b34b6fbb4"
+            ],
+            "phoneNumber": "+2348035222858"
+          }
+        },
+        "PayForAnOrderRequest": {
+          "title": "PayForAnOrderRequest",
+          "required": [
+            "amount"
+          ],
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "amount": 1200
+          }
+        },
+        "AddATableRequest": {
+          "title": "AddATableRequest",
+          "required": [
+            "number",
+            "capacity"
+          ],
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "capacity": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "number": 107,
+            "capacity": 1
+          }
+        },
+        "UpdateATableRequest": {
+          "title": "UpdateATableRequest",
+          "required": [
+            "number",
+            "capacity"
+          ],
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "capacity": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "number": 102,
+            "capacity": 8
+          }
+        },
+        "AddReservationRequest": {
+          "title": "AddReservationRequest",
+          "required": [
+            "customerPhone",
+            "dateTime",
+            "duration",
+            "table",
+            "partySize"
+          ],
+          "type": "object",
+          "properties": {
+            "customerPhone": {
+              "type": "string"
+            },
+            "dateTime": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "table": {
+              "type": "string"
+            },
+            "partySize": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "customerPhone": "",
+            "dateTime": "2023-07-08T16:30",
+            "duration": 2,
+            "table": "64a15243dcd9678c6cc5a31d",
+            "partySize": 4
+          }
+        },
+        "UpdateReservationTime-DurationRequest": {
+          "title": "UpdateReservationTime-DurationRequest",
+          "required": [
+            "dateTime",
+            "duration"
+          ],
+          "type": "object",
+          "properties": {
+            "dateTime": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "dateTime": "2023-07-06T17:30",
+            "duration": 3
+          }
+        },
+        "UpdateReservationTableAndSizeRequest": {
+          "title": "UpdateReservationTableAndSizeRequest",
+          "required": [
+            "table",
+            "partySize"
+          ],
+          "type": "object",
+          "properties": {
+            "table": {
+              "type": "string"
+            },
+            "partySize": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "table": "64a1dabf71ebb124a8942333",
+            "partySize": 8
+          }
+        },
+        "ConfirmReservationRequest": {
+          "title": "ConfirmReservationRequest",
+          "required": [
+            "cardNumber",
+            "cardPin",
+            "cvv"
+          ],
+          "type": "object",
+          "properties": {
+            "cardNumber": {
+              "type": "string"
+            },
+            "cardPin": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "cvv": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "cardNumber": "",
+            "cardPin": 1234,
+            "cvv": 123
+          }
+        },
+        "LoginEmployeeRequest": {
+          "title": "LoginEmployeeRequest",
+          "required": [
+            "emailAddress",
+            "password"
+          ],
+          "type": "object",
+          "properties": {
+            "emailAddress": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "emailAddress": "ojotobar@gmail.com",
+            "password": "P@33w0rd"
+          }
+        },
+        "ConfirmEmployeeEmailRequest": {
+          "title": "ConfirmEmployeeEmailRequest",
+          "required": [
+            "token",
+            "email"
+          ],
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "token": "c2e3b17547bbddbbb604eca10e682437fca50509aa23afa048307ef9936c53b299a9f658cc09663b0525a421639e669b1d58a4d9b19a139b2a7d46e9a7b246af",
+            "email": "ojotobar@gmail.com"
+          }
+        },
+        "ChangeEmployeePasswordRequest": {
+          "title": "ChangeEmployeePasswordRequest",
+          "required": [
+            "newPassword",
+            "confirmNewPassword"
+          ],
+          "type": "object",
+          "properties": {
+            "newPassword": {
+              "type": "string"
+            },
+            "confirmNewPassword": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "newPassword": "P@33w0rd",
+            "confirmNewPassword": "P@33w0rd"
+          }
+        },
+        "ResetEmployeePasswordRequest": {
+          "title": "ResetEmployeePasswordRequest",
+          "required": [
+            "emailAddress"
+          ],
+          "type": "object",
+          "properties": {
+            "emailAddress": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "emailAddress": "ojotobar@gmail.com"
+          }
+        },
+        "ChangeEmployeeForgottenPasswordRequest": {
+          "title": "ChangeEmployeeForgottenPasswordRequest",
+          "required": [
+            "newPassword",
+            "confirmNewPassword",
+            "token"
+          ],
+          "type": "object",
+          "properties": {
+            "newPassword": {
+              "type": "string"
+            },
+            "confirmNewPassword": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "newPassword": "P@33w0rd174",
+            "confirmNewPassword": "P@33w0rd174",
+            "token": "aa8b0faad563f6653c4e070ec85b1181580b13cfbe76be690aa8cdc05ca44f98af320234b1c8199df8b879c644dda55d6fe4a073da5f505d25ac33ef78e361da"
+          }
+        },
+        "RegisterUserRequest": {
+          "title": "RegisterUserRequest",
+          "required": [
+            "name",
+            "email",
+            "password",
+            "confirmPassword"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "confirmPassword": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "name": "tope data",
+            "email": "tojo@axxess.com",
+            "password": "P@ssw0rd",
+            "confirmPassword": "P@ssw0rd"
+          }
+        },
+        "UpdateUserNamesRequest": {
+          "title": "UpdateUserNamesRequest",
+          "required": [
+            "name"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "name": "Tope Dada"
+          }
+        },
+        "LoginUserRequest": {
+          "title": "LoginUserRequest",
+          "required": [
+            "emailAddress",
+            "password"
+          ],
+          "type": "object",
+          "properties": {
+            "emailAddress": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "emailAddress": "tojo@axxess.com",
+            "password": "P@33w0rd"
+          }
+        },
+        "ConfirmUserEmailRequest": {
+          "title": "ConfirmUserEmailRequest",
+          "required": [
+            "token"
+          ],
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "token": "88722e7f701f29bbb64614b78af32b9193929ba95ee5dfbd34f2b58dfa9ce2dcacf25b1e2a54e6f5f0e1b7d7323fb69c3951a82b105dea469bc9db6af022751a"
+          }
+        },
+        "ResetUserPasswordRequest": {
+          "title": "ResetUserPasswordRequest",
+          "required": [
+            "emailAddress"
+          ],
+          "type": "object",
+          "properties": {
+            "emailAddress": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "emailAddress": "tojo@axxess.com"
+          }
+        },
+        "ChangeUsersForgottenPasswordRequest": {
+          "title": "ChangeUsersForgottenPasswordRequest",
+          "required": [
+            "newPassword",
+            "confirmNewPassword",
+            "token"
+          ],
+          "type": "object",
+          "properties": {
+            "newPassword": {
+              "type": "string"
+            },
+            "confirmNewPassword": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "newPassword": "P@33w0rd174",
+            "confirmNewPassword": "P@33w0rd174",
+            "token": "848565b956a373934c07995acfd44b8443b00cdeda7aee774e2bc1fc5f5e6994b8c03f6146e88fd3f5c1ed1bd49108f1fb2f4e4fcfba87d4eda4d10a71844c90"
+          }
+        },
+        "ChangeUserPasswordRequest": {
+          "title": "ChangeUserPasswordRequest",
+          "required": [
+            "newPassword",
+            "confirmNewPassword"
+          ],
+          "type": "object",
+          "properties": {
+            "newPassword": {
+              "type": "string"
+            },
+            "confirmNewPassword": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "newPassword": "P@33w0rd",
+            "confirmNewPassword": "P@33w0rd"
+          }
+        },
+        "AddDurationRequest": {
+          "title": "AddDurationRequest",
+          "required": [
+            "inWords",
+            "inFigure"
+          ],
+          "type": "object",
+          "properties": {
+            "inWords": {
+              "type": "string"
+            },
+            "inFigure": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "example": {
+            "inWords": "11 Hours",
+            "inFigure": 11
+          }
+        },
+        "UpdateDurationRequest": {
+          "title": "UpdateDurationRequest",
+          "required": [
+            "inWords",
+            "inFigure"
+          ],
+          "type": "object",
+          "properties": {
+            "inWords": {
+              "type": "string"
+            },
+            "inFigure": {
+              "type": "number"
+            }
+          },
+          "example": {
+            "inWords": "2 Hours 30 Minutes",
+            "inFigure": 2.5
+          }
+        },
+        "AddUserAddressRequest": {
+          "title": "AddUserAddressRequest",
+          "required": [
+            "line1",
+            "line2",
+            "locality",
+            "adminArea",
+            "postalCode",
+            "country"
+          ],
+          "type": "object",
+          "properties": {
+            "line1": {
+              "type": "string"
+            },
+            "line2": {
+              "type": "string"
+            },
+            "locality": {
+              "type": "string"
+            },
+            "adminArea": {
+              "type": "string"
+            },
+            "postalCode": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
+            "line2": "Tudun Fulani New Site",
+            "locality": "Bwari-Abuja",
+            "adminArea": "Federal Capital Territory",
+            "postalCode": "901774",
+            "country": "Nigeria"
+          }
+        },
+        "UpdateAnAddressRequest": {
+          "title": "UpdateAnAddressRequest",
+          "required": [
+            "line1",
+            "line2",
+            "locality",
+            "adminArea",
+            "postalCode",
+            "country"
+          ],
+          "type": "object",
+          "properties": {
+            "line1": {
+              "type": "string"
+            },
+            "line2": {
+              "type": "string"
+            },
+            "locality": {
+              "type": "string"
+            },
+            "adminArea": {
+              "type": "string"
+            },
+            "postalCode": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
+            "line2": "Tudun Fulani New Site",
+            "locality": "Bwari-Abuja",
+            "adminArea": "Federal Capital Territory",
+            "postalCode": "901774",
+            "country": "Nigeria"
+          }
+        }
+      },
+      "securitySchemes": {
+        "bearer": {
+          "type": "http",
+          "scheme": "bearer"
+        }
+      }
+    },
+    "security": [],
+    "tags": [
+      {
+        "name": "positions"
+      },
+      {
+        "name": "departments"
+      },
+      {
+        "name": "employees"
+      },
+      {
+        "name": "roles"
+      },
+      {
+        "name": "menus"
+      },
+      {
+        "name": "dishes"
+      },
+      {
+        "name": "orders"
+      },
+      {
+        "name": "tables"
+      },
+      {
+        "name": "reservations"
+      },
+      {
+        "name": "auth"
+      },
+      {
+        "name": "profile"
+      },
+      {
+        "name": "OAuth"
+      },
+      {
+        "name": "duration"
+      },
+      {
+        "name": "address"
+      }
+    ]
+  }

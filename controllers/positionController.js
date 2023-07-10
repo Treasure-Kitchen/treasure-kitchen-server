@@ -1,4 +1,3 @@
-const { deleteOne } = require('../models/Employee');
 const Position = require('../models/Position');
 
 const create = async (req, res) => {
@@ -40,7 +39,7 @@ const remove = async (req, res) => {
         if(!position){
             res.status(404).json({ 'message': `No position with Id: ${req.params.id}` });
         } else {
-            await deleteOne({ _id: req.params.id });
+            await Position.deleteOne({ _id: req.params.id });
             res.status(200).json({ 'message': 'Position successfully deleted.' });
         }
     } catch (error) {

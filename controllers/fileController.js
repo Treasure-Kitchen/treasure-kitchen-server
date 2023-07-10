@@ -34,7 +34,7 @@ const updateDishImage = async (req, res) => {
     const file = req.file;
     const fileExt = (file.mimetype).split('/')[1];
     const fileSize = file.size;
-    if(fileSize > MAX_FILE_SIZE) return res.status(400).json({message: 'Maximum file size is 800 kilo bytes.'});
+    if(fileSize > MAX_FILE_SIZE) return res.status(400).json({message: 'Maximum file size is 800kb.'});
     if(!allowedFileExt.includes(fileExt)) return res.status(400).json({message: 'Invalid file type. Must either be a .png, .jpg or .jpeg file.'});
 
     try {

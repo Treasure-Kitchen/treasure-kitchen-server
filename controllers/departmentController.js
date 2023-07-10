@@ -1,4 +1,3 @@
-const { deleteOne } = require('../models/Employee');
 const Department = require('../models/Department');
 
 const create = async (req, res) => {
@@ -40,7 +39,7 @@ const remove = async (req, res) => {
         if(!department){
             res.status(404).json({ 'message': `No Department with Id: ${req.params.id}` });
         } else {
-            await deleteOne({ _id: req.params.id });
+            await Department.deleteOne({ _id: req.params.id });
             res.status(200).json({ 'message': 'Department successfully deleted.' });
         }
     } catch (error) {

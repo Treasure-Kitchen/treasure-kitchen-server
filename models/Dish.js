@@ -6,7 +6,8 @@ const dishSchema = new Schema({
     description: { type: String, required: true },
     price: { type: Number, required: true },
     photo: { type: String, default: '' },
-    publicId: { type: String, default: '' }
+    publicId: { type: String, default: '' },
+    orders: Array
 });
 
 module.exports = mongoose.model('Dish', dishSchema);

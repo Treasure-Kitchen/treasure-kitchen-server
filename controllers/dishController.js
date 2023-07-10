@@ -118,6 +118,7 @@ const remove = async (req, res) => {
 
     try {
         const result = await Dish.findOneAndDelete({ _id: id });
+        cloudinary.uploader.destroy(result.publicId, (result) => { console.log(result) });
         if(!result) return res.status(404).json({message: `No dish found with Id: ${id}`});
         res.status(200).json({message:'Dish successfully deleted'});
     } catch (error) {

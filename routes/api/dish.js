@@ -27,7 +27,7 @@ router.route('/:id')
     .patch(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), dishController.update)
     .delete(verifyJWT, verifyRoles(ROLES.SuperAdmin, ROLES.Admin), dishController.remove);
 
-router.route(':id/update-image')
-    .post(verifyJWT, verifyRoles(ROLES.Admin, ROLES.SuperAdmin), fileController.updateDishImage);
+router.route('/:id/update-image')
+    .post(verifyJWT, verifyRoles(ROLES.Admin, ROLES.SuperAdmin), upload.single('image'), fileController.updateDishImage);
 
 module.exports = router;

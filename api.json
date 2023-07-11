@@ -28,7 +28,7 @@
           "operationId": "CreateANewPosition",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "The name field is the position name",
             "content": {
               "application/json": {
                 "schema": {
@@ -38,13 +38,13 @@
                     },
                     {
                       "example": {
-                        "name": "CEO"
+                        "name": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "name": "CEO"
+                  "name": "string"
                 }
               }
             },
@@ -52,7 +52,23 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -72,7 +88,23 @@
           "parameters": [],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -93,7 +125,7 @@
           "operationId": "CreateNewDepartment",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Name: Department's given name",
             "content": {
               "application/json": {
                 "schema": {
@@ -103,13 +135,13 @@
                     },
                     {
                       "example": {
-                        "name": "Sales"
+                        "name": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "name": "Sales"
+                  "name": "string"
                 }
               }
             },
@@ -117,7 +149,23 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -137,7 +185,23 @@
           "parameters": [],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -153,7 +217,7 @@
           "operationId": "CreateANewEmployee",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "This endpoint creates a new Employee profile.",
             "content": {
               "application/json": {
                 "schema": {
@@ -163,35 +227,35 @@
                     },
                     {
                       "example": {
-                        "firstName": "Toba",
-                        "lastName": "Ojo",
-                        "middleName": "Rufus",
-                        "emailAddress": "ojotobar@gmail.com",
-                        "phoneNumber": "+2348131016938",
+                        "firstName": "string",
+                        "lastName": "string",
+                        "middleName": "string",
+                        "emailAddress": "example@email.com",
+                        "phoneNumber": "+1234567890",
                         "employmentDate": "2023-07-01",
-                        "salary": 1000000,
+                        "salary": 100000,
                         "positionId": "64a9cd92aacb2c3daf46778f",
-                        "departmentId": "648a80a600105844a1c6a8ca",
-                        "password": "P@33w0rd",
-                        "confirmPassword": "P@33w0rd",
-                        "roleId": "648a7fe800105844a1c6a8c7"
+                        "departmentId": "64a9cd92aacb2c3daf46778f",
+                        "password": "string",
+                        "confirmPassword": "string",
+                        "roleId": "64a9cd92aacb2c3daf46778f"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "firstName": "Toba",
-                  "lastName": "Ojo",
-                  "middleName": "Rufus",
-                  "emailAddress": "ojotobar@gmail.com",
-                  "phoneNumber": "+2348131016938",
+                  "firstName": "string",
+                  "lastName": "string",
+                  "middleName": "string",
+                  "emailAddress": "example@email.com",
+                  "phoneNumber": "+1234567890",
                   "employmentDate": "2023-07-01",
-                  "salary": 1000000,
+                  "salary": 100000,
                   "positionId": "64a9cd92aacb2c3daf46778f",
-                  "departmentId": "648a80a600105844a1c6a8ca",
-                  "password": "P@33w0rd",
-                  "confirmPassword": "P@33w0rd",
-                  "roleId": "648a7fe800105844a1c6a8c7"
+                  "departmentId": "64a9cd92aacb2c3daf46778f",
+                  "password": "string",
+                  "confirmPassword": "string",
+                  "roleId": "64a9cd92aacb2c3daf46778f"
                 }
               }
             },
@@ -199,7 +263,31 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "409": {
+              "description": "Conflict",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -240,13 +328,29 @@
               "schema": {
                 "type": "integer",
                 "format": "int32",
-                "example": 20
+                "example": 10
               }
             }
           ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -258,16 +362,23 @@
           ]
         }
       },
-      "/api/employees/64a9cec69d29e765667c5fe7/update-name": {
+      "/api/employees/{id}/update-name": {
         "patch": {
           "tags": [
             "employees"
           ],
           "summary": "Update Employee Names",
           "operationId": "UpdateEmployeeNames",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "End point ot update Employees' First, Middle, and Last names",
             "content": {
               "application/json": {
                 "schema": {
@@ -277,17 +388,17 @@
                     },
                     {
                       "example": {
-                        "firstName": "Oloruntomiloba",
-                        "lastName": "Ojo",
-                        "middleName": ""
+                        "firstName": "string",
+                        "lastName": "string",
+                        "middleName": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "firstName": "Oloruntomiloba",
-                  "lastName": "Ojo",
-                  "middleName": ""
+                  "firstName": "string",
+                  "lastName": "string",
+                  "middleName": "string"
                 }
               }
             },
@@ -295,7 +406,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -307,16 +438,23 @@
           ]
         }
       },
-      "/api/employees/64a9cec69d29e765667c5fe7/update-salary": {
+      "/api/employees/{id}/update-salary": {
         "patch": {
           "tags": [
             "employees"
           ],
           "summary": "Update Employee Salary",
           "operationId": "UpdateEmployeeSalary",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "End point to update Employees' salary",
             "content": {
               "application/json": {
                 "schema": {
@@ -326,13 +464,13 @@
                     },
                     {
                       "example": {
-                        "salary": 1200000
+                        "salary": 100000
                       }
                     }
                   ]
                 },
                 "example": {
-                  "salary": 1200000
+                  "salary": 100000
                 }
               }
             },
@@ -340,7 +478,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -352,17 +510,50 @@
           ]
         }
       },
-      "/api/employees/64a9cec69d29e765667c5fe7/update-role/648a7fe800105844a1c6a8c7": {
+      "/api/employees/{id}/update-role/{roleId}": {
         "patch": {
           "tags": [
             "employees"
           ],
           "summary": "Update Employee Role",
           "operationId": "UpdateEmployeeRole",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "roleId",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -374,17 +565,44 @@
           ]
         }
       },
-      "/api/employees/64a9cec69d29e765667c5fe7/terminate": {
+      "/api/employees/{id}/terminate": {
         "patch": {
           "tags": [
             "employees"
           ],
           "summary": "Terminate Employee",
           "operationId": "TerminateEmployee",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -396,17 +614,50 @@
           ]
         }
       },
-      "/api/employees/64a9cec69d29e765667c5fe7/reinstate/648a7fe800105844a1c6a8c7": {
+      "/api/employees/{id}/reinstate/{roleId}": {
         "patch": {
           "tags": [
             "employees"
           ],
           "summary": "Reinstate Employee",
           "operationId": "ReinstateEmployee",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "roleId",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -418,17 +669,50 @@
           ]
         }
       },
-      "/api/employees/64a9cec69d29e765667c5fe7/update-position/64a9cd92aacb2c3daf46778f": {
+      "/api/employees/{id}/update-position/{positionId}": {
         "patch": {
           "tags": [
             "employees"
           ],
           "summary": "Update Employee Position",
           "operationId": "UpdateEmployeePosition",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "positionId",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -440,17 +724,50 @@
           ]
         }
       },
-      "/api/employees/64a9cec69d29e765667c5fe7/update-department/648a80a600105844a1c6a8ca": {
+      "/api/employees/{id}/update-department/{departmentId}": {
         "patch": {
           "tags": [
             "employees"
           ],
           "summary": "Update Employee Department",
           "operationId": "UpdateEmployeeDepartment",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "departmentId",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -462,14 +779,21 @@
           ]
         }
       },
-      "/api/employees/64a9cec69d29e765667c5fe7/update-employment-date": {
+      "/api/employees/{id}/update-employment-date": {
         "patch": {
           "tags": [
             "employees"
           ],
           "summary": "Update Employment Date",
           "operationId": "UpdateEmploymentDate",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
             "description": "",
             "content": {
@@ -495,7 +819,96 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "api/employees/{id}/upload-photo": {
+        "post": {
+          "tags": [
+            "employees"
+          ],
+          "summary": "Upload Employee Photo",
+          "operationId": "UploadEmployeePhoto",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "encoding": {},
+                "schema": {
+                  "required": [
+                    "image"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "image": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            },
+            "required": false
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -516,7 +929,7 @@
           "operationId": "CreateNewRole",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to create a new role",
             "content": {
               "application/json": {
                 "schema": {
@@ -526,15 +939,15 @@
                     },
                     {
                       "example": {
-                        "name": "User",
-                        "role": 2004
+                        "name": "string",
+                        "role": 2005
                       }
                     }
                   ]
                 },
                 "example": {
-                  "name": "User",
-                  "role": 2004
+                  "name": "string",
+                  "role": 2005
                 }
               }
             },
@@ -542,7 +955,23 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -557,12 +986,28 @@
           "tags": [
             "roles"
           ],
-          "summary": "Get All List Of Roles",
+          "summary": "Get A List Of All Roles",
           "operationId": "GetAllListOfRoles",
           "parameters": [],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -578,7 +1023,7 @@
           "operationId": "AddMenu",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to add a Menu. The dishes array is the array of all the dish ids to be added",
             "content": {
               "application/json": {
                 "schema": {
@@ -588,8 +1033,8 @@
                     },
                     {
                       "example": {
-                        "name": "Continental",
-                        "description": "Continental Dishes",
+                        "name": "string",
+                        "description": "string",
                         "dishes": [
                           "648d0d1f8e6bf9bebb2b6d1b"
                         ]
@@ -598,8 +1043,8 @@
                   ]
                 },
                 "example": {
-                  "name": "Continental",
-                  "description": "Continental Dishes",
+                  "name": "string",
+                  "description": "string",
                   "dishes": [
                     "648d0d1f8e6bf9bebb2b6d1b"
                   ]
@@ -610,7 +1055,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -630,24 +1095,67 @@
           "parameters": [],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
           "deprecated": false
         }
       },
-      "/api/menus/648e03bcfc1a7b39ce6c26b6": {
+      "/api/menus/{id}": {
         "get": {
           "tags": [
             "menus"
           ],
           "summary": "Get Menu By Id",
           "operationId": "GetMenuById",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -659,9 +1167,16 @@
           ],
           "summary": "Update Menu",
           "operationId": "UpdateMenu",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to update a Menu. The dishes array is the array of all the dish ids to be added",
             "content": {
               "application/json": {
                 "schema": {
@@ -671,8 +1186,8 @@
                     },
                     {
                       "example": {
-                        "name": "Africana",
-                        "description": "Africana Dishes.",
+                        "name": "string",
+                        "description": "string",
                         "dishes": [
                           "648cd753d301e88b34b6fbb4"
                         ]
@@ -681,8 +1196,8 @@
                   ]
                 },
                 "example": {
-                  "name": "Africana",
-                  "description": "Africana Dishes.",
+                  "name": "string",
+                  "description": "string",
                   "dishes": [
                     "648cd753d301e88b34b6fbb4"
                   ]
@@ -693,7 +1208,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -703,19 +1238,44 @@
               "bearer": []
             }
           ]
-        }
-      },
-      "/api/menus/648e2f98971d82da02152038": {
+        },
         "delete": {
           "tags": [
             "menus"
           ],
           "summary": "Delete A Menu",
           "operationId": "DeleteAMenu",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -750,16 +1310,16 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "example": "Beans"
+                      "example": ""
                     },
                     "description": {
                       "type": "string",
-                      "example": "Beans with Ponmo"
+                      "example": ""
                     },
                     "price": {
                       "type": "integer",
                       "format": "int32",
-                      "example": 1850
+                      "example": 0
                     },
                     "image": {
                       "type": "string",
@@ -773,7 +1333,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -814,13 +1394,29 @@
               "schema": {
                 "type": "integer",
                 "format": "int32",
-                "example": 25
+                "example": 10
               }
             }
           ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -832,16 +1428,65 @@
           ]
         }
       },
-      "/api/dishes/648cd646d301e88b34b6fbb2": {
+      "api/dishes/{id}": {
+        "get": {
+          "tags": [
+            "dishes"
+          ],
+          "summary": "Get A Dish By Id",
+          "operationId": "GetADishById",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false
+        },
         "patch": {
           "tags": [
             "dishes"
           ],
           "summary": "Update A Dish",
           "operationId": "UpdateADish",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to update a dish",
             "content": {
               "application/json": {
                 "schema": {
@@ -851,17 +1496,17 @@
                     },
                     {
                       "example": {
-                        "name": "Amala",
-                        "description": "Amala with Beans soup together with tomato stew, spinach and Goat meat",
-                        "price": 854
+                        "name": "string",
+                        "description": "string",
+                        "price": 0
                       }
                     }
                   ]
                 },
                 "example": {
-                  "name": "Amala",
-                  "description": "Amala with Beans soup together with tomato stew, spinach and Goat meat",
-                  "price": 854
+                  "name": "string",
+                  "description": "string",
+                  "price": 0
                 }
               }
             },
@@ -869,7 +1514,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -879,19 +1544,44 @@
               "bearer": []
             }
           ]
-        }
-      },
-      "/api/dishes/648d0db98e6bf9bebb2b6d1f": {
+        },
         "delete": {
           "tags": [
             "dishes"
           ],
           "summary": "Delete A Dish",
           "operationId": "DeleteADish",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -903,21 +1593,73 @@
           ]
         }
       },
-      "/api/dishes/648cd753d301e88b34b6fbb4": {
-        "get": {
+      "api/dishes/{id}/upload-photo": {
+        "post": {
           "tags": [
             "dishes"
           ],
-          "summary": "Get A Dish By Id",
-          "operationId": "GetADishById",
-          "parameters": [],
+          "summary": "Update Dish Photo",
+          "operationId": "UpdateDishPhoto",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "encoding": {},
+                "schema": {
+                  "required": [
+                    "image"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "image": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            },
+            "required": false
+          },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
-          "deprecated": false
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
         }
       },
       "/api/orders": {
@@ -929,7 +1671,7 @@
           "operationId": "AddOrder",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to create an order",
             "content": {
               "application/json": {
                 "schema": {
@@ -940,20 +1682,18 @@
                     {
                       "example": {
                         "dishes": [
-                          "648cd753d301e88b34b6fbb4",
-                          "648d0d1f8e6bf9bebb2b6d1b"
+                          "648cd753d301e88b34b6fbb4"
                         ],
-                        "phoneNumber": "+2348035222858"
+                        "phoneNumber": "+1234567890"
                       }
                     }
                   ]
                 },
                 "example": {
                   "dishes": [
-                    "648cd753d301e88b34b6fbb4",
-                    "648d0d1f8e6bf9bebb2b6d1b"
+                    "648cd753d301e88b34b6fbb4"
                   ],
-                  "phoneNumber": "+2348035222858"
+                  "phoneNumber": "+1234567890"
                 }
               }
             },
@@ -961,7 +1701,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -980,21 +1740,99 @@
           "operationId": "GetAllOrders",
           "parameters": [
             {
-              "name": "status",
+              "name": "page",
               "in": "query",
               "description": "",
               "required": true,
               "style": "form",
               "explode": true,
               "schema": {
+                "type": "integer",
+                "format": "int32",
+                "example": 1
+              }
+            },
+            {
+              "name": "perPage",
+              "in": "query",
+              "description": "",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "example": 10
+              }
+            },
+            {
+              "name": "status",
+              "in": "query",
+              "description": "",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
                 "type": "string",
-                "example": "Completed"
+                "example": "Pending"
+              }
+            },
+            {
+              "name": "payStatus",
+              "in": "query",
+              "description": "",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "NotPaid"
+              }
+            },
+            {
+              "name": "minDate",
+              "in": "query",
+              "description": "Minimum datetime",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "1970-01-01"
+              }
+            },
+            {
+              "name": "maxDate",
+              "in": "query",
+              "description": "Maximum datetime",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "9999-12-31"
               }
             }
           ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1006,16 +1844,23 @@
           ]
         }
       },
-      "/api/orders/64a4d40d015af41342670369": {
+      "/api/orders/{id}": {
         "put": {
           "tags": [
             "orders"
           ],
           "summary": "Update Order",
           "operationId": "UpdateOrder",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to update an order. Array of dish ids and user phone number",
             "content": {
               "application/json": {
                 "schema": {
@@ -1028,7 +1873,7 @@
                         "dishes": [
                           "648cd753d301e88b34b6fbb4"
                         ],
-                        "phoneNumber": "+2348035222858"
+                        "phoneNumber": "+1234567890"
                       }
                     }
                   ]
@@ -1037,7 +1882,7 @@
                   "dishes": [
                     "648cd753d301e88b34b6fbb4"
                   ],
-                  "phoneNumber": "+2348035222858"
+                  "phoneNumber": "+1234567890"
                 }
               }
             },
@@ -1045,7 +1890,23 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1062,10 +1923,80 @@
           ],
           "summary": "Get Order By Id",
           "operationId": "GetOrderById",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "tags": [
+            "orders"
+          ],
+          "summary": "Delete An Order",
+          "operationId": "DeleteAnOrder",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1084,10 +2015,101 @@
           ],
           "summary": "Get Order By UserId",
           "operationId": "GetOrderByUserId",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "example": 1
+              }
+            },
+            {
+              "name": "perPage",
+              "in": "query",
+              "description": "",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "example": 10
+              }
+            },
+            {
+              "name": "status",
+              "in": "query",
+              "description": "",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "Pending"
+              }
+            },
+            {
+              "name": "payStatus",
+              "in": "query",
+              "description": "",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "NotPaid"
+              }
+            },
+            {
+              "name": "minDate",
+              "in": "query",
+              "description": "Minimum datetime",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "1970-01-01"
+              }
+            },
+            {
+              "name": "maxDate",
+              "in": "query",
+              "description": "Maximum datetime",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "9999-12-31"
+              }
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1099,16 +2121,23 @@
           ]
         }
       },
-      "/api/orders/64a4d40d015af41342670369/pay": {
+      "/api/orders/{id}/pay": {
         "patch": {
           "tags": [
             "orders"
           ],
           "summary": "Pay For An Order",
           "operationId": "PayForAnOrder",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to pay and confirm an order.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1118,13 +2147,13 @@
                     },
                     {
                       "example": {
-                        "amount": 1200
+                        "amount": 100
                       }
                     }
                   ]
                 },
                 "example": {
-                  "amount": 1200
+                  "amount": 100
                 }
               }
             },
@@ -1132,7 +2161,23 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1144,39 +2189,44 @@
           ]
         }
       },
-      "/api/orders/64a56aa175f25be4bc38bca8": {
-        "delete": {
-          "tags": [
-            "orders"
-          ],
-          "summary": "Delete An Order",
-          "operationId": "DeleteAnOrder",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "",
-              "headers": {}
-            }
-          },
-          "deprecated": false,
-          "security": [
-            {
-              "bearer": []
-            }
-          ]
-        }
-      },
-      "/api/orders/64a4d40d015af41342670369/confirm": {
+      "/api/orders/{id}/confirm": {
         "patch": {
           "tags": [
             "orders"
           ],
           "summary": "Confirm An Order",
           "operationId": "ConfirmAnOrder",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1188,17 +2238,44 @@
           ]
         }
       },
-      "/api/orders/64a4d40d015af41342670369/complete": {
+      "/api/orders/{id}/complete": {
         "patch": {
           "tags": [
             "orders"
           ],
           "summary": "Complete An Order",
           "operationId": "CompleteAnOrder",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1210,17 +2287,40 @@
           ]
         }
       },
-      "/api/orders/64a4d40d015af41342670369/tracks": {
+      "/api/orders/{id}/tracks": {
         "get": {
           "tags": [
             "orders"
           ],
           "summary": "Get Order Tracks",
           "operationId": "GetOrderTracks",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1242,7 +2342,23 @@
           "parameters": [],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1261,7 +2377,7 @@
           "operationId": "AddATable",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to add a table. The number field is the table identifier, while the capacity field the number of occupants.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1271,15 +2387,15 @@
                     },
                     {
                       "example": {
-                        "number": 107,
-                        "capacity": 1
+                        "number": 100,
+                        "capacity": 4
                       }
                     }
                   ]
                 },
                 "example": {
-                  "number": 107,
-                  "capacity": 1
+                  "number": 100,
+                  "capacity": 4
                 }
               }
             },
@@ -1287,7 +2403,23 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1299,16 +2431,23 @@
           ]
         }
       },
-      "/api/tables/64a1dabf71ebb124a8942333": {
+      "/api/tables/{id}": {
         "patch": {
           "tags": [
             "tables"
           ],
           "summary": "Update A Table",
           "operationId": "UpdateATable",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to update table details",
             "content": {
               "application/json": {
                 "schema": {
@@ -1318,14 +2457,14 @@
                     },
                     {
                       "example": {
-                        "number": 102,
+                        "number": 100,
                         "capacity": 8
                       }
                     }
                   ]
                 },
                 "example": {
-                  "number": 102,
+                  "number": 100,
                   "capacity": 8
                 }
               }
@@ -1334,7 +2473,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1344,19 +2503,44 @@
               "bearer": []
             }
           ]
-        }
-      },
-      "/api/tables/64a1db6071ebb124a894233a": {
+        },
         "delete": {
           "tags": [
             "tables"
           ],
           "summary": "Delete A Table",
           "operationId": "DeleteATable",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1373,10 +2557,37 @@
           ],
           "summary": "Get A Table By Id",
           "operationId": "GetATableById",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1398,7 +2609,15 @@
           "parameters": [],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1414,7 +2633,7 @@
           "operationId": "AddReservation",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "DateTime field should include the actual time of the reservation. The duration is in hours. Party size is the number of people.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1426,7 +2645,7 @@
                       "example": {
                         "customerPhone": "",
                         "dateTime": "2023-07-08T16:30",
-                        "duration": 2,
+                        "duration": 0.5,
                         "table": "64a15243dcd9678c6cc5a31d",
                         "partySize": 4
                       }
@@ -1436,7 +2655,7 @@
                 "example": {
                   "customerPhone": "",
                   "dateTime": "2023-07-08T16:30",
-                  "duration": 2,
+                  "duration": 0.5,
                   "table": "64a15243dcd9678c6cc5a31d",
                   "partySize": 4
                 }
@@ -1446,7 +2665,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1465,15 +2704,65 @@
           "operationId": "GetAllReservations",
           "parameters": [
             {
-              "name": "status",
+              "name": "page",
               "in": "query",
               "description": "",
               "required": true,
               "style": "form",
               "explode": true,
               "schema": {
+                "type": "integer",
+                "format": "int32",
+                "example": 1
+              }
+            },
+            {
+              "name": "perPage",
+              "in": "query",
+              "description": "",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "example": 10
+              }
+            },
+            {
+              "name": "status",
+              "in": "query",
+              "description": "",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
                 "type": "string",
                 "example": "Pending"
+              }
+            },
+            {
+              "name": "minDate",
+              "in": "query",
+              "description": "Minimum datetime",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "1970-01-01"
+              }
+            },
+            {
+              "name": "maxDate",
+              "in": "query",
+              "description": "Maximum datetime",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "9999-12-31"
               }
             }
           ],
@@ -1491,17 +2780,44 @@
           ]
         }
       },
-      "/api/reservations/64a47622e0015c7183ad8b46/cancel": {
+      "/api/reservations/{id}/cancel": {
         "patch": {
           "tags": [
             "reservations"
           ],
           "summary": "Cancel A Reservation",
           "operationId": "CancelAReservation",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1513,16 +2829,23 @@
           ]
         }
       },
-      "/api/reservations/64a47622e0015c7183ad8b46/time-duration": {
+      "/api/reservations/{id}/time-duration": {
         "patch": {
           "tags": [
             "reservations"
           ],
           "summary": "Update Reservation Time-Duration",
           "operationId": "UpdateReservationTime-Duration",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to update a reservation's time and duration.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1533,14 +2856,14 @@
                     {
                       "example": {
                         "dateTime": "2023-07-06T17:30",
-                        "duration": 3
+                        "duration": 0.5
                       }
                     }
                   ]
                 },
                 "example": {
                   "dateTime": "2023-07-06T17:30",
-                  "duration": 3
+                  "duration": 0.5
                 }
               }
             },
@@ -1548,7 +2871,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1560,16 +2903,23 @@
           ]
         }
       },
-      "/api/reservations/64a47622e0015c7183ad8b46/table-size": {
+      "/api/reservations/{id}/table-size": {
         "patch": {
           "tags": [
             "reservations"
           ],
           "summary": "Update Reservation Table And Size",
           "operationId": "UpdateReservationTableAndSize",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to update reserved table and the party size",
             "content": {
               "application/json": {
                 "schema": {
@@ -1580,14 +2930,14 @@
                     {
                       "example": {
                         "table": "64a1dabf71ebb124a8942333",
-                        "partySize": 8
+                        "partySize": 0
                       }
                     }
                   ]
                 },
                 "example": {
                   "table": "64a1dabf71ebb124a8942333",
-                  "partySize": 8
+                  "partySize": 0
                 }
               }
             },
@@ -1595,7 +2945,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1607,16 +2977,23 @@
           ]
         }
       },
-      "/api/reservations/64a47622e0015c7183ad8b46/confirm": {
+      "/api/reservations/{id}/confirm": {
         "patch": {
           "tags": [
             "reservations"
           ],
           "summary": "Confirm Reservation",
           "operationId": "ConfirmReservation",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to make payment for reservating a table. This also updates the reservation status to Confirmed.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1626,7 +3003,7 @@
                     },
                     {
                       "example": {
-                        "cardNumber": "",
+                        "cardNumber": "1234 5678 9123 4567",
                         "cardPin": 1234,
                         "cvv": 123
                       }
@@ -1634,7 +3011,7 @@
                   ]
                 },
                 "example": {
-                  "cardNumber": "",
+                  "cardNumber": "1234 5678 9123 4567",
                   "cardPin": 1234,
                   "cvv": 123
                 }
@@ -1644,7 +3021,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1666,7 +3063,23 @@
           "parameters": [],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1687,7 +3100,7 @@
           "operationId": "LoginEmployee",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Enpoint to login Employees",
             "content": {
               "application/json": {
                 "schema": {
@@ -1697,15 +3110,15 @@
                     },
                     {
                       "example": {
-                        "emailAddress": "ojotobar@gmail.com",
-                        "password": "P@33w0rd"
+                        "emailAddress": "example@email.com",
+                        "password": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "emailAddress": "ojotobar@gmail.com",
-                  "password": "P@33w0rd"
+                  "emailAddress": "example@email.com",
+                  "password": "string"
                 }
               }
             },
@@ -1713,7 +3126,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1729,7 +3162,7 @@
           "operationId": "ConfirmEmployeeEmail",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to confirm employees email address after registration.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1739,15 +3172,15 @@
                     },
                     {
                       "example": {
-                        "token": "c2e3b17547bbddbbb604eca10e682437fca50509aa23afa048307ef9936c53b299a9f658cc09663b0525a421639e669b1d58a4d9b19a139b2a7d46e9a7b246af",
-                        "email": "ojotobar@gmail.com"
+                        "token": "string",
+                        "email": "example@email.com"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "token": "c2e3b17547bbddbbb604eca10e682437fca50509aa23afa048307ef9936c53b299a9f658cc09663b0525a421639e669b1d58a4d9b19a139b2a7d46e9a7b246af",
-                  "email": "ojotobar@gmail.com"
+                  "token": "string",
+                  "email": "example@email.com"
                 }
               }
             },
@@ -1755,7 +3188,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1772,7 +3225,27 @@
           "parameters": [],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1784,16 +3257,23 @@
           ]
         }
       },
-      "/api/employee/auth/64a9cec69d29e765667c5fe7/change-password": {
+      "/api/employee/auth/{id}/change-password": {
         "patch": {
           "tags": [
             "auth"
           ],
           "summary": "Change Employee Password",
           "operationId": "ChangeEmployeePassword",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to change Employee password",
             "content": {
               "application/json": {
                 "schema": {
@@ -1819,7 +3299,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1840,7 +3340,7 @@
           "operationId": "ResetEmployeePassword",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to reset Employee password",
             "content": {
               "application/json": {
                 "schema": {
@@ -1850,13 +3350,13 @@
                     },
                     {
                       "example": {
-                        "emailAddress": "ojotobar@gmail.com"
+                        "emailAddress": "example@email.com"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "emailAddress": "ojotobar@gmail.com"
+                  "emailAddress": "example@email.com"
                 }
               }
             },
@@ -1864,7 +3364,19 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1880,7 +3392,7 @@
           "operationId": "ChangeEmployeeForgottenPassword",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to Change Employee Forgotten Password",
             "content": {
               "application/json": {
                 "schema": {
@@ -1890,17 +3402,17 @@
                     },
                     {
                       "example": {
-                        "newPassword": "P@33w0rd174",
-                        "confirmNewPassword": "P@33w0rd174",
-                        "token": "aa8b0faad563f6653c4e070ec85b1181580b13cfbe76be690aa8cdc05ca44f98af320234b1c8199df8b879c644dda55d6fe4a073da5f505d25ac33ef78e361da"
+                        "newPassword": "string",
+                        "confirmNewPassword": "string",
+                        "token": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "newPassword": "P@33w0rd174",
-                  "confirmNewPassword": "P@33w0rd174",
-                  "token": "aa8b0faad563f6653c4e070ec85b1181580b13cfbe76be690aa8cdc05ca44f98af320234b1c8199df8b879c644dda55d6fe4a073da5f505d25ac33ef78e361da"
+                  "newPassword": "string",
+                  "confirmNewPassword": "string",
+                  "token": "string"
                 }
               }
             },
@@ -1908,7 +3420,23 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "409": {
+              "description": "Conflict",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -1941,7 +3469,7 @@
           "operationId": "RegisterUser",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to register a User",
             "content": {
               "application/json": {
                 "schema": {
@@ -1951,19 +3479,19 @@
                     },
                     {
                       "example": {
-                        "name": "tope data",
-                        "email": "tojo@axxess.com",
-                        "password": "P@ssw0rd",
-                        "confirmPassword": "P@ssw0rd"
+                        "name": "John Doe",
+                        "email": "example@email.com",
+                        "password": "string",
+                        "confirmPassword": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "name": "tope data",
-                  "email": "tojo@axxess.com",
-                  "password": "P@ssw0rd",
-                  "confirmPassword": "P@ssw0rd"
+                  "name": "John Doe",
+                  "email": "example@email.com",
+                  "password": "string",
+                  "confirmPassword": "string"
                 }
               }
             },
@@ -1971,23 +3499,38 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
           "deprecated": false
         }
       },
-      "/api/profile/64a99186e7af91d2705922c7/update-name": {
+      "/api/profile/{id}/update-name": {
         "patch": {
           "tags": [
             "profile"
           ],
           "summary": "Update User Names",
           "operationId": "UpdateUserNames",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to update User's names",
             "content": {
               "application/json": {
                 "schema": {
@@ -1997,13 +3540,13 @@
                     },
                     {
                       "example": {
-                        "name": "Tope Dada"
+                        "name": "John Doe"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "name": "Tope Dada"
+                  "name": "John Doe"
                 }
               }
             },
@@ -2011,7 +3554,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2037,7 +3600,7 @@
               "headers": {}
             }
           },
-          "deprecated": false
+          "deprecated": true
         }
       },
       "/auth/login": {
@@ -2049,7 +3612,7 @@
           "operationId": "LoginUser",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to login a User",
             "content": {
               "application/json": {
                 "schema": {
@@ -2059,15 +3622,15 @@
                     },
                     {
                       "example": {
-                        "emailAddress": "tojo@axxess.com",
-                        "password": "P@33w0rd"
+                        "emailAddress": "example@email.com",
+                        "password": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "emailAddress": "tojo@axxess.com",
-                  "password": "P@33w0rd"
+                  "emailAddress": "example@email.com",
+                  "password": "string"
                 }
               }
             },
@@ -2075,7 +3638,19 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2091,7 +3666,7 @@
           "operationId": "ConfirmUserEmail",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to confirm user email using token",
             "content": {
               "application/json": {
                 "schema": {
@@ -2101,13 +3676,13 @@
                     },
                     {
                       "example": {
-                        "token": "88722e7f701f29bbb64614b78af32b9193929ba95ee5dfbd34f2b58dfa9ce2dcacf25b1e2a54e6f5f0e1b7d7323fb69c3951a82b105dea469bc9db6af022751a"
+                        "token": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "token": "88722e7f701f29bbb64614b78af32b9193929ba95ee5dfbd34f2b58dfa9ce2dcacf25b1e2a54e6f5f0e1b7d7323fb69c3951a82b105dea469bc9db6af022751a"
+                  "token": "string"
                 }
               }
             },
@@ -2115,7 +3690,19 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2131,7 +3718,7 @@
           "operationId": "ResetUserPassword",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to reset User password",
             "content": {
               "application/json": {
                 "schema": {
@@ -2141,13 +3728,13 @@
                     },
                     {
                       "example": {
-                        "emailAddress": "tojo@axxess.com"
+                        "emailAddress": "example@email.com"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "emailAddress": "tojo@axxess.com"
+                  "emailAddress": "example@email.com"
                 }
               }
             },
@@ -2155,7 +3742,19 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2171,7 +3770,7 @@
           "operationId": "ChangeUser'sForgottenPassword",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to change user's forgotten password",
             "content": {
               "application/json": {
                 "schema": {
@@ -2181,17 +3780,17 @@
                     },
                     {
                       "example": {
-                        "newPassword": "P@33w0rd174",
-                        "confirmNewPassword": "P@33w0rd174",
-                        "token": "848565b956a373934c07995acfd44b8443b00cdeda7aee774e2bc1fc5f5e6994b8c03f6146e88fd3f5c1ed1bd49108f1fb2f4e4fcfba87d4eda4d10a71844c90"
+                        "newPassword": "string",
+                        "confirmNewPassword": "string",
+                        "token": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "newPassword": "P@33w0rd174",
-                  "confirmNewPassword": "P@33w0rd174",
-                  "token": "848565b956a373934c07995acfd44b8443b00cdeda7aee774e2bc1fc5f5e6994b8c03f6146e88fd3f5c1ed1bd49108f1fb2f4e4fcfba87d4eda4d10a71844c90"
+                  "newPassword": "string",
+                  "confirmNewPassword": "string",
+                  "token": "string"
                 }
               }
             },
@@ -2199,23 +3798,42 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
           "deprecated": false
         }
       },
-      "/auth/64a99186e7af91d2705922c7/change-password": {
+      "/auth/{id}/change-password": {
         "patch": {
           "tags": [
             "OAuth"
           ],
           "summary": "Change User Password",
           "operationId": "ChangeUserPassword",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to change user's known password.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2225,15 +3843,15 @@
                     },
                     {
                       "example": {
-                        "newPassword": "P@33w0rd",
-                        "confirmNewPassword": "P@33w0rd"
+                        "newPassword": "string",
+                        "confirmNewPassword": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "newPassword": "P@33w0rd",
-                  "confirmNewPassword": "P@33w0rd"
+                  "newPassword": "string",
+                  "confirmNewPassword": "string"
                 }
               }
             },
@@ -2241,7 +3859,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2262,7 +3900,7 @@
           "operationId": "AddDuration",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to add Time Durations",
             "content": {
               "application/json": {
                 "schema": {
@@ -2272,15 +3910,15 @@
                     },
                     {
                       "example": {
-                        "inWords": "11 Hours",
-                        "inFigure": 11
+                        "inWords": "30 Minutes",
+                        "inFigure": 0.5
                       }
                     }
                   ]
                 },
                 "example": {
-                  "inWords": "11 Hours",
-                  "inFigure": 11
+                  "inWords": "30 Minutes",
+                  "inFigure": 0.5
                 }
               }
             },
@@ -2288,7 +3926,23 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2308,23 +3962,46 @@
           "parameters": [],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
           "deprecated": false
         }
       },
-      "/api/durations/64a00f8df4ff868bac521e27": {
+      "/api/durations/{id}": {
         "put": {
           "tags": [
             "duration"
           ],
           "summary": "Update Duration",
           "operationId": "UpdateDuration",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to update Time Durations",
             "content": {
               "application/json": {
                 "schema": {
@@ -2334,15 +4011,15 @@
                     },
                     {
                       "example": {
-                        "inWords": "2 Hours 30 Minutes",
-                        "inFigure": 2.5
+                        "inWords": "1 Hour 30 Minutes",
+                        "inFigure": 1.5
                       }
                     }
                   ]
                 },
                 "example": {
-                  "inWords": "2 Hours 30 Minutes",
-                  "inFigure": 2.5
+                  "inWords": "1 Hours 30 Minutes",
+                  "inFigure": 1.5
                 }
               }
             },
@@ -2350,7 +4027,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2360,19 +4057,44 @@
               "bearer": []
             }
           ]
-        }
-      },
-      "/api/durations/64a01005f4ff868bac521e3d": {
+        },
         "delete": {
           "tags": [
             "duration"
           ],
           "summary": "Delete A Duration",
           "operationId": "DeleteADuration",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2393,7 +4115,7 @@
           "operationId": "AddUserAddress",
           "parameters": [],
           "requestBody": {
-            "description": "",
+            "description": "Endpoint to add User's address",
             "content": {
               "application/json": {
                 "schema": {
@@ -2403,23 +4125,23 @@
                     },
                     {
                       "example": {
-                        "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
-                        "line2": "Tudun Fulani New Site",
-                        "locality": "Bwari-Abuja",
-                        "adminArea": "Federal Capital Territory",
-                        "postalCode": "901774",
-                        "country": "Nigeria"
+                        "line1": "string",
+                        "line2": "",
+                        "locality": "string",
+                        "adminArea": "string",
+                        "postalCode": "string",
+                        "country": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
-                  "line2": "Tudun Fulani New Site",
-                  "locality": "Bwari-Abuja",
-                  "adminArea": "Federal Capital Territory",
-                  "postalCode": "901774",
-                  "country": "Nigeria"
+                  "line1": "string",
+                  "line2": "",
+                  "locality": "string",
+                  "adminArea": "string",
+                  "postalCode": "string",
+                  "country": "string"
                 }
               }
             },
@@ -2427,7 +4149,27 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2439,29 +4181,7 @@
           ]
         }
       },
-      "/api/addresses/64a5b57baa6c7c191ab3724b": {
-        "get": {
-          "tags": [
-            "address"
-          ],
-          "summary": "Get Address By Id",
-          "operationId": "GetAddressById",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "",
-              "headers": {}
-            }
-          },
-          "deprecated": false,
-          "security": [
-            {
-              "bearer": []
-            }
-          ]
-        }
-      },
-      "/api/addresses/64a5b3e8aa6c7c191ab3723d": {
+      "/api/addresses/{id}": {
         "put": {
           "tags": [
             "address"
@@ -2480,23 +4200,23 @@
                     },
                     {
                       "example": {
-                        "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
-                        "line2": "Tudun Fulani New Site",
-                        "locality": "Bwari-Abuja",
-                        "adminArea": "Federal Capital Territory",
-                        "postalCode": "901774",
-                        "country": "Nigeria"
+                        "line1": "string",
+                        "line2": "",
+                        "locality": "string",
+                        "adminArea": "string",
+                        "postalCode": "string",
+                        "country": "string"
                       }
                     }
                   ]
                 },
                 "example": {
-                  "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
-                  "line2": "Tudun Fulani New Site",
-                  "locality": "Bwari-Abuja",
-                  "adminArea": "Federal Capital Territory",
-                  "postalCode": "901774",
-                  "country": "Nigeria"
+                  "line1": "string",
+                  "line2": "",
+                  "locality": "string",
+                  "adminArea": "string",
+                  "postalCode": "string",
+                  "country": "string"
                 }
               }
             },
@@ -2504,7 +4224,74 @@
           },
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Get Address By Id",
+          "operationId": "GetAddressById",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2521,10 +4308,37 @@
           ],
           "summary": "Delete An Address",
           "operationId": "DeleteAnAddress",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
-              "description": "",
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
               "headers": {}
             }
           },
@@ -2566,7 +4380,7 @@
             }
           },
           "example": {
-            "name": "Sales"
+            "name": "string"
           }
         },
         "CreateANewEmployeeRequest": {
@@ -2626,17 +4440,17 @@
             }
           },
           "example": {
-            "firstName": "Toba",
-            "lastName": "Ojo",
-            "middleName": "Rufus",
-            "emailAddress": "ojotobar@gmail.com",
-            "phoneNumber": "+2348131016938",
+            "firstName": "string",
+            "lastName": "string",
+            "middleName": "string",
+            "emailAddress": "example@email.com",
+            "phoneNumber": "+1234567890",
             "employmentDate": "2023-07-01",
-            "salary": 1000000,
+            "salary": 1000,
             "positionId": "64a9cd92aacb2c3daf46778f",
             "departmentId": "648a80a600105844a1c6a8ca",
-            "password": "P@33w0rd",
-            "confirmPassword": "P@33w0rd",
+            "password": "string",
+            "confirmPassword": "string",
             "roleId": "648a7fe800105844a1c6a8c7"
           }
         },
@@ -2660,8 +4474,8 @@
             }
           },
           "example": {
-            "firstName": "Oloruntomiloba",
-            "lastName": "Ojo",
+            "firstName": "string",
+            "lastName": "string",
             "middleName": ""
           }
         },
@@ -2678,7 +4492,7 @@
             }
           },
           "example": {
-            "salary": 1200000
+            "salary": 1000
           }
         },
         "UpdateEmploymentDateRequest": {
@@ -2713,8 +4527,8 @@
             }
           },
           "example": {
-            "name": "User",
-            "role": 2004
+            "name": "string",
+            "role": 2005
           }
         },
         "AddMenuRequest": {
@@ -2741,8 +4555,8 @@
             }
           },
           "example": {
-            "name": "Continental",
-            "description": "Continental Dishes",
+            "name": "string",
+            "description": "string",
             "dishes": [
               "648d0d1f8e6bf9bebb2b6d1b"
             ]
@@ -2768,12 +4582,12 @@
               "items": {
                 "type": "string"
               },
-              "description": ""
+              "description": "Array of dish ids"
             }
           },
           "example": {
-            "name": "Africana",
-            "description": "Africana Dishes.",
+            "name": "string",
+            "description": "string",
             "dishes": [
               "648cd753d301e88b34b6fbb4"
             ]
@@ -2800,9 +4614,9 @@
             }
           },
           "example": {
-            "name": "Amala",
-            "description": "Amala with Beans soup together with tomato stew, spinach and Goat meat",
-            "price": 854
+            "name": "string",
+            "description": "string",
+            "price": 100
           }
         },
         "AddOrderRequest": {
@@ -2826,10 +4640,9 @@
           },
           "example": {
             "dishes": [
-              "648cd753d301e88b34b6fbb4",
               "648d0d1f8e6bf9bebb2b6d1b"
             ],
-            "phoneNumber": "+2348035222858"
+            "phoneNumber": "+1234567890"
           }
         },
         "UpdateOrderRequest": {
@@ -2855,7 +4668,7 @@
             "dishes": [
               "648cd753d301e88b34b6fbb4"
             ],
-            "phoneNumber": "+2348035222858"
+            "phoneNumber": "+1234567890"
           }
         },
         "PayForAnOrderRequest": {
@@ -2871,7 +4684,7 @@
             }
           },
           "example": {
-            "amount": 1200
+            "amount": 100
           }
         },
         "AddATableRequest": {
@@ -2892,8 +4705,8 @@
             }
           },
           "example": {
-            "number": 107,
-            "capacity": 1
+            "number": 100,
+            "capacity": 4
           }
         },
         "UpdateATableRequest": {
@@ -2914,8 +4727,8 @@
             }
           },
           "example": {
-            "number": 102,
-            "capacity": 8
+            "number": 100,
+            "capacity": 4
           }
         },
         "AddReservationRequest": {
@@ -2994,7 +4807,7 @@
           },
           "example": {
             "table": "64a1dabf71ebb124a8942333",
-            "partySize": 8
+            "partySize": 4
           }
         },
         "ConfirmReservationRequest": {
@@ -3019,7 +4832,7 @@
             }
           },
           "example": {
-            "cardNumber": "",
+            "cardNumber": "1234 5678 9123 4567",
             "cardPin": 1234,
             "cvv": 123
           }
@@ -3040,8 +4853,8 @@
             }
           },
           "example": {
-            "emailAddress": "ojotobar@gmail.com",
-            "password": "P@33w0rd"
+            "emailAddress": "example@email.com",
+            "password": "string"
           }
         },
         "ConfirmEmployeeEmailRequest": {
@@ -3060,8 +4873,8 @@
             }
           },
           "example": {
-            "token": "c2e3b17547bbddbbb604eca10e682437fca50509aa23afa048307ef9936c53b299a9f658cc09663b0525a421639e669b1d58a4d9b19a139b2a7d46e9a7b246af",
-            "email": "ojotobar@gmail.com"
+            "token": "string",
+            "email": "example@email.com"
           }
         },
         "ChangeEmployeePasswordRequest": {
@@ -3080,8 +4893,8 @@
             }
           },
           "example": {
-            "newPassword": "P@33w0rd",
-            "confirmNewPassword": "P@33w0rd"
+            "newPassword": "string",
+            "confirmNewPassword": "string"
           }
         },
         "ResetEmployeePasswordRequest": {
@@ -3096,7 +4909,7 @@
             }
           },
           "example": {
-            "emailAddress": "ojotobar@gmail.com"
+            "emailAddress": "example@email.com"
           }
         },
         "ChangeEmployeeForgottenPasswordRequest": {
@@ -3119,9 +4932,9 @@
             }
           },
           "example": {
-            "newPassword": "P@33w0rd174",
-            "confirmNewPassword": "P@33w0rd174",
-            "token": "aa8b0faad563f6653c4e070ec85b1181580b13cfbe76be690aa8cdc05ca44f98af320234b1c8199df8b879c644dda55d6fe4a073da5f505d25ac33ef78e361da"
+            "newPassword": "string",
+            "confirmNewPassword": "string",
+            "token": "string"
           }
         },
         "RegisterUserRequest": {
@@ -3148,10 +4961,10 @@
             }
           },
           "example": {
-            "name": "tope data",
-            "email": "tojo@axxess.com",
-            "password": "P@ssw0rd",
-            "confirmPassword": "P@ssw0rd"
+            "name": "John Doe",
+            "email": "example@email.com",
+            "password": "string",
+            "confirmPassword": "string"
           }
         },
         "UpdateUserNamesRequest": {
@@ -3166,7 +4979,7 @@
             }
           },
           "example": {
-            "name": "Tope Dada"
+            "name": "John Doe"
           }
         },
         "LoginUserRequest": {
@@ -3185,8 +4998,8 @@
             }
           },
           "example": {
-            "emailAddress": "tojo@axxess.com",
-            "password": "P@33w0rd"
+            "emailAddress": "example@email.com",
+            "password": "string"
           }
         },
         "ConfirmUserEmailRequest": {
@@ -3201,7 +5014,7 @@
             }
           },
           "example": {
-            "token": "88722e7f701f29bbb64614b78af32b9193929ba95ee5dfbd34f2b58dfa9ce2dcacf25b1e2a54e6f5f0e1b7d7323fb69c3951a82b105dea469bc9db6af022751a"
+            "token": "string"
           }
         },
         "ResetUserPasswordRequest": {
@@ -3216,7 +5029,7 @@
             }
           },
           "example": {
-            "emailAddress": "tojo@axxess.com"
+            "emailAddress": "example@email.com"
           }
         },
         "ChangeUsersForgottenPasswordRequest": {
@@ -3239,9 +5052,9 @@
             }
           },
           "example": {
-            "newPassword": "P@33w0rd174",
-            "confirmNewPassword": "P@33w0rd174",
-            "token": "848565b956a373934c07995acfd44b8443b00cdeda7aee774e2bc1fc5f5e6994b8c03f6146e88fd3f5c1ed1bd49108f1fb2f4e4fcfba87d4eda4d10a71844c90"
+            "newPassword": "string",
+            "confirmNewPassword": "string",
+            "token": "string"
           }
         },
         "ChangeUserPasswordRequest": {
@@ -3281,8 +5094,8 @@
             }
           },
           "example": {
-            "inWords": "11 Hours",
-            "inFigure": 11
+            "inWords": "30 Minutes",
+            "inFigure": 0.5
           }
         },
         "UpdateDurationRequest": {
@@ -3301,8 +5114,8 @@
             }
           },
           "example": {
-            "inWords": "2 Hours 30 Minutes",
-            "inFigure": 2.5
+            "inWords": "1 Hours 30 Minutes",
+            "inFigure": 1.5
           }
         },
         "AddUserAddressRequest": {
@@ -3337,12 +5150,12 @@
             }
           },
           "example": {
-            "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
-            "line2": "Tudun Fulani New Site",
-            "locality": "Bwari-Abuja",
-            "adminArea": "Federal Capital Territory",
-            "postalCode": "901774",
-            "country": "Nigeria"
+            "line1": "string",
+            "line2": "",
+            "locality": "string",
+            "adminArea": "string",
+            "postalCode": "string",
+            "country": "string"
           }
         },
         "UpdateAnAddressRequest": {
@@ -3377,12 +5190,12 @@
             }
           },
           "example": {
-            "line1": "3, Estalla Crescent, Off Tessy A. Bagson Street",
-            "line2": "Tudun Fulani New Site",
-            "locality": "Bwari-Abuja",
-            "adminArea": "Federal Capital Territory",
-            "postalCode": "901774",
-            "country": "Nigeria"
+            "line1": "string",
+            "line2": "",
+            "locality": "string",
+            "adminArea": "string",
+            "postalCode": "string",
+            "country": "string"
           }
         }
       },

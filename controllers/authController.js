@@ -47,12 +47,7 @@ const handleLogin = async (req, res) => {
                 //set the refresh token in cookie
                 const user = {
                     id: foundEmployee._id,
-                    displayName: `${foundEmployee.firstName} ${foundEmployee.lastName}`,
-                    email: foundEmployee.emailAddress, 
-                    photo: foundEmployee.photoUrl, 
-                    role: foundEmployee.role.role, 
-                    createdAt: foundEmployee.createdAt,
-                    lastLogin: foundEmployee.lastLogin
+                    role: foundEmployee.role.role,
                 };
                 res.cookie('jwt', refreshToken, { httpOnly: false, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });//secure: true might not work for Thunder Client
                 res.status(200).json({ accessToken, user });
@@ -79,14 +74,12 @@ const handleLogout = async (req, res) => {
                 user.refreshToken = '';
                 await user.save();
             }
-            return res.sendStatus(204);
         } else {
             //Delete the refresh token for employee
-            await Employee.findOneAndUpdate({ _id: foundEmployee?._id }, { refreshToken: '' });
-            //Clear cookie
-            res.clearCookie('jwt', { httpOnly: false, sameSite: 'None', secure: true });//secure: true might not work for Thunder Client
-            res.sendStatus(204);
+            await Employee.findOneAndUpdate({ _id: foundEmployee?._id }, { refreshToken: '' });  
         }
+        res.clearCookie('jwt', { httpOnly: false, sameSite: 'None', secure: true });//secure: true might not work for Thunder Client
+        res.sendStatus(204);
     } catch (error) {
         res.status(500).json({message: error.message});
     }

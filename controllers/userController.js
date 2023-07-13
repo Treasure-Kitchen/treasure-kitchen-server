@@ -13,13 +13,19 @@ const create = async(req, res) => {
     const origin = req.headers.origin;
     const {
         name,
-        email,
-        password
+        emailAddress,
+        password,
+        confirmPassword
     } = req.body;
-
     try {
-            if((await User.exists({ email: email }).exec())) 
-                return res.status(409).json({message: `There's already a resgistered user with the email: ${email}`});
+            if(!name) return res.status(400).json({ 'message': 'Name is required'});
+            if(!(name.split(' ').length > 1)) return res.status(400).json({message: 'You must emter your first and last names seaparated by a whitespace.'});
+            if(!password) return res.status(400).json({ 'message': 'Password is required'});
+            if(password !== confirmPassword) return res.status(400).json({ 'message': 'Password and Confirm Password must match' });
+            if(!isValidPassword(password)) return res.status(400).json({ 'message':'Password must have at least, a lowercase, an uppercase, a digit and a special character' });
+            if(!emailAddress) return res.status(400).json({message: 'Email address is required'});
+            if((await User.exists({ email: emailAddress }).exec())) 
+                return res.status(409).json({message: `There's already a resgistered user with the email: ${emailAddress}`});
             const hashedPwd = await bcrypt.hash(password, 10);
             const roleFromDb = await Role.findOne({ role: ROLES.User }).exec();
             if(!roleFromDb) return res.status(404).json({message: `${ROLES.User} role does not exist.`});
@@ -27,7 +33,7 @@ const create = async(req, res) => {
             //Initialize new User
             const user = new User({
                 displayName: capitalizeFirstLetters(name),
-                email: email,
+                email: emailAddress,
                 role: roleFromDb._id,
                 password: hashedPwd,
                 emailToken: emailToken,
@@ -70,15 +76,15 @@ const login = async(req, res) => {
     if(!emailAddress || !password) return res.status(400).json({ 'message': 'Email and password are required.'});
 
     try {
-        const user = await User.findOne({ email: emailAddress }).populate('role').exec();
-        if(!user) return res.status(404).json({'message':`No user found with the email: ${emailAddress}`});
-        if(!user.isEmailConfirmed) {
-            if(new Date(user?.tokenExpiryTime).getTime() < new Date().getTime()){
+        const userFromDb = await User.findOne({ email: emailAddress }).populate('role').exec();
+        if(!userFromDb) return res.status(404).json({'message':`No user found with the email: ${emailAddress}`});
+        if(!userFromDb.isEmailConfirmed) {
+            if(new Date(userFromDb?.tokenExpiryTime).getTime() < new Date().getTime()){
                 const emailToken = crypto.randomBytes(64).toString("hex");
                 const link = `${origin}/verify-user-email?token=${emailToken}`;
                 const payload = {
-                    name: capitalizeFirstWord(user.displayName),
-                    email: user.email,
+                    name: capitalizeFirstWord(userFromDb.displayName),
+                    email: userFromDb.email,
                     subject: "Confirm Email",
                     messageText: emailConfirmationMessage(),
                     file: "ConfirmEmail.html",
@@ -86,34 +92,29 @@ const login = async(req, res) => {
                 };
                 //Save confirmation email
                 await sendConfirmationEmail(payload);
-                user.emailToken = emailToken;
-                user.tokenExpiryTime = addHours(new Date(), 2);
-                await user.save();
+                userFromDb.emailToken = emailToken;
+                userFromDb.tokenExpiryTime = addHours(new Date(), 2);
+                await userFromDb.save();
             }
             return res.status(400).json({message:'Confirm your account before attempting to log in. Please check your mail.'})
         } else {
             //check password
-            const match = await bcrypt.compare(password, user.password);
+            const match = await bcrypt.compare(password, userFromDb.password);
             if(match){
                 //create JWT
-                const accessToken = generateAccessToken(user.role, user._id, '1d');
-                const refreshToken = generateRefreshToken(user._id, '1d');
-                //set refresh token for user
-                user.refreshToken = refreshToken;
-                user.lastLogin = new Date();
-                await user.save();
+                const accessToken = generateAccessToken(userFromDb.role, userFromDb._id, '1d');
+                const refreshToken = generateRefreshToken(userFromDb._id, '1d');
+                //set refresh token for userFromDb
+                userFromDb.refreshToken = refreshToken;
+                userFromDb.lastLogin = new Date();
+                await userFromDb.save();
                 //set the refresh token in cookie
-                const profile = {
-                    id: user._id,
-                    displayName: user.displayName,
-                    email: user.email, 
-                    photo: user.photo, 
-                    role: user.role.role, 
-                    createdAt: user.createdAt,
-                    lastLogin: user.lastLogin
+                const user = {
+                    id: userFromDb._id,
+                    role: userFromDb.role.role
                 };
                 res.cookie('jwt', refreshToken, { httpOnly: false, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });//secure: true might not work for Thunder Client
-                res.status(200).json({ accessToken, profile });
+                res.status(200).json({ accessToken, user });
         } else {
             res.status(400).json({'message':'Password is not correct.'});
         }
@@ -154,7 +155,7 @@ const confirmEmail = async (req, res) => {
                 user.isEmailConfirmed = true;
                 //save the changes
                 await user.save();
-                res.status(200).json({message: 'Email successfully confirmed. Please proceed to login.'});
+                res.status(200).json({message: 'Email successfully confirmed.'});
             }  
         } else {
             res.status(404).json({message:'Email verification failed. Invalid token'});
@@ -191,12 +192,13 @@ const resetPassword = async(req, res) => {
 };
 
 const changeForgottenPassword = async(req, res) => {
+    const origin = req.headers.origin;
     const { 
         newPassword, 
         confirmNewPassword,
         token 
     } = req.body;
-
+    
     if(newPassword !== confirmNewPassword)
         return res.status(400).json({message:'Password and confirm password must match.'});
     if(!isValidPassword(newPassword)) return res.status(400).json({message:'Password must have at least, a lowercase, an uppercase, a digit and a special character'});

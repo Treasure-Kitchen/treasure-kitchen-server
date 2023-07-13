@@ -5,7 +5,7 @@ const verifyUserRegistration = require('../../middlewares/verifyUserRegistration
 const verifyJWT = require('../../middlewares/verifyJWT');
 
 router.route('/signup')
-    .post(verifyUserRegistration, userController.create);
+    .post(userController.create);
 
 router.route('/:id')
     .get(userController.getUserProfile)

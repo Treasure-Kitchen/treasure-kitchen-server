@@ -2,10 +2,14 @@ const userController = require('../../controllers/userController');
 const express = require('express');
 const router = express.Router();
 const verifyJWT = require('../../middlewares/verifyJWT');
+const authController = require('../../controllers/authController');
 const passport = require('passport')
 
 router.route('/login')
     .post(userController.login);
+
+router.route('/logout')
+    .post(verifyJWT, authController.handleLogout);
 
 router.route('/confirm-email')
     .patch(userController.confirmEmail);

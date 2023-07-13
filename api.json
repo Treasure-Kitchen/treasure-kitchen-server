@@ -3480,7 +3480,7 @@
                     {
                       "example": {
                         "name": "John Doe",
-                        "email": "example@email.com",
+                        "emailAddress": "example@email.com",
                         "password": "string",
                         "confirmPassword": "string"
                       }
@@ -3489,7 +3489,7 @@
                 },
                 "example": {
                   "name": "John Doe",
-                  "email": "example@email.com",
+                  "emailAddress": "example@email.com",
                   "password": "string",
                   "confirmPassword": "string"
                 }
@@ -4861,7 +4861,7 @@
           "title": "ConfirmEmployeeEmailRequest",
           "required": [
             "token",
-            "email"
+            "emailAddress"
           ],
           "type": "object",
           "properties": {
@@ -4874,7 +4874,7 @@
           },
           "example": {
             "token": "string",
-            "email": "example@email.com"
+            "emailAddress": "example@email.com"
           }
         },
         "ChangeEmployeePasswordRequest": {
@@ -4941,7 +4941,7 @@
           "title": "RegisterUserRequest",
           "required": [
             "name",
-            "email",
+            "emailAddress",
             "password",
             "confirmPassword"
           ],
@@ -4962,7 +4962,7 @@
           },
           "example": {
             "name": "John Doe",
-            "email": "example@email.com",
+            "emailAddress": "example@email.com",
             "password": "string",
             "confirmPassword": "string"
           }

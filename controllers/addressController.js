@@ -27,8 +27,8 @@ const create = async (req, res) => {
             });
             user.address = address._id;
             //Save
-            await address.save();
             await user.save();
+            await address.save();
             res.status(200).json({message: 'Address added successfully.'});
     } catch (error) {
         res.status(500).json({message: error.message});

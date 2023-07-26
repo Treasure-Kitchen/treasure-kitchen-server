@@ -100,6 +100,17 @@ const getAll = async (req, res) => {
     }
 };
 
+const getManyIds = async(req, res) => {
+    const { dishes } = req.body;
+    try {
+            if(dishes.length <= 0) return res.status(400).json({message: 'You must select at least, one dish.'});
+            const dishesFromDb = await Dish.find().where('_id').in(dishes).select('name description price photo');
+            res.status(200).json(dishesFromDb);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
 const getSingleWithOrders = async(req, res) => {
     const { id } = req.params;
     try {
@@ -132,5 +143,6 @@ module.exports = {
     getById,
     update,
     remove,
+    getManyIds,
     getSingleWithOrders
 };

@@ -6,8 +6,8 @@ const verifyRoles = require('../../middlewares/verifyRoles');
 const ROLES = require('../../config/roles');
 const verifyAddressRequest = require('../../middlewares/verifyAddressRequest');
 
-router.route('/')
-    .post(verifyJWT, verifyRoles(ROLES.User), verifyAddressRequest, addressController.create);
+// router.route('/')
+//     .post(verifyJWT, verifyRoles(ROLES.User), verifyAddressRequest, addressController.create);
     
 router.route('/:id')
     .put(verifyJWT, verifyRoles(ROLES.User), verifyAddressRequest, addressController.update)

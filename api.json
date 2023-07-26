@@ -1428,6 +1428,75 @@
           ]
         }
       },
+      "/api/dishes/get-many-by-ids": {
+        "post": {
+          "tags": [
+            "dishes"
+          ],
+          "summary": "Get List of Dish by Ids",
+          "operationId": "GetManyDishesById",
+          "parameters": [],
+          "requestBody": {
+            "description": "Get List of Dishes by an array of dish Ids",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/GetListOfDishesByIdsRequest"
+                    },
+                    {
+                      "example": {
+                        "dishes": [
+                          "648cd753d301e88b34b6fbb4"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "dishes": [
+                    "648cd753d301e88b34b6fbb4"
+                  ]
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
       "api/dishes/{id}": {
         "get": {
           "tags": [

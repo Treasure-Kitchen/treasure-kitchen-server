@@ -1428,41 +1428,21 @@
           ]
         }
       },
-      "/api/dishes/get-many-by-ids": {
-        "post": {
+      "/api/dishes/{ids}/get-many": {
+        "get": {
           "tags": [
             "dishes"
           ],
-          "summary": "Get List of Dish by Ids",
-          "operationId": "GetManyDishesById",
-          "parameters": [],
-          "requestBody": {
-            "description": "Get List of Dishes by an array of dish Ids",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/GetListOfDishesByIdsRequest"
-                    },
-                    {
-                      "example": {
-                        "dishes": [
-                          "648cd753d301e88b34b6fbb4"
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "example": {
-                  "dishes": [
-                    "648cd753d301e88b34b6fbb4"
-                  ]
-                }
-              }
-            },
-            "required": true
-          },
+          "summary": "Get List of Dishes by comma separated string of Ids passed in from the route.",
+          "operationId": "GetListOfDishesByStringsOfIds",
+          "parameters": [
+            {
+              "name": "ids",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
           "responses": {
             "200": {
               "description": "OK",

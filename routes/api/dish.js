@@ -22,8 +22,8 @@ router.route('/')
     .post(verifyJWT, upload.single('image'), validateDishRequest, dishController.create)
     .get(dishController.getAll);
 
-router.route('/get-many-by-ids')
-    .post(verifyJWT, dishController.getManyIds);
+router.route('/:ids/get-many')
+    .get(verifyJWT, dishController.getManyByIds);
 
 router.route('/:id')
     .get(dishController.getById)

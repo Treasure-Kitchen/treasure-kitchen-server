@@ -4,14 +4,25 @@ const addressController = require('../../controllers/addressController');
 const verifyJWT = require('../../middlewares/verifyJWT');
 const verifyRoles = require('../../middlewares/verifyRoles');
 const ROLES = require('../../config/roles');
-const verifyAddressRequest = require('../../middlewares/verifyAddressRequest');
 
-// router.route('/')
-//     .post(verifyJWT, verifyRoles(ROLES.User), verifyAddressRequest, addressController.create);
-    
-router.route('/:id')
-    .put(verifyJWT, verifyRoles(ROLES.User), verifyAddressRequest, addressController.update)
-    .get(verifyJWT, verifyRoles(ROLES.User), addressController.getById)
-    .delete(verifyJWT, verifyRoles(ROLES.User), addressController.remove);
+router.route('/countries')
+    .post(verifyJWT, verifyRoles(ROLES.Admin, ROLES.SuperAdmin), addressController.createCountry)
+    .get(verifyJWT, addressController.getCountries);
+
+router.route('/countries/:countryId/states')
+    .get(verifyJWT, addressController.getStatesByCountry);
+
+router.route('/countries/:id')
+    .put(verifyJWT, verifyRoles(ROLES.Admin, ROLES.SuperAdmin), addressController.updateCountry)
+    .delete(verifyJWT, verifyRoles(ROLES.Admin, ROLES.SuperAdmin), addressController.removeCountry)
+    .get(verifyJWT, addressController.getCountryById);
+
+router.route('/states')
+    .post(verifyJWT, verifyRoles(ROLES.Admin, ROLES.SuperAdmin), addressController.createState);
+
+router.route('/states/:id')
+    .get(verifyJWT, addressController.getStateById)
+    .put(verifyJWT, verifyRoles(ROLES.Admin, ROLES.SuperAdmin), addressController.updateState)
+    .delete(verifyJWT, verifyRoles(ROLES.Admin, ROLES.SuperAdmin), addressController.removeState)
 
 module.exports = router;

@@ -13,6 +13,11 @@ router.route('/signup')
 router.route('/addresses')
     .post(verifyJWT, verifyRoles(ROLES.User), verifyAddressRequest, addressController.create);
 
+router.route('/address/:id')
+    .put(verifyJWT, verifyRoles(ROLES.User), verifyAddressRequest, addressController.update)
+    .get(verifyJWT, verifyRoles(ROLES.User), addressController.getById)
+    .delete(verifyJWT, verifyRoles(ROLES.User), addressController.remove);
+
 router.route('/:id')
     .get(userController.getUserProfile)
     .post(userController.ping);

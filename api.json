@@ -4155,10 +4155,10 @@
           ]
         }
       },
-      "/api/addresses": {
+      "/api/profile/addresses": {
         "post": {
           "tags": [
-            "address"
+            "profile"
           ],
           "summary": "Add User Address",
           "operationId": "AddUserAddress",
@@ -4230,10 +4230,10 @@
           ]
         }
       },
-      "/api/addresses/{id}": {
+      "/api/profile/addresses/{id}": {
         "put": {
           "tags": [
-            "address"
+            "profile"
           ],
           "summary": "Update An Address",
           "operationId": "UpdateAnAddress",
@@ -4306,7 +4306,7 @@
         },
         "get": {
           "tags": [
-            "address"
+            "profile"
           ],
           "summary": "Get Address By Id",
           "operationId": "GetAddressById",
@@ -4353,7 +4353,7 @@
         },
         "delete": {
           "tags": [
-            "address"
+            "profile"
           ],
           "summary": "Delete An Address",
           "operationId": "DeleteAnAddress",
@@ -4372,6 +4372,533 @@
             },
             "400": {
               "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/addresses/countries": {
+        "post": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Add Country",
+          "operationId": "AddCountry",
+          "parameters": [],
+          "requestBody": {
+            "description": "Endpoint to add countries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AddUserAddressRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "string"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "string"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "201": {
+              "description": "Created",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Get A List Of All Countries",
+          "operationId": "GetsAListOfAllCountries",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/addresses/countries/{id}": {
+        "put": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Update A Country",
+          "operationId": "UpdateACountry",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "requestBody": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateAnAddressRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "string"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "string"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Get Country By Id",
+          "operationId": "GetCountryById",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Delete A Country",
+          "operationId": "DeleteACountry",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/addresses/countries/{countryId}/states": {
+        "get": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Get States By Country Id",
+          "operationId": "Get States By Country Id",
+          "parameters": [
+            {
+              "name": "countryId",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/addresses/states": {
+        "post": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Add State/Admin. Area",
+          "operationId": "AddStateAdminArea",
+          "parameters": [],
+          "requestBody": {
+            "description": "Endpoint to add states/localities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AddUserAddressRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "string",
+                        "countryId": "string"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "string",
+                  "countryId": "string"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "201": {
+              "description": "Created",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description": "Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/addresses/states/{id}": {
+        "put": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Update A State",
+          "operationId": "UpdateAState",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "requestBody": {
+            "description": "Endpoint to Update State record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UpdateAnAddressRequest"
+                    },
+                    {
+                      "example": {
+                        "name": "string",
+                        "countryId": "string"
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "name": "string",
+                  "countryId": "string"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "400": {
+              "description": "Bad Request",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Get State By Id",
+          "operationId": "GetStateById",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {}
+            },
+            "401": {
+              "description": "Unauthorized",
+              "headers": {}
+            },
+            "403": {
+              "description": "Forbidden",
+              "headers": {}
+            },
+            "404": {
+              "description":"Not Found",
+              "headers": {}
+            },
+            "500": {
+              "description": "Server Error",
+              "headers": {}
+            }
+          },
+          "deprecated": false,
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "tags": [
+            "address"
+          ],
+          "summary": "Delete A State",
+          "operationId": "DeletedAState",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
               "headers": {}
             },
             "401": {
@@ -5258,46 +5785,45 @@
     "security": [],
     "tags": [
       {
-        "name": "positions"
-      },
-      {
-        "name": "departments"
-      },
-      {
-        "name": "employees"
-      },
-      {
-        "name": "roles"
-      },
-      {
-        "name": "menus"
-      },
-      {
-        "name": "dishes"
-      },
-      {
-        "name": "orders"
-      },
-      {
-        "name": "tables"
-      },
-      {
-        "name": "reservations"
+        "name": "address"
       },
       {
         "name": "auth"
       },
       {
-        "name": "profile"
-      },
-      {
-        "name": "OAuth"
+        "name": "departments"
+      },{
+        "name": "dishes"
       },
       {
         "name": "duration"
       },
       {
-        "name": "address"
+        "name": "employees"
+      },
+      {
+        "name": "menus"
+      },
+      {
+        "name": "OAuth"
+      },
+      {
+        "name": "orders"
+      },
+      {
+        "name": "positions"
+      },
+      {
+        "name": "profile"
+      },
+      {
+        "name": "reservations"
+      },
+      {
+        "name": "roles"
+      },
+      {
+        "name": "tables"
       }
     ]
   }

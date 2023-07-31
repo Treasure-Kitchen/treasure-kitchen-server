@@ -1,3 +1,4 @@
+const { capitalizeFirstLetters } = require('../helpers/helperFs');
 const Address = require('../models/Address');
 const Country = require('../models/Country');
 const State = require('../models/State');
@@ -101,7 +102,7 @@ const createCountry = async (req, res) => {
     try {
             if(!name) return res.status(400).json({message: 'Country name is required.'});
             const newCountry = new Country({
-                name: name
+                name: capitalizeFirstLetters(name)
             });
 
             //save
@@ -120,7 +121,7 @@ const updateCountry = async (req, res) => {
             const country = await Country.findOne({_id: id }).exec();
             if(!country) return res.status(404).json({message: `No country found with Id: ${id}`});
             //update
-            country.name = name;
+            country.name = capitalizeFirstLetters(name);
             //save
             await country.save();
             res.status(200).json({message: 'Country record successfully updated.'});
@@ -144,9 +145,22 @@ const removeCountry = async (req, res) => {
 }
 
 const getCountries = async (req, res) => {
+    const { includeStates } = req.query;
     try {
-            const countries = await Country.find().sort({name: 1}).select('_id name');
-            res.status(200).json(countries);
+            if(includeStates){
+                const countries = await Country.find()
+                        .sort({name: 1})
+                        .select('_id name states')
+                        .populate({
+                            path: 'states',
+                            select: '_id name'
+                        })
+                        .exec();
+                res.status(200).json(countries);
+            } else {
+                const countries = await Country.find().sort({name: 1}).select('_id name');
+                res.status(200).json(countries);
+            }
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -181,7 +195,7 @@ const createState = async (req, res) => {
 
             //create state
             const newState = new State({
-                name: name,
+                name: capitalizeFirstLetters(name),
                 country: country._id
             });
 
@@ -224,7 +238,7 @@ const updateState = async (req, res) => {
             }
 
             //update the state name
-            state.name = name;
+            state.name = capitalizeFirstLetters(name);
             //update new country
             country.states.push(state._id);
             //save
@@ -276,9 +290,8 @@ const getStateById = async (req, res) => {
 
 const getStatesByCountry = async (req, res) => {
     const { countryId } = req.params;
-
     try {
-            const states = await State.find({country: countryId}).sort({name: 1}).select('_id name country').exec();
+            const states = await State.find({ country: countryId}).sort({name: 1}).select('_id name').exec();
             res.status(200).json(states);
     } catch (error) {
         res.status(500).json({message: error.message});

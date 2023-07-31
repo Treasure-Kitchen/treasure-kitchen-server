@@ -4465,7 +4465,14 @@
           ],
           "summary": "Get A List Of All Countries",
           "operationId": "GetsAListOfAllCountries",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "includeStates",
+              "in": "query",
+              "required": false,
+              "type": "boolean"
+            }
+          ],
           "responses": {
             "200": {
               "description": "OK",

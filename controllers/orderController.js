@@ -167,7 +167,7 @@ const getAll = async (req, res) => {
                  .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
                  .populate({
                      path: 'dishes',
-                     select: '_id name photo'
+                     select: '_id name photo price description'
                  })
                  .populate({
                      path: 'customer',
@@ -232,7 +232,7 @@ const getByUserId = async (req, res) => {
                  .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
                  .populate({
                      path: 'dishes',
-                     select: '_id name photo'
+                     select: '_id name photo price description'
                  })
                  .populate({
                      path: 'customer',
@@ -267,7 +267,7 @@ const getById = async (req, res) => {
                     .select('_id status price amountPaid balance dateTime paymentStatus customer dishes')
                     .populate({
                         path: 'dishes',
-                        select: '_id name photo'
+                        select: '_id name photo price description'
                     })
                     .populate({
                         path: 'customer',

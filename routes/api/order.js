@@ -13,6 +13,9 @@ router.route('/')
 router.route('/user')
     .get(verifyJWT, verifyRoles(ROLES.User), orderController.getByUserId);
 
+router.route('/user-has-order')
+    .get(verifyJWT, verifyRoles(ROLES.User), orderController.isUserHasOrders);
+
 router.route('/:id')
     .get(verifyJWT, orderController.getById)
     .put(verifyJWT, verifyRoles(ROLES.User), orderController.update)

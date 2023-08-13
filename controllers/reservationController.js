@@ -263,13 +263,22 @@ const getByUserEmail = async(req, res) => {
         }
 };
 
+const userHasReservation = async(req, res) => {
+    const userId = getLoggedInUserId(req);
+  
+    try {
+            const user = await User.findOne({ _id: userId });
+            if(!user) return res.status(404).json({message: `No user found with the Id: ${userId}`});
+            
+            const count = await Reservation.countDocuments({ customerEmail: user.email }).exec();
+            res.status(200).json(count > 0);
+        } catch(error){
+            res.status(500).json({message: error.message});
+        }
+};
+
 const confirmReservation = async(req, res) => {
     const { id } = req.params;
-    const {
-        cardNumber,
-        cardPin,
-        cvv
-    } = req.body;
 
     try {
             const reservation = await Reservation.findOne({ _id: id });
@@ -294,5 +303,6 @@ module.exports = {
     confirmReservation,
     cancelReservation,
     updateTableAndPartySize,
-    updateTimeAndDuration
+    updateTimeAndDuration,
+    userHasReservation
 };

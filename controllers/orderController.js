@@ -381,6 +381,20 @@ const initOrderTrack = (order) => {
     });
 }
 
+const isUserHasOrders = async (req, res) => {
+    const userId = getLoggedInUserId(req);
+    
+    try {
+            const user = await User.findOne({ _id: userId }).exec();
+            if(!user) return res.status(404).json({message: `No user found with the Id: ${userId}`});
+            
+            const count = await Order.countDocuments({ customer: user._id }).exec();
+            res.status(200).json(count > 0 );
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+};
+
 module.exports = {
     create,
     update,
@@ -391,5 +405,6 @@ module.exports = {
     remove,
     confirmOrder,
     completeOrder,
-    getOrderTrack
+    getOrderTrack,
+    isUserHasOrders
 };

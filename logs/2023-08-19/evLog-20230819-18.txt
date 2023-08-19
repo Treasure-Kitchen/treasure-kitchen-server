@@ -1,0 +1,2 @@
+2023-08-19	18:09:13	7998a9a4-752e-4777-bd75-5fde4d334d31	Server running on 5500.	Windows_NT - Windows 10 Pro
+2023-08-19	18:09:47	a3281c02-21ca-453e-be5b-fc2fb85d0601	Server running on 5500.	Windows_NT - Windows 10 Pro

@@ -21,9 +21,6 @@ router.route('/:id')
     .put(verifyJWT, verifyRoles(ROLES.User), orderController.update)
     .delete(verifyJWT, verifyRoles(ROLES.User), orderController.remove);
 
-router.route('/:id/confirm')
-    .patch(verifyJWT, verifyRoles(ROLES.Admin, ROLES.Regular, ROLES.SuperAdmin), orderController.confirmOrder);
-
 router.route('/:id/complete')
     .patch(verifyJWT, verifyRoles(ROLES.Admin, ROLES.Regular, ROLES.SuperAdmin), orderController.completeOrder)
 

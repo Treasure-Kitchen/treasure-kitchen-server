@@ -102,35 +102,51 @@ const update = async (req, res) => {
 
 const pay = async (req, res) => {
     const { id } = req.params;
-    const { amount } = req.body;
-
-    if(isNotANumber(amount)) return res.status(400).json({message: `Invalid payment amount: ${amount}.`});
-    if(toNumber(amount) <= 0) return res.status(400).json({message: `Amount must be greater than 0.`});
 
     try {
-        const order = await Order.findOne({ _id: id }).populate('customer').exec();
-        if(!order) return res.status(404).json({message: `Could not find an order with Id: ${id}`});
-        if((order.paymentStatus === paymentStatuses.Paid && order.balance <= 0) || order.amountPaid === order.price) return res.status(400).json({message: 'Order already process. Awaiting confirmation.'});
-        //TODO: Process Payment here
-        const previousOrderStatus = order.status;
-        //Update
-        order.amountPaid = toNumber(amount);
-        order.balance = (order.price - toNumber(amount));
-        order.status = (order.price - toNumber(amount)) === 0 || (order.price - toNumber(amount) < 0) ? 
-                orderStatuses.Placed : 
-                orderStatuses.Pending;
-        order.paymentStatus = processPaymentStatus(order, toNumber(amount));
-        //Initialize Order Track
-        if(previousOrderStatus !== order.status){
-            const orderTrack = initOrderTrack(order);
-            await orderTrack.save();
+            const order = await Order.findOne({ _id: id }).populate('customer').exec();
+            if(!order) return res.status(404).json({message: `Could not find an order with Id: ${id}`});
+            if((order.paymentStatus === paymentStatuses.Paid && order.balance <= 0) || order.amountPaid === order.price) 
+                return res.status(400).json({message: 'Order already process. Awaiting confirmation.'});
+
+            //TODO: Process Payment here
+            const paymentResult = processPayment(order, req)
+            if(paymentResult.isSuccessful){
+                const previousOrderStatus = order.status;
+                //Update
+                order.amountPaid = toNumber(order.price);
+                order.balance = 0;
+                order.status = orderStatuses.Confirmed;
+                order.paymentStatus = processPaymentStatus(order, toNumber(amount));
+
+                //Initialize Order Track
+                if(previousOrderStatus !== order.status){
+                    const orderTrack = initOrderTrack(order);
+                    await orderTrack.save();
+                }
+
+                //Update
+                order.status = orderStatuses.Confirmed;
+                //Send order details to the user email
+                const payload = {
+                    name: order.customer.displayName, 
+                    price: order.price, 
+                    date: order.dateTime, 
+                    orderId: order._id, 
+                    email: order.customer.email, 
+                    subject: "Order Details"
+                };
+                await sendOrderNotification(payload);
+                //Save
+                await order.save();
+                res.status(200).json({ message: 'Your order now on the way. We have sent the details to your mail.'})
+            } else {
+                return res.status(404).json({message: paymentResult.message });
+            }
+            
+        } catch (error) {
+            res.status(500).json({ message: error.message });
         }
-        //Save
-        await order.save();
-        res.status(200).json({ message: 'Order successfully placed. You will receive a notification once your order is confirmed.'})
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
 };
 
 const getAll = async (req, res) => {
@@ -302,40 +318,6 @@ const remove = async (req, res) => {
     }
 };
 
-const confirmOrder = async (req, res) => {
-    const { id } = req.params;
-    try {
-            const orderToConfirm = await Order.findOne({ _id: id }).populate('customer').exec();
-            if(!orderToConfirm) return res.status(404).json({message: `No order found with Id: ${id}`});
-            if(orderToConfirm.status !== orderStatuses.Placed) return res.status(400).json({message: `You can not moved order from ${orderToConfirm.status} to ${orderStatuses.Confirmed}`});
-            if(orderToConfirm.price !== orderToConfirm.amountPaid || orderToConfirm.price > orderToConfirm.amountPaid)
-                return res.status(400).json({message: `The order amount has to be fully paid to be confirmed.`});
-
-            const previousOrderStatus = orderToConfirm.status;
-            if(previousOrderStatus !== orderToConfirm.status){
-                const orderTrack = initOrderTrack(orderToConfirm);
-                await orderTrack.save();
-            }
-            //Update
-            orderToConfirm.status = orderStatuses.Confirmed;
-            //Save
-            orderToConfirm.save();
-            //Send order details to the user email
-            const payload = {
-                name: orderToConfirm.customer.displayName, 
-                price: orderToConfirm.price, 
-                date: orderToConfirm.dateTime, 
-                orderId: orderToConfirm._id, 
-                email: orderToConfirm.customer.email, 
-                subject: "Order Details"
-            };
-            await sendOrderNotification(payload);
-            res.status(200).json({message: 'Order successfully confirmed.'});
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
-};
-
 const completeOrder = async (req, res) => {
     const { id } = req.params;
     try {
@@ -395,6 +377,25 @@ const isUserHasOrders = async (req, res) => {
     }
 };
 
+const processPayment = (order, req) => {
+    const { 
+        cardNumber,
+        cvv,
+        pin
+     } = req.body;
+
+     if(!cardNumber || !cvv || pin) 
+        return {
+            isSuccessful: false,
+            message: "Invalid request. Please enter the required details"
+        };
+
+    return {
+        isSuccessful: true,
+        message: "payment successfully processed."
+    };
+}
+
 module.exports = {
     create,
     update,
@@ -403,7 +404,6 @@ module.exports = {
     getByUserId,
     getById,
     remove,
-    confirmOrder,
     completeOrder,
     getOrderTrack,
     isUserHasOrders

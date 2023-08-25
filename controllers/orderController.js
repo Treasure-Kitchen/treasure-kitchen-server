@@ -1,7 +1,7 @@
 const Order = require('../models/Order');
 const Dish = require('../models/Dish');
 const { orderStatuses, paymentStatuses } = require('../config/statuses');
-const { isNotANumber, toNumber, processPaymentStatus, validDateRange, minimumDate, maximumDate } = require('../helpers/helperFs');
+const { toNumber, processPaymentStatus, validDateRange, minimumDate, maximumDate } = require('../helpers/helperFs');
 const User = require('../models/User');
 const { getLoggedInUserId } = require('../utils/getClaimsFromToken');
 const OrderTrack = require('../models/OrderTrack');
@@ -46,7 +46,7 @@ const create = async (req, res) => {
             await orderTrack.save()
             const threeDaysLater = addMilliseconds(order.dateTime, (millisecondsInHour * 24 * 3));
             cancelOrderIfNotConfirmed(order._id, threeDaysLater);
-            res.status(200).json({message: `Order created successfully. Pending payment. Please complete your order before ${threeDaysLater}.`});
+            res.status(200).json({id: order?._id, message: `Order created successfully. Pending payment. Please complete your order before ${threeDaysLater}.`});
         } catch (error) {
             res.status(500).json({message: error.message});
         }
@@ -381,10 +381,11 @@ const processPayment = (order, req) => {
     const { 
         cardNumber,
         cvv,
-        pin
+        expMonth,
+        expYear
      } = req.body;
 
-     if(!cardNumber || !cvv || pin) 
+     if(!cardNumber || !cvv || !expMonth || !expYear) 
         return {
             isSuccessful: false,
             message: "Invalid request. Please enter the required details"

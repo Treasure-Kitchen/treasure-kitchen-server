@@ -8,6 +8,7 @@ const OrderTrack = require('../models/OrderTrack');
 const { addMilliseconds, millisecondsInHour } = require('date-fns');
 const { cancelOrderIfNotConfirmed } = require('../utils/cronJobs');
 const { sendOrderNotification } = require('../helpers/emailSlave');
+const mongoose = require("mongoose")
 
 const create = async (req, res) => {
     const userId = getLoggedInUserId(req);
@@ -100,6 +101,7 @@ const update = async (req, res) => {
     }
 };
 
+//update on swagger doc
 const pay = async (req, res) => {
     const { id } = req.params;
 
@@ -117,7 +119,7 @@ const pay = async (req, res) => {
                 order.amountPaid = toNumber(order.price);
                 order.balance = 0;
                 order.status = orderStatuses.Confirmed;
-                order.paymentStatus = processPaymentStatus(order, toNumber(amount));
+                order.paymentStatus = processPaymentStatus(order, toNumber(order.amountPaid));
 
                 //Initialize Order Track
                 if(previousOrderStatus !== order.status){
@@ -125,8 +127,6 @@ const pay = async (req, res) => {
                     await orderTrack.save();
                 }
 
-                //Update
-                order.status = orderStatuses.Confirmed;
                 //Send order details to the user email
                 const payload = {
                     name: order.customer.displayName, 
@@ -341,6 +341,34 @@ const completeOrder = async (req, res) => {
     }
 };
 
+//Add to swagger doc
+const cancelOrder = async (req, res) => {
+    const { id } = req.params;
+    const userId = getLoggedInUserId(req);
+
+    try {
+            const orderToCancel = await Order.findOne({ _id: id, customer: userId }).populate("customer").exec();
+            if(!orderToCancel) return res.status(404).json({message: `No order found with Id and UserId: ${id} and ${userId} respectively.`});
+            if(orderToCancel.status === orderStatuses.Cancelled) return res.status(400).json({message: `Order already cancelled!`});
+            if(orderToCancel.amountPaid > 0) return res.status(400).json({message: `You can not cancel this order.`});
+            
+            const previousOrderStatus = orderToCancel.status;
+            //Update order
+            orderToCancel.status = orderStatuses.Cancelled;
+
+            if(previousOrderStatus !== orderToCancel.status){
+                const orderTrack = initOrderTrack(orderToCancel);
+                await orderTrack.save();
+            }
+
+            //Save
+            orderToCancel.save();
+        res.status(200).json({message: 'Order successfully Cancelled.'});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+};
+
 const getOrderTrack = async (req, res) => {
     const { orderId } = req.params;
     const userId = getLoggedInUserId(req);
@@ -405,6 +433,7 @@ module.exports = {
     getByUserId,
     getById,
     remove,
+    cancelOrder,
     completeOrder,
     getOrderTrack,
     isUserHasOrders

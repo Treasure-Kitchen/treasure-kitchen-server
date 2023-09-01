@@ -24,6 +24,9 @@ router.route('/:id')
 router.route('/:id/complete')
     .patch(verifyJWT, verifyRoles(ROLES.Admin, ROLES.Regular, ROLES.SuperAdmin), orderController.completeOrder)
 
+router.route('/:id/cancel')
+    .patch(verifyJWT, verifyRoles(ROLES.User), orderController.cancelOrder)
+
 router.route('/:id/pay')
     .patch(verifyJWT, verifyRoles(ROLES.User), orderController.pay);
 

@@ -247,24 +247,24 @@ const changePassword = async(req, res) => {
             newPassword, 
             confirmNewPassword 
         } = req.body;
-    if(newPassword !== confirmNewPassword)
-        return res.status(400).json({'message':'Password and confirm password must match.'});
-    if(!isValidPassword(newPassword)) return res.status(400).json({'message':'Password must have at least, a lowercase, an uppercase, a digit and a special character'});
     
     try {
-        const user = await User.findOne({ _id: userId }).exec();
-        if(user){
-            const hashedPwd = await bcrypt.hash(newPassword, 10);
-            user.password = hashedPwd;
-            //save the changes
-            await user.save();
-            res.status(200).json({'message':'Password successfully changed'});
-        } else {
-            res.status(404).json({'message':`No user found with Id: ${userId}`});
+            if(newPassword !== confirmNewPassword)
+                return res.status(400).json({'message':'Password and confirm password must match.'});
+            if(!isValidPassword(newPassword)) return res.status(400).json({'message':'Password must have at least, a lowercase, an uppercase, a digit and a special character'});
+                const user = await User.findOne({ _id: userId }).exec();
+                if(user){
+                    const hashedPwd = await bcrypt.hash(newPassword, 10);
+                    user.password = hashedPwd;
+                    //save the changes
+                    await user.save();
+                    res.status(200).json({'message':'Password successfully changed'});
+                } else {
+                    res.status(404).json({'message':`No user found with Id: ${userId}`});
+                }
+        } catch (error) {
+            res.status(500).json({'message':error.message});
         }
-    } catch (error) {
-        res.status(500).json({'message':error.message});
-    }
 };
 
 const changeName = async(req, res) => {

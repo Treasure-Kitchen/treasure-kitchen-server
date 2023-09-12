@@ -43,7 +43,11 @@ const updateDishImage = async (req, res) => {
             
             const result = await cloudinary.uploader.upload(file.path, {
                 folder: "treasure_kitchen",
-                public_id: dish?.publicId
+                public_id: dish?.publicId,
+                transformation: {
+                    width: '240',
+                    height: '160'
+                }
             });
     
             dish.photo = result.secure_url;

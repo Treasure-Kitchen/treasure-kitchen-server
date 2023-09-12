@@ -9,7 +9,7 @@ const sendOrderNotification = async({ name, price, date, orderId, email, subject
         const filePath = path.join(__dirname, '..', 'views', 'OrderDetails.html');
         const template = await fsPromises.readFile(filePath, 'utf8');
         const message = template
-                        .replace("{{firstname}}", `Hello ${capitalizeFirstWord(name)},`)
+                        .replace("{{firstname}}", `${capitalizeFirstWord(name)}`)
                         .replace("{{total_price}}", `${currency.naira}${new Intl.NumberFormat().format(price)}`)
                         .replace("{{order_date}}", format(new Date(date), 'yyyy-MM-dd-HH:mm'))
                         .replace("{{order_id}}", orderId);
@@ -30,7 +30,7 @@ const sendReservationNotification = async({ name, email, subject, cancelAtDate, 
         const filePath = path.join(__dirname, '..', 'views', 'Notification.html');
         const template = await fsPromises.readFile(filePath, 'utf8');
         const message = template
-                        .replace("{{greetings}}", `Hello ${capitalizeFirstWord(name)},`)
+                        .replace("{{greetings}}", `${capitalizeFirstWord(name)},`)
                         .replace("{{message}}", confirmReservationMessage(cancelAtDate))
                         .replace("{{order_track_link}}", link)
                         .replace("{{year}}", (new Date()).getFullYear());

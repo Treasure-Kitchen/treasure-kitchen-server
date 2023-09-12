@@ -32,7 +32,7 @@ const sendMail = ({ recipientEmail, recipientName, subject, html }) => {
 	})
 request
 	.then((result) => {
-        logEvents(`${result.response.statusText}: Verification email sent to ${recipientEmail}`, `evLog-${format(new Date(), 'yyyyMMdd-HH')}.txt`);
+        logEvents(`${result.response.statusText}: Email sent to ${recipientEmail} on ${new Date()}`, `evLog-${format(new Date(), 'yyyyMMdd-HH')}.txt`);
 	})
 	.catch((err) => {
         logEvents(`${err.originalMessage}`, `errLog-${format(new Date(), 'yyyyMMdd-HH')}.txt`);

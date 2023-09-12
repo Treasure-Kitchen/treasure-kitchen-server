@@ -16,6 +16,10 @@
       {
         "url": "http://localhost:5500",
         "variables": {}
+      },
+      {
+        "url": "https://treasure-kitchen-server.onrender.com",
+        "variables": {}
       }
     ],
     "paths": {
